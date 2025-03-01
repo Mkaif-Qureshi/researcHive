@@ -30,6 +30,7 @@ const userSchema = new mongoose.Schema(
     profile_pic: {
       type: String,
       default: "",
+      maxLength: 300,
     },
     gender: {
       type: String,

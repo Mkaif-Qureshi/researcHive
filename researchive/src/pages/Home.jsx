@@ -4,9 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { FiSearch } from 'react-icons/fi'; // Import search icon from react-icons
 import { useAuth } from '@/context/AuthContext';
+import { Button } from '@/components/ui/button';
 
 const Home = () => {
-  const {currentUser} = useAuth();
+  const {currentUser , logout} = useAuth();
   return (
     <div className="flex min-h-screen bg-gray-100">
       <div className="w-full p-8 space-y-6 , ml-20">
@@ -23,6 +24,7 @@ const Home = () => {
             </div>
           </div>
         </div>
+        <Button type='button' onClick={logout} />
 
         <h2 className="text-2xl font-bold text-gray-800">Research Papers</h2>
 

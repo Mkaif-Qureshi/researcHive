@@ -208,14 +208,17 @@ export const updateProfilePic = async (req, res) => {
     //upload to cloudinary
     const uploadRes = await cloudinary.uploader.upload(profilePic);
 
+
     //update user in database
-    const updatedUser = User.findByIdAndUpdate(
+    const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { profile_pic: uploadRes.secure_url },
+      { profile_pic: uploadRes.url },
       { new: true }
     ); //secure_url given by clodinary
     //on new : true gives updated object
-    return res.status(200).json({ message: "Updated user profile picture" });
+    console.log('fgfggg')
+    console.log(updatedUser)
+    return res.status(200).json({message: "Updated user profile picture" });
   } catch (err) {
     console.log(`Error in Update Profile Pic : ${err.message}`);
     res.status(500).json({ message: `Internal Server error ${err}` });
