@@ -25,6 +25,9 @@ const Navbar = () => {
             <Link to="/" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
               Home
             </Link>
+            <Link to="/profile" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
+              Profile
+            </Link>
             <Link to="/dashboard" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
               Dashboard
             </Link>
@@ -71,6 +74,9 @@ const Navbar = () => {
       <div className="md:hidden hidden" id="mobile-menu">
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           <Link to="/" className={`block px-3 py-2 rounded-md text-base font-medium text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} hover:bg-gray-50`}>
+            Home
+          </Link>
+          <Link to="/profile" className={`block px-3 py-2 rounded-md text-base font-medium text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} hover:bg-gray-50`}>
             Home
           </Link>
           <Link to="/dashboard" className={`block px-3 py-2 rounded-md text-base font-medium text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} hover:bg-gray-50`}>
