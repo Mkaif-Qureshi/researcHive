@@ -8,23 +8,25 @@ import { AuthProvider } from "./context/AuthContext";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import ResearchGraph from "./pages/ResearchGraph";
+import Chat from "./pages/Chat";
 
 const App = () => {
   return (
     <AuthProvider>
-      <Router>
-        <Toaster />
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/research-graph" element={<ResearchGraph />} />
-          </Route>
-        </Routes>
-      </Router>
+    <Router>
+      <Toaster /> 
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/research-graph" element={<ResearchGraph />} />
+        </Route>
+      </Routes>
+    </Router>
     </AuthProvider>
   );
 };

@@ -33,9 +33,6 @@ const Navbar = () => {
             <Link to="/" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
               Home
             </Link>
-            <Link to="/profile" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
-              Profile
-            </Link>
             <Link to="/dashboard" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
               Dashboard
             </Link>
@@ -44,6 +41,9 @@ const Navbar = () => {
             </Link>
             <Link to="/communities" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
               Communities
+            </Link>
+            <Link to="/Chat" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
+             Chat
             </Link>
           </div>}
 
@@ -95,6 +95,9 @@ const Navbar = () => {
           </Link>
           <Link to="/communities" className={`block px-3 py-2 rounded-md text-base font-medium text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} hover:bg-gray-50`}>
             Communities
+          </Link>
+          <Link to="/communities" className={`block px-3 py-2 rounded-md text-base font-medium text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} hover:bg-gray-50`}>
+            Chat
           </Link>
         </div>
         <div className="pt-4 pb-3 border-t border-gray-200">
