@@ -25,9 +25,6 @@ const Navbar = () => {
             <Link to="/" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
               Home
             </Link>
-            <Link to="/profile" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
-              Profile
-            </Link>
             <Link to="/dashboard" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
               Dashboard
             </Link>
