@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import { AuthProvider } from "./context/AuthContext";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
+import Chat from "./pages/Chat";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/chat" element={<Chat />} />
         </Route>
       </Routes>
     </Router>
