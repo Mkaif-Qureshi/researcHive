@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import themeConfig from '../../themeConfig.js'; // Import the theme configuration
 import { useAuth } from "../context/AuthContext";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.jsx';
 
 const Navbar = () => {
   const { currentUser, logout } = useAuth();
@@ -20,7 +21,7 @@ const Navbar = () => {
           </div>
           
           {/* Middle - Navigation Links */}
-          <div className="hidden md:flex space-x-8">
+          {currentUser && <div className="hidden md:flex space-x-8">
             <Link to="/" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
               Home
             </Link>
@@ -33,17 +34,21 @@ const Navbar = () => {
             <Link to="/communities" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
               Communities
             </Link>
-          </div>
+          </div>}
 
           {/* Right side - Auth Section */}
           <div className="flex items-center space-x-4">
-            {currentUser && <Link to="/profile" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
-              {`${currentUser.name.trim()}`}
+            {currentUser && <Link to="/profile" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover}rounded-md font-medium`}>
+              {`${currentUser.name.split(" ")[0]}`}
             </Link>}
-            {currentUser ? (
-              <Button onClick={logout} variant="outline" size="sm" className={`text-${themeConfig.colors.primary} border-${themeConfig.colors.primary} hover:bg-blue-50`}>
-                Logout
-              </Button>
+            {currentUser ? 
+            (
+              <Link to="/profile">
+            <Avatar className="h-11 w-11">
+                <AvatarImage src={currentUser.profile_pic} alt="Profile" />
+                <AvatarFallback>{currentUser.name?.charAt(0) || "U"}</AvatarFallback>
+              </Avatar>
+              </Link>
             ) : (
               <>
                 <Link to="/login">

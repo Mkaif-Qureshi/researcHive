@@ -16,7 +16,7 @@ router.post("/logout", logout);
 
 
 //now update method
-router.put("/update-profile-pic" , protectRoute , updateProfilePic) // only authenticated can do so create middleware
+router.put("/update-profile-pic" , updateProfilePic) // only authenticated can do so create middleware
 
 //update other data
 router.put("/update-user-data" , protectRoute , updateUserData)

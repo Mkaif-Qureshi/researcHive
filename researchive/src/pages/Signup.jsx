@@ -58,7 +58,7 @@ export default function SignupForm() {
   const [step, setStep] = useState(1)
   const [formData, setFormData] = useState({
     email: "",
-    mobile_number: "+91",
+    mobile_number: "",
     name: "",
     password: "",
     profile_pic: "",
@@ -151,57 +151,77 @@ export default function SignupForm() {
     setStep((prev) => Math.max(prev - 1, 1))
   }
 
-
-  //backend part here
+  // Backend submission
   const handleSubmit = async (e) => {
     e.preventDefault();
   
     try {
-      // Prepare the form data as a JSON object
       const formPayload = {
         name: formData.name,
         email: formData.email,
-        mobile_number: formData.mobile_number,
+        mobile_number: '+91' + formData.mobile_number,
         password: formData.password,
         role: formData.role,
         gender: formData.gender,
         age: formData.age,
         expertise: formData.expertise,
-        institutions: formData.institutions,  // Institutions is already an array
-        interests: formData.interests,  // Interests is already an array
-        social_links: formData.social_links,  // Social links is already an array
+        institutions: formData.institutions,
+        interests: formData.interests,
+        social_links: formData.social_links,
         visibility: formData.visibility,
       };
-  
+
+      console.log(formPayload)
+
       const response = await fetch(`${backend_url}/api/auth/signup`, {
         method: 'POST',
-        body: JSON.stringify(formPayload),  // Send JSON
+        body: JSON.stringify(formPayload),
         headers: {
-          'Content-Type': 'application/json', 
+          'Content-Type': 'application/json',
         },
-        credentials : 'include',
       });
-      navigate("/");
-  
+
       if (!response.ok) {
         const errorData = await response.json();
         toast.error(errorData.message || 'Signup failed');
         return;
       }
-  
-      // Handle successful signup
-      const result = await response.json();
+
+      let result = await response.json();
       console.log('User signed up:', result);
       toast.success('Signup successful!');
-    
+
+      if(formData.profile_pic){
+        const response = await fetch(`${backend_url}/api/auth/update-profile-pic`, {
+          method: 'PUT',
+          body: JSON.stringify({profilePic : formData.profile_pic , userId : result._id}),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
   
+        if (!response.ok) {
+          const errorData = await response.json();
+          toast.error(errorData.message || 'Error during uploading profile pic');
+          return;
+        }
+  
+        const result2 = await response.json();
+        console.log('User signed up:', result2);
+        toast.success('Profile pic uploaded!');
+      }
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 4000); // 2000 milliseconds = 2 seconds
+
+
     } catch (error) {
       console.error('Signup failed:', error);
       toast.error(error.message || 'Signup failed! Please try again.');
     }
   };
-  
-  
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50 p-4">
       <Card className="w-full max-w-3xl">
@@ -212,8 +232,8 @@ export default function SignupForm() {
           </CardDescription>
           <Progress value={progress} className="h-2 mt-2" />
         </CardHeader>
-        <form onSubmit={handleSubmit}>
-          <CardContent className="min-h-[450px]"> {/* Fixed height to prevent layout shifts */}
+        <form onSubmit={(e)=>e.preventDefault()}>
+          <CardContent className="min-h-[450px]">
             {step === 1 && <BasicInfoStep form={basicInfoForm} formData={formData} updateFormData={updateFormData} />}
             {step === 2 && <PersonalDetailsStep form={personalDetailsForm} formData={formData} updateFormData={updateFormData} />}
             {step === 3 && <ProfessionalInfoStep form={professionalInfoForm} formData={formData} updateFormData={updateFormData} />}
@@ -230,7 +250,7 @@ export default function SignupForm() {
                   Next
                 </Button>
               ) : (
-                <Button type="submit" variant="button">Create Account</Button>
+                <Button type="button" onClick={handleSubmit} variant="button">Create Account</Button>
               )}
             </div>
           </CardFooter>
@@ -239,6 +259,7 @@ export default function SignupForm() {
     </div>
   )
 }
+
 
 // Step 1: Basic Information
 function BasicInfoStep({ form, formData, updateFormData }) {
@@ -274,26 +295,36 @@ function BasicInfoStep({ form, formData, updateFormData }) {
           )}
         />
 
+
         <FormField
-          control={form.control}
-          name="mobile_number"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Mobile Number</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Enter your mobile number"
-                  {...field}
-                  onChange={(e) => {
-                    field.onChange(e)
-                    handleChange("mobile_number", e.target.value)
-                  }}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      control={form.control}
+      name="mobile_number"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>Mobile Number</FormLabel>
+          <FormControl>
+            <div className="flex">
+            <Input
+                className=" w-15 mr-2"
+                placeholder="Enter your mobile number"
+                value={'+91'}
+              />
+              <Input
+                className="rounded-l-none"
+                placeholder="Enter your mobile number"
+                maxLength={10}
+                {...field}
+                onChange={(e) => {
+                  field.onChange(e)
+                  handleChange("mobile_number", e.target.value)
+                }}
+              />
+            </div>
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
 
         <FormField
           control={form.control}
@@ -335,12 +366,12 @@ function BasicInfoStep({ form, formData, updateFormData }) {
                   />
                   <Button
                     type="button"
-                    variant="button"
+                    variant="outline2"
                     size="icon"
                     className="absolute right-0 top-0 h-full px-3"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    {showPassword ? <EyeOff className="" /> : <Eye className="h-4 w-4" />}
                     <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
                   </Button>
                 </div>
@@ -362,12 +393,18 @@ function PersonalDetailsStep({ form, formData, updateFormData }) {
   const handleFileChange = (e) => {
     const file = e.target.files?.[0]
     if (file) {
-      // In a real app, you would upload this file to your server or cloud storage
-      // For this example, we'll just create a local URL for preview
+      // For preview only
       const url = URL.createObjectURL(file)
       setPreviewUrl(url)
-      updateFormData({ profile_pic: url })
-      form.setValue("profile_pic", url)
+      
+      // Convert file to base64 for sending to server
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onloadend = () => {
+        updateFormData({ profile_pic: reader.result }) // This will be a base64 string
+        console.log(reader.result)
+        form.setValue("profile_pic", reader.result)
+      }
     }
   }
 

@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { FiSearch } from 'react-icons/fi'; // Import search icon from react-icons
+import { useAuth } from '@/context/AuthContext';
 
 const Home = () => {
+  const {currentUser} = useAuth();
   return (
     <div className="flex min-h-screen bg-gray-100">
       <div className="w-full p-8 space-y-6 , ml-20">
@@ -24,7 +26,7 @@ const Home = () => {
 
         <h2 className="text-2xl font-bold text-gray-800">Research Papers</h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {currentUser && <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Research Paper Block */}
           <Card className="shadow-lg bg-white">
             <CardHeader>
@@ -63,11 +65,11 @@ const Home = () => {
               <Link to="#" className="text-blue-500 hover:text-blue-700">Read more</Link>
             </CardContent>
           </Card>
-        </div>
+        </div>}
       </div>
 
       {/* Right Side - Top Research Experts */}
-      <div className="w-1/3 bg-gray-200 p-8 , m-12 , mt-18 border-2">
+      {currentUser && <div className="w-1/3 bg-gray-200 p-8 , m-12 , mt-18 border-2">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Top Research Experts</h2>
 
         <div className="space-y-4">
@@ -98,7 +100,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div>}
     </div>
   );
 };

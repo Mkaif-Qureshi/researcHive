@@ -93,8 +93,8 @@ export const signup = async (req, res) => {
     // Save the user to the database
     await newUser.save();
 
-    // Generate JWT token
-    generateToken(newUser._id, res);
+    // // Generate JWT token
+    // generateToken(newUser._id, res);
 
     // Return success response
     res.status(201).json({
@@ -199,8 +199,7 @@ export const logout = (req, res) => {
 export const updateProfilePic = async (req, res) => {
   try {
     //grab
-    const { profilePic } = req.body;
-    const userId = req.user._id; //protect route
+    const { profilePic , userId } = req.body;
 
     if (!profilePic) {
       res.status(400).json({ message: "Profile pic is required" });
