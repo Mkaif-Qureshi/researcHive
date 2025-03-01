@@ -17,6 +17,9 @@ import { Badge } from "@/components/ui/badge"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { backend_url } from "../../backendUrl"
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom"
 
 // Form schemas
 const basicInfoSchema = z.object({
@@ -51,10 +54,11 @@ const additionalInfoSchema = z.object({
 })
 
 export default function SignupForm() {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1)
   const [formData, setFormData] = useState({
     email: "",
-    mobile_number: "",
+    mobile_number: "+91",
     name: "",
     password: "",
     profile_pic: "",
@@ -75,21 +79,129 @@ export default function SignupForm() {
     setFormData((prev) => ({ ...prev, ...data }))
   }
 
-  const handleNext = () => {
-    setStep((prev) => Math.min(prev + 1, totalSteps))
+  // Form refs to access form methods across steps
+  const basicInfoForm = useForm({
+    resolver: zodResolver(basicInfoSchema),
+    defaultValues: {
+      email: formData.email || "",
+      mobile_number: formData.mobile_number || "",
+      name: formData.name || "",
+      password: formData.password || "",
+    },
+    mode: "onSubmit", // Only validate on submit, not onChange
+  })
+
+  const personalDetailsForm = useForm({
+    resolver: zodResolver(personalDetailsSchema),
+    defaultValues: {
+      profile_pic: formData.profile_pic || "",
+      gender: formData.gender || undefined,
+      age: formData.age ? String(formData.age) : "",
+    },
+    mode: "onSubmit",
+  })
+
+  const professionalInfoForm = useForm({
+    resolver: zodResolver(professionalInfoSchema),
+    defaultValues: {
+      role: formData.role || undefined,
+      expertise: formData.expertise || "",
+      institutions: formData.institutions || [],
+    },
+    mode: "onSubmit",
+  })
+
+  const additionalInfoForm = useForm({
+    resolver: zodResolver(additionalInfoSchema),
+    defaultValues: {
+      interests: formData.interests || [],
+      social_links: formData.social_links || [],
+      visibility: formData.visibility !== undefined ? formData.visibility : true,
+    },
+    mode: "onSubmit",
+  })
+
+  // Function to validate current step before proceeding
+  const handleNext = async () => {
+    let isValid = false;
+    
+    switch (step) {
+      case 1:
+        isValid = await basicInfoForm.trigger();
+        break;
+      case 2:
+        isValid = await personalDetailsForm.trigger();
+        break;
+      case 3:
+        isValid = await professionalInfoForm.trigger();
+        break;
+      case 4:
+        isValid = await additionalInfoForm.trigger();
+        break;
+      default:
+        isValid = true;
+    }
+
+    if (isValid) {
+      setStep((prev) => Math.min(prev + 1, totalSteps));
+    }
   }
 
   const handlePrevious = () => {
     setStep((prev) => Math.max(prev - 1, 1))
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    // Here you would typically send the data to your API
-    console.log("Form submitted:", formData)
-    // Redirect to success page or login page
-  }
 
+  //backend part here
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    try {
+      // Prepare the form data as a JSON object
+      const formPayload = {
+        name: formData.name,
+        email: formData.email,
+        mobile_number: formData.mobile_number,
+        password: formData.password,
+        role: formData.role,
+        gender: formData.gender,
+        age: formData.age,
+        expertise: formData.expertise,
+        institutions: formData.institutions,  // Institutions is already an array
+        interests: formData.interests,  // Interests is already an array
+        social_links: formData.social_links,  // Social links is already an array
+        visibility: formData.visibility,
+      };
+  
+      const response = await fetch(`${backend_url}/api/auth/signup`, {
+        method: 'POST',
+        body: JSON.stringify(formPayload),  // Send JSON
+        headers: {
+          'Content-Type': 'application/json', 
+        },
+        credentials : 'include',
+      });
+      navigate("/");
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        toast.error(errorData.message || 'Signup failed');
+        return;
+      }
+  
+      // Handle successful signup
+      const result = await response.json();
+      console.log('User signed up:', result);
+      toast.success('Signup successful!');
+    
+  
+    } catch (error) {
+      console.error('Signup failed:', error);
+      toast.error(error.message || 'Signup failed! Please try again.');
+    }
+  };
+  
+  
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50 p-4">
       <Card className="w-full max-w-3xl">
@@ -101,24 +213,24 @@ export default function SignupForm() {
           <Progress value={progress} className="h-2 mt-2" />
         </CardHeader>
         <form onSubmit={handleSubmit}>
-          <CardContent>
-            {step === 1 && <BasicInfoStep formData={formData} updateFormData={updateFormData} />}
-            {step === 2 && <PersonalDetailsStep formData={formData} updateFormData={updateFormData} />}
-            {step === 3 && <ProfessionalInfoStep formData={formData} updateFormData={updateFormData} />}
-            {step === 4 && <AdditionalInfoStep formData={formData} updateFormData={updateFormData} />}
+          <CardContent className="min-h-[450px]"> {/* Fixed height to prevent layout shifts */}
+            {step === 1 && <BasicInfoStep form={basicInfoForm} formData={formData} updateFormData={updateFormData} />}
+            {step === 2 && <PersonalDetailsStep form={personalDetailsForm} formData={formData} updateFormData={updateFormData} />}
+            {step === 3 && <ProfessionalInfoStep form={professionalInfoForm} formData={formData} updateFormData={updateFormData} />}
+            {step === 4 && <AdditionalInfoStep form={additionalInfoForm} formData={formData} updateFormData={updateFormData} />}
             {step === 5 && <ReviewStep formData={formData} />}
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Button type="button" variant="outline" onClick={handlePrevious} disabled={step === 1}>
+            <Button type="button" variant="button" onClick={handlePrevious} disabled={step === 1}>
               Previous
             </Button>
             <div>
               {step < totalSteps ? (
-                <Button type="button" onClick={handleNext}>
+                <Button type="button" onClick={handleNext} variant="button">
                   Next
                 </Button>
               ) : (
-                <Button type="submit">Create Account</Button>
+                <Button type="submit" variant="button">Create Account</Button>
               )}
             </div>
           </CardFooter>
@@ -129,31 +241,17 @@ export default function SignupForm() {
 }
 
 // Step 1: Basic Information
-function BasicInfoStep({ formData, updateFormData }) {
+function BasicInfoStep({ form, formData, updateFormData }) {
   const [showPassword, setShowPassword] = useState(false)
 
-  const form = useForm({
-    resolver: zodResolver(basicInfoSchema),
-    defaultValues: {
-      email: formData.email || "",
-      mobile_number: formData.mobile_number || "",
-      name: formData.name || "",
-      password: formData.password || "",
-    },
-  })
-
-  function onSubmit(values) {
-    updateFormData(values)
-  }
-
-  // Auto-save as user types
+  // Handle field changes without validation
   const handleChange = (field, value) => {
     updateFormData({ [field]: value })
   }
 
   return (
     <Form {...form}>
-      <form onChange={form.handleSubmit(onSubmit)} className="space-y-6">
+      <div className="space-y-6">
         <FormField
           control={form.control}
           name="email"
@@ -237,7 +335,7 @@ function BasicInfoStep({ formData, updateFormData }) {
                   />
                   <Button
                     type="button"
-                    variant="ghost"
+                    variant="button"
                     size="icon"
                     className="absolute right-0 top-0 h-full px-3"
                     onClick={() => setShowPassword(!showPassword)}
@@ -252,31 +350,14 @@ function BasicInfoStep({ formData, updateFormData }) {
             </FormItem>
           )}
         />
-      </form>
+      </div>
     </Form>
   )
 }
 
 // Step 2: Personal Details
-function PersonalDetailsStep({ formData, updateFormData }) {
+function PersonalDetailsStep({ form, formData, updateFormData }) {
   const [previewUrl, setPreviewUrl] = useState(formData.profile_pic || "")
-
-  const form = useForm({
-    resolver: zodResolver(personalDetailsSchema),
-    defaultValues: {
-      profile_pic: formData.profile_pic || "",
-      gender: formData.gender || undefined,
-      age: formData.age ? String(formData.age) : "",
-    },
-  })
-
-  function onSubmit(values) {
-    const updatedValues = {
-      ...values,
-      age: values.age ? Number.parseInt(values.age) : undefined,
-    }
-    updateFormData(updatedValues)
-  }
 
   const handleFileChange = (e) => {
     const file = e.target.files?.[0]
@@ -292,7 +373,7 @@ function PersonalDetailsStep({ formData, updateFormData }) {
 
   return (
     <Form {...form}>
-      <form onChange={form.handleSubmit(onSubmit)} className="space-y-6">
+      <div className="space-y-6">
         <div className="flex flex-col items-center space-y-4">
           <Avatar className="h-24 w-24">
             <AvatarImage src={previewUrl} alt="Profile" />
@@ -361,31 +442,15 @@ function PersonalDetailsStep({ formData, updateFormData }) {
             </FormItem>
           )}
         />
-      </form>
+      </div>
     </Form>
   )
 }
 
 // Step 3: Professional Information
-function ProfessionalInfoStep({ formData, updateFormData }) {
+function ProfessionalInfoStep({ form, formData, updateFormData }) {
   const [institution, setInstitution] = useState("")
   const [institutions, setInstitutions] = useState(formData.institutions || [])
-
-  const form = useForm({
-    resolver: zodResolver(professionalInfoSchema),
-    defaultValues: {
-      role: formData.role || undefined,
-      expertise: formData.expertise || "",
-      institutions: formData.institutions || [],
-    },
-  })
-
-  function onSubmit(values) {
-    updateFormData({
-      ...values,
-      institutions,
-    })
-  }
 
   const addInstitution = () => {
     if (institution.trim() && !institutions.includes(institution.trim())) {
@@ -404,9 +469,16 @@ function ProfessionalInfoStep({ formData, updateFormData }) {
     form.setValue("institutions", updatedInstitutions)
   }
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevent form submission
+      addInstitution();
+    }
+  };
+
   return (
     <Form {...form}>
-      <form onChange={form.handleSubmit(onSubmit)} className="space-y-6">
+      <div className="space-y-6">
         <FormField
           control={form.control}
           name="role"
@@ -466,9 +538,10 @@ function ProfessionalInfoStep({ formData, updateFormData }) {
               id="institutions"
               value={institution}
               onChange={(e) => setInstitution(e.target.value)}
+              onKeyPress={handleKeyPress}
               placeholder="Add your institution"
             />
-            <Button type="button" onClick={addInstitution} size="sm">
+            <Button type="button" onClick={addInstitution} size="sm"className='mx-2' variant="button">
               Add
             </Button>
           </div>
@@ -478,7 +551,7 @@ function ProfessionalInfoStep({ formData, updateFormData }) {
                 {inst}
                 <Button
                   type="button"
-                  variant="ghost"
+                  variant="button"
                   size="icon"
                   className="h-4 w-4 p-0 ml-1"
                   onClick={() => removeInstitution(index)}
@@ -490,34 +563,17 @@ function ProfessionalInfoStep({ formData, updateFormData }) {
             ))}
           </div>
         </div>
-      </form>
+      </div>
     </Form>
   )
 }
 
 // Step 4: Additional Information
-function AdditionalInfoStep({ formData, updateFormData }) {
+function AdditionalInfoStep({ form, formData, updateFormData }) {
   const [interest, setInterest] = useState("")
   const [interests, setInterests] = useState(formData.interests || [])
   const [socialLink, setSocialLink] = useState("")
   const [socialLinks, setSocialLinks] = useState(formData.social_links || [])
-
-  const form = useForm({
-    resolver: zodResolver(additionalInfoSchema),
-    defaultValues: {
-      interests: formData.interests || [],
-      social_links: formData.social_links || [],
-      visibility: formData.visibility !== undefined ? formData.visibility : true,
-    },
-  })
-
-  function onSubmit(values) {
-    updateFormData({
-      ...values,
-      interests,
-      social_links: socialLinks,
-    })
-  }
 
   const addInterest = () => {
     if (interest.trim() && !interests.includes(interest.trim())) {
@@ -553,9 +609,23 @@ function AdditionalInfoStep({ formData, updateFormData }) {
     form.setValue("social_links", updatedLinks)
   }
 
+  const handleInterestKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevent form submission
+      addInterest();
+    }
+  };
+
+  const handleSocialLinkKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevent form submission
+      addSocialLink();
+    }
+  };
+
   return (
     <Form {...form}>
-      <form onChange={form.handleSubmit(onSubmit)} className="space-y-6">
+      <div className="space-y-6">
         <div className="space-y-2">
           <Label htmlFor="interests">Research Interests</Label>
           <div className="flex space-x-2">
@@ -563,6 +633,7 @@ function AdditionalInfoStep({ formData, updateFormData }) {
               id="interests"
               value={interest}
               onChange={(e) => setInterest(e.target.value)}
+              onKeyPress={handleInterestKeyPress}
               placeholder="Add a research interest"
             />
             <Button type="button" onClick={addInterest} size="sm">
@@ -595,6 +666,7 @@ function AdditionalInfoStep({ formData, updateFormData }) {
               id="social_links"
               value={socialLink}
               onChange={(e) => setSocialLink(e.target.value)}
+              onKeyPress={handleSocialLinkKeyPress}
               placeholder="Add a social media link"
             />
             <Button type="button" onClick={addSocialLink} size="sm">
@@ -648,7 +720,7 @@ function AdditionalInfoStep({ formData, updateFormData }) {
             </FormItem>
           )}
         />
-      </form>
+      </div>
     </Form>
   )
 }
@@ -787,4 +859,3 @@ function ReviewStep({ formData }) {
     </div>
   )
 }
-

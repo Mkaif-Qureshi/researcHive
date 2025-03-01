@@ -4,76 +4,117 @@ import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 
 export const signup = async (req, res) => {
-  //do grabbing of data in try catch
-  const { name, email, mobile_number, password , role } = req.body; //to make use like this to fetch data write app.use(express.json())
+  const {
+    name,
+    email,
+    mobile_number,
+    password,
+    role,
+    profile_pic,
+    gender,
+    age,
+    expertise,
+    institutions,
+    interests,
+    social_links,
+    visibility,
+  } = req.body;
 
-  //signup user
-  //hash password(bcryptjs)
-  //create jwt
+  console.log(
+    email,
+    mobile_number,
+    password,
+    role,
+    profile_pic,
+    gender,
+    age,
+    expertise,
+    institutions,
+    interests,
+    social_links,
+    visibility
+  );
+
   try {
-    //validation
+    // Validate input fields
     if (password.trim().length < 8) {
       return res
         .status(400)
-        .json({ message: "Password must be atleast 8 characters" });
+        .json({ message: "Password must be at least 8 characters" });
     }
-    if (mobile_number.trim().length != 13) {
+    if (mobile_number.trim().length !== 13) {
       return res.status(400).json({ message: "Invalid Mobile Number" });
     }
     if (!name.trim()) {
       return res.status(400).json({ message: "Name cannot be empty" });
     }
-
     if (!email.trim()) {
       return res.status(400).json({ message: "Email cannot be empty" });
     }
-
-    if (!mobile_number.trim()) {
-      return res.status(400).json({ message: "Mobile Number cannot be empty" });
-    }
     if (!role.trim()) {
-      return res.status(400).json({ message: "Gender cannot be empty" });
+      return res.status(400).json({ message: "Role cannot be empty" });
     }
 
-    //now use model
-    //find if user already exists
+    // Check if user already exists
     const user = await User.findOne({ email });
+    if (user) {
+      return res.status(400).json({ message: "Email already exists" });
+    }
 
-    if (user) return res.status(400).json({ message: "Email already exists" });
-
-    //now user does not already exist so create one
-    //password
+    // Hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    // Handle profile picture upload if provided
+    let profilePicUrl = "";
+    if (profile_pic) {
+      // Upload the profile picture to Cloudinary
+      const uploadRes = await cloudinary.uploader.upload(profile_pic);
+      profilePicUrl = uploadRes.secure_url;
+    }
+
+    // Create new user
     const newUser = new User({
-      name: name,
-      email: email,
-      mobile_number: mobile_number,
+      name,
+      email,
+      mobile_number,
       password: hashedPassword,
-      role : role,
+      role,
+      profile_pic: profilePicUrl, // Save the profile picture URL in the database
+      gender,
+      age,
+      expertise,
+      institutions,
+      interests,
+      social_links,
+      visibility,
     });
 
-    // success
-    if (newUser) {
-      //generate jwt token here
-      generateToken(newUser._id, res);
+    // Save the user to the database
+    await newUser.save();
 
-      await newUser.save(); //save user to the database
-      res.status(201).json({
-        _id: newUser._id,
-        name: newUser.name,
-        email: newUser.email,
-        mobile_number: newUser.mobile_number,
-        profilePic: newUser.profile_pic,
-        role : newUser.role,
-      });
-    } else {
-      res.status(400).json({ message: "Invalid user data" });
-    }
+    // Generate JWT token
+    generateToken(newUser._id, res);
+
+    // Return success response
+    res.status(201).json({
+      _id: newUser._id,
+      name: newUser.name,
+      email: newUser.email,
+      mobile_number: newUser.mobile_number,
+      profilePic: newUser.profile_pic,
+      role: newUser.role,
+      gender: newUser.gender,
+      age: newUser.age,
+      expertise: newUser.expertise,
+      institutions: newUser.institutions,
+      interests: newUser.interests,
+      social_links: newUser.social_links,
+      visibility: newUser.visibility,
+    });
   } catch (err) {
-    console.log(`Error in signup : ${err.message}`);
-    res.status(500).json({ message: `Internal Server error ${err}` });
+    console.error(`Error in signup: ${err.message}`);
+    res.status(500).json({ message: `Internal Server error: ${err.message}` });
   }
 };
 
@@ -103,7 +144,7 @@ export const loginByEmail = async (req, res) => {
       email: user.email,
       mobile_number: user.mobile_number,
       profilePic: user.profile_pic,
-      gender : user.gender,
+      gender: user.gender,
     });
   } catch (err) {
     console.log(`Error in login : ${err.message}`);
@@ -136,7 +177,7 @@ export const loginByMobile = async (req, res) => {
       email: user.email,
       mobile_number: user.mobile_number,
       profilePic: user.profile_pic,
-      gender : user.$isDeletedgender,
+      gender: user.$isDeletedgender,
     });
   } catch (err) {
     console.log(`Error in login : ${err.message}`);
@@ -186,17 +227,16 @@ export const updateUserData = async (req, res) => {
   try {
     // Extract the fields from the request body
     const {
-      gender, 
-      age, 
-      expertise, 
-      ongoing_projects, 
-      institution, 
-      interests, 
-      social_links
+      gender,
+      age,
+      expertise,
+      ongoing_projects,
+      institution,
+      interests,
+      social_links,
     } = req.body;
 
-    const userId = req.user._id;  // Assuming user ID is stored in the request user object
-
+    const userId = req.user._id; // Assuming user ID is stored in the request user object
 
     if (!gender.trim()) {
       return res.status(400).json({ message: "Gender cannot be empty" });
@@ -208,7 +248,9 @@ export const updateUserData = async (req, res) => {
       return res.status(400).json({ message: "Expertise cannot be empty" });
     }
     if (!ongoing_projects.trim()) {
-      return res.status(400).json({ message: "Ongoing projects cannot be empty" });
+      return res
+        .status(400)
+        .json({ message: "Ongoing projects cannot be empty" });
     }
     if (!institution.trim()) {
       return res.status(400).json({ message: "Institution cannot be empty" });
@@ -229,7 +271,9 @@ export const updateUserData = async (req, res) => {
     };
 
     // Update the user data
-    const updatedUser = await User.findByIdAndUpdate(userId, updateData, { new: true });
+    const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
+      new: true,
+    });
 
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
@@ -245,11 +289,10 @@ export const updateUserData = async (req, res) => {
   }
 };
 
-
 //check authentication
 //current user
 export const checkAuth = async (req, res) => {
-  res.status(200).json(req.user);  //send protect route user only
+  res.status(200).json(req.user); //send protect route user only
   try {
   } catch (err) {
     console.log(`Error in Checking Authorization : ${err.message}`);

@@ -5,14 +5,13 @@ export const generateToken = (userId, res) => {
     expiresIn: "7d",
   });
 
-  //send cookie in response with name as jwt
   res.cookie("jwt", token, {
-    //options to make it more secure
-    maxAge: 7 * 24 * 60 * 60 * 1000, //in milliseconds
-    httpOnly: true, //prevents XSS attacks and cross-site scripting attacks
-    sameSite: "strict", //CSRF attacks cross-site request forgery attacks
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    httpOnly: true,
+    sameSite: "strict",
     secure: process.env.NODE_ENV !== "development",
   });
-
+  console.log("Cookies Set in Response:", res.getHeaders());
+  
   return token;
 };

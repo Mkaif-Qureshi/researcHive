@@ -44,6 +44,7 @@ const Login = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(loginData),
+          credentials : 'include'
         });
       }
       else{
@@ -53,6 +54,7 @@ const Login = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(loginData),
+          credentials : 'include'
         });
       }
 
@@ -60,6 +62,7 @@ const Login = () => {
       
       if (response.status === 200) {
         toast.success('Login successful!');
+        navigate('/');
 
       } else {
         toast.error(data.message || 'Login failed!');
