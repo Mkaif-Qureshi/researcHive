@@ -1,22 +1,26 @@
-//import mongoose
+// Import mongoose
 import mongoose from "mongoose";
 
-//create schema
+// Create schema
 const userSchema = new mongoose.Schema(
   {
     email: {
       type: String,
       required: true,
       unique: true,
+      lowercase: true,
+      trim: true,
     },
     mobile_number: {
       type: String,
       required: true,
       unique: true,
+      trim: true,
     },
     name: {
       type: String,
       required: true,
+      trim: true,
     },
     password: {
       type: String,
@@ -29,41 +33,45 @@ const userSchema = new mongoose.Schema(
     },
     gender: {
       type: String,
+      enum: ["Male", "Female", "Other"],
     },
     age: {
       type: Number,
+      min: 0,
     },
     role: {
       type: String,
-      required: true, // Fixed typo from "requried"
+      required: true,
+      enum: ["Reviewer", "Researcher", "Both"], // Ensures valid role assignment
     },
     expertise: {
       type: String,
+      trim: true,
     },
     ongoing_projects: {
-      type: String,
+      type: [String],
+      default: [],
     },
-    institution: {
-      type: String,
+    institutions: {
+      type: [String],
+      default: [],
     },
     interests: {
-      type: String,
+      type: [String],
+      default: [],
     },
     social_links: {
-      type: [String], 
-      default: [], 
+      type: [String],
+      default: [],
     },
-    visibility:{
-      type : Boolean,
-      default : true,
+    visibility: {
+      type: Boolean,
+      default: true,
     },
   },
-  { timestamps: true } // Optional: Adds createdAt and updatedAt fields
+  { timestamps: true } // Adds createdAt and updatedAt fields
 );
 
-//now create model from this schema
-const User = mongoose.model("User", userSchema); //name of model put singular and first letter as uppercase
+// Create and export model
+const User = mongoose.model("User", userSchema);
 export default User;
-
-//when name User ----> mongoose updates and names collection as users
-//Message ----> messages
