@@ -186,11 +186,8 @@ export const updateUserData = async (req, res) => {
   try {
     // Extract the fields from the request body
     const {
-      name, 
-      profile_pic, 
       gender, 
       age, 
-      role, 
       expertise, 
       ongoing_projects, 
       institution, 
@@ -200,18 +197,12 @@ export const updateUserData = async (req, res) => {
 
     const userId = req.user._id;  // Assuming user ID is stored in the request user object
 
-    // Validation - check if required fields are provided
-    if (!name.trim()) {
-      return res.status(400).json({ message: "Full name cannot be empty" });
-    }
+
     if (!gender.trim()) {
       return res.status(400).json({ message: "Gender cannot be empty" });
     }
     if (!age || age <= 0) {
       return res.status(400).json({ message: "Age must be a valid number" });
-    }
-    if (!role.trim()) {
-      return res.status(400).json({ message: "Role cannot be empty" });
     }
     if (!expertise.trim()) {
       return res.status(400).json({ message: "Expertise cannot be empty" });
@@ -228,11 +219,8 @@ export const updateUserData = async (req, res) => {
 
     // Prepare the update object
     const updateData = {
-      fullName,
-      profile_pic: profile_pic || "", // Optional field
       gender,
       age,
-      role,
       expertise,
       ongoing_projects,
       institution,
