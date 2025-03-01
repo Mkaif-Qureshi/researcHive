@@ -1,0 +1,177 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 800px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"group": 0, "id": "Lost in Translation: Large Language Models in Non-English Content Analysis", "label": "Lost in Translation: Large Language Models in Non-English Content Analysis", "shape": "dot", "title": "Title: Lost in Translation: Large Language Models in Non-English Content Analysis\u003cbr\u003eType: paper", "url": "http://arxiv.org/abs/2306.07377v1"}, {"group": 0, "id": "Gabriel Nicholas", "label": "Gabriel Nicholas", "shape": "dot", "title": "Title: Gabriel Nicholas\u003cbr\u003eType: author", "url": null}, {"group": 0, "id": "Aliya Bhatia", "label": "Aliya Bhatia", "shape": "dot", "title": "Title: Aliya Bhatia\u003cbr\u003eType: author", "url": null}, {"group": 0, "id": "multilingual language models", "label": "multilingual language models", "shape": "dot", "title": "Title: multilingual language models\u003cbr\u003eType: keyword", "url": null}, {"group": 0, "id": "language models", "label": "language models", "shape": "dot", "title": "Title: language models\u003cbr\u003eType: keyword", "url": null}, {"group": 0, "id": "Meta LLaMa", "label": "Meta LLaMa", "shape": "dot", "title": "Title: Meta LLaMa\u003cbr\u003eType: keyword", "url": null}, {"group": 0, "id": "large language models", "label": "large language models", "shape": "dot", "title": "Title: large language models\u003cbr\u003eType: keyword", "url": null}, {"group": 0, "id": "multilingual language", "label": "multilingual language", "shape": "dot", "title": "Title: multilingual language\u003cbr\u003eType: keyword", "url": null}, {"group": 2, "id": "Cedille: A large autoregressive French language model", "label": "Cedille: A large autoregressive French language model", "shape": "dot", "title": "Title: Cedille: A large autoregressive French language model\u003cbr\u003eType: paper", "url": "http://arxiv.org/abs/2202.03371v1"}, {"group": 2, "id": "Martin M\u00fcller", "label": "Martin M\u00fcller", "shape": "dot", "title": "Title: Martin M\u00fcller\u003cbr\u003eType: author", "url": null}, {"group": 2, "id": "Florian Laurent", "label": "Florian Laurent", "shape": "dot", "title": "Title: Florian Laurent\u003cbr\u003eType: author", "url": null}, {"group": 4, "id": "Natural Language Processing", "label": "Natural Language Processing", "shape": "dot", "title": "Title: Natural Language Processing\u003cbr\u003eType: keyword", "url": null}, {"group": 2, "id": "solving Natural Language", "label": "solving Natural Language", "shape": "dot", "title": "Title: solving Natural Language\u003cbr\u003eType: keyword", "url": null}, {"group": 2, "id": "Language Processing tasks", "label": "Language Processing tasks", "shape": "dot", "title": "Title: Language Processing tasks\u003cbr\u003eType: keyword", "url": null}, {"group": 2, "id": "solving Natural", "label": "solving Natural", "shape": "dot", "title": "Title: solving Natural\u003cbr\u003eType: keyword", "url": null}, {"group": 2, "id": "Processing tasks", "label": "Processing tasks", "shape": "dot", "title": "Title: Processing tasks\u003cbr\u003eType: keyword", "url": null}, {"group": 4, "id": "How Good are Commercial Large Language Models on African Languages?", "label": "How Good are Commercial Large Language Models on African Languages?", "shape": "dot", "title": "Title: How Good are Commercial Large Language Models on African Languages?\u003cbr\u003eType: paper", "url": "http://arxiv.org/abs/2305.06530v1"}, {"group": 4, "id": "Jessica Ojo", "label": "Jessica Ojo", "shape": "dot", "title": "Title: Jessica Ojo\u003cbr\u003eType: author", "url": null}, {"group": 4, "id": "Kelechi Ogueji", "label": "Kelechi Ogueji", "shape": "dot", "title": "Title: Kelechi Ogueji\u003cbr\u003eType: author", "url": null}, {"group": 4, "id": "advancements in Natural", "label": "advancements in Natural", "shape": "dot", "title": "Title: advancements in Natural\u003cbr\u003eType: keyword", "url": null}, {"group": 4, "id": "Language Processing", "label": "Language Processing", "shape": "dot", "title": "Title: Language Processing\u003cbr\u003eType: keyword", "url": null}, {"group": 4, "id": "Natural Language", "label": "Natural Language", "shape": "dot", "title": "Title: Natural Language\u003cbr\u003eType: keyword", "url": null}, {"group": 4, "id": "African languages", "label": "African languages", "shape": "dot", "title": "Title: African languages\u003cbr\u003eType: keyword", "url": null}, {"group": 5, "id": "Goldfish: Monolingual Language Models for 350 Languages", "label": "Goldfish: Monolingual Language Models for 350 Languages", "shape": "dot", "title": "Title: Goldfish: Monolingual Language Models for 350 Languages\u003cbr\u003eType: paper", "url": "http://arxiv.org/abs/2408.10441v1"}, {"group": 5, "id": "Tyler A. Chang", "label": "Tyler A. Chang", "shape": "dot", "title": "Title: Tyler A. Chang\u003cbr\u003eType: author", "url": null}, {"group": 5, "id": "Catherine Arnett", "label": "Catherine Arnett", "shape": "dot", "title": "Title: Catherine Arnett\u003cbr\u003eType: author", "url": null}, {"group": 5, "id": "Zhuowen Tu", "label": "Zhuowen Tu", "shape": "dot", "title": "Title: Zhuowen Tu\u003cbr\u003eType: author", "url": null}, {"group": 5, "id": "Benjamin K. Bergen", "label": "Benjamin K. Bergen", "shape": "dot", "title": "Title: Benjamin K. Bergen\u003cbr\u003eType: author", "url": null}, {"group": 5, "id": "languages", "label": "languages", "shape": "dot", "title": "Title: languages\u003cbr\u003eType: keyword", "url": null}, {"group": 5, "id": "models", "label": "models", "shape": "dot", "title": "Title: models\u003cbr\u003eType: keyword", "url": null}, {"group": 5, "id": "Goldfish", "label": "Goldfish", "shape": "dot", "title": "Title: Goldfish\u003cbr\u003eType: keyword", "url": null}, {"group": 5, "id": "low-resource languages", "label": "low-resource languages", "shape": "dot", "title": "Title: low-resource languages\u003cbr\u003eType: keyword", "url": null}, {"group": 5, "id": "FLORES", "label": "FLORES", "shape": "dot", "title": "Title: FLORES\u003cbr\u003eType: keyword", "url": null}, {"group": 0, "id": "Modelling Language", "label": "Modelling Language", "shape": "dot", "title": "Title: Modelling Language\u003cbr\u003eType: paper", "url": "http://arxiv.org/abs/2404.09579v1"}, {"group": 0, "id": "Jumbly Grindrod", "label": "Jumbly Grindrod", "shape": "dot", "title": "Title: Jumbly Grindrod\u003cbr\u003eType: author", "url": null}, {"group": 0, "id": "valuable scientific role", "label": "valuable scientific role", "shape": "dot", "title": "Title: valuable scientific role\u003cbr\u003eType: keyword", "url": null}, {"group": 0, "id": "role to play", "label": "role to play", "shape": "dot", "title": "Title: role to play\u003cbr\u003eType: keyword", "url": null}, {"group": 0, "id": "play in serving", "label": "play in serving", "shape": "dot", "title": "Title: play in serving\u003cbr\u003eType: keyword", "url": null}, {"group": 6, "id": "LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration", "label": "LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration", "shape": "dot", "title": "Title: LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration\u003cbr\u003eType: paper", "url": "http://arxiv.org/abs/2405.18774v1"}, {"group": 6, "id": "Mingrui Ma", "label": "Mingrui Ma", "shape": "dot", "title": "Title: Mingrui Ma\u003cbr\u003eType: author", "url": null}, {"group": 6, "id": "Yu Yang", "label": "Yu Yang", "shape": "dot", "title": "Title: Yu Yang\u003cbr\u003eType: author", "url": null}, {"group": 6, "id": "large language model", "label": "large language model", "shape": "dot", "title": "Title: large language model\u003cbr\u003eType: keyword", "url": null}, {"group": 6, "id": "large language", "label": "large language", "shape": "dot", "title": "Title: large language\u003cbr\u003eType: keyword", "url": null}, {"group": 6, "id": "language model", "label": "language model", "shape": "dot", "title": "Title: language model\u003cbr\u003eType: keyword", "url": null}, {"group": 6, "id": "pretrained large language", "label": "pretrained large language", "shape": "dot", "title": "Title: pretrained large language\u003cbr\u003eType: keyword", "url": null}, {"group": 6, "id": "Medical image registration", "label": "Medical image registration", "shape": "dot", "title": "Title: Medical image registration\u003cbr\u003eType: keyword", "url": null}, {"group": 4, "id": "A Precis of Language Models are not Models of Language", "label": "A Precis of Language Models are not Models of Language", "shape": "dot", "title": "Title: A Precis of Language Models are not Models of Language\u003cbr\u003eType: paper", "url": "http://arxiv.org/abs/2205.07634v1"}, {"group": 4, "id": "Csaba Veres", "label": "Csaba Veres", "shape": "dot", "title": "Title: Csaba Veres\u003cbr\u003eType: author", "url": null}, {"group": 4, "id": "Artificial Intelligence", "label": "Artificial Intelligence", "shape": "dot", "title": "Title: Artificial Intelligence\u003cbr\u003eType: keyword", "url": null}, {"group": 4, "id": "leading application areas", "label": "leading application areas", "shape": "dot", "title": "Title: leading application areas\u003cbr\u003eType: keyword", "url": null}, {"group": 4, "id": "Large Neural Language", "label": "Large Neural Language", "shape": "dot", "title": "Title: Large Neural Language\u003cbr\u003eType: keyword", "url": null}, {"group": 7, "id": "A Survey of Large Language Models for European Languages", "label": "A Survey of Large Language Models for European Languages", "shape": "dot", "title": "Title: A Survey of Large Language Models for European Languages\u003cbr\u003eType: paper", "url": "http://arxiv.org/abs/2408.15040v2"}, {"group": 7, "id": "Wazir Ali", "label": "Wazir Ali", "shape": "dot", "title": "Title: Wazir Ali\u003cbr\u003eType: author", "url": null}, {"group": 7, "id": "Sampo Pyysalo", "label": "Sampo Pyysalo", "shape": "dot", "title": "Title: Sampo Pyysalo\u003cbr\u003eType: author", "url": null}, {"group": 7, "id": "gained significant attention", "label": "gained significant attention", "shape": "dot", "title": "Title: gained significant attention\u003cbr\u003eType: keyword", "url": null}, {"group": 7, "id": "significant attention due", "label": "significant attention due", "shape": "dot", "title": "Title: significant attention due\u003cbr\u003eType: keyword", "url": null}, {"group": 7, "id": "natural language tasks", "label": "natural language tasks", "shape": "dot", "title": "Title: natural language tasks\u003cbr\u003eType: keyword", "url": null}, {"group": 7, "id": "gained significant", "label": "gained significant", "shape": "dot", "title": "Title: gained significant\u003cbr\u003eType: keyword", "url": null}, {"group": 7, "id": "significant attention", "label": "significant attention", "shape": "dot", "title": "Title: significant attention\u003cbr\u003eType: keyword", "url": null}, {"group": 1, "id": "Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics", "label": "Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics", "shape": "dot", "title": "Title: Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics\u003cbr\u003eType: paper", "url": "http://arxiv.org/abs/2303.00077v1"}, {"group": 1, "id": "Conor Houghton", "label": "Conor Houghton", "shape": "dot", "title": "Title: Conor Houghton\u003cbr\u003eType: author", "url": null}, {"group": 1, "id": "Nina Kazanina", "label": "Nina Kazanina", "shape": "dot", "title": "Title: Nina Kazanina\u003cbr\u003eType: author", "url": null}, {"group": 1, "id": "Priyanka Sukumaran", "label": "Priyanka Sukumaran", "shape": "dot", "title": "Title: Priyanka Sukumaran\u003cbr\u003eType: author", "url": null}, {"group": 1, "id": "human linguistic processing", "label": "human linguistic processing", "shape": "dot", "title": "Title: human linguistic processing\u003cbr\u003eType: keyword", "url": null}, {"group": 1, "id": "Large language models", "label": "Large language models", "shape": "dot", "title": "Title: Large language models\u003cbr\u003eType: keyword", "url": null}, {"group": 1, "id": "linguistic processing", "label": "linguistic processing", "shape": "dot", "title": "Title: linguistic processing\u003cbr\u003eType: keyword", "url": null}, {"group": 1, "id": "human linguistic", "label": "human linguistic", "shape": "dot", "title": "Title: human linguistic\u003cbr\u003eType: keyword", "url": null}, {"group": 1, "id": "Large language", "label": "Large language", "shape": "dot", "title": "Title: Large language\u003cbr\u003eType: keyword", "url": null}, {"group": 3, "id": "Enhance Reasoning Ability of Visual-Language Models via Large Language Models", "label": "Enhance Reasoning Ability of Visual-Language Models via Large Language Models", "shape": "dot", "title": "Title: Enhance Reasoning Ability of Visual-Language Models via Large Language Models\u003cbr\u003eType: paper", "url": "http://arxiv.org/abs/2305.13267v1"}, {"group": 3, "id": "Yueting Yang", "label": "Yueting Yang", "shape": "dot", "title": "Title: Yueting Yang\u003cbr\u003eType: author", "url": null}, {"group": 3, "id": "Xintong Zhang", "label": "Xintong Zhang", "shape": "dot", "title": "Title: Xintong Zhang\u003cbr\u003eType: author", "url": null}, {"group": 3, "id": "Wenjuan Han", "label": "Wenjuan Han", "shape": "dot", "title": "Title: Wenjuan Han\u003cbr\u003eType: author", "url": null}, {"group": 3, "id": "shown excellent performance", "label": "shown excellent performance", "shape": "dot", "title": "Title: shown excellent performance\u003cbr\u003eType: keyword", "url": null}, {"group": 3, "id": "Pre-trained visual language", "label": "Pre-trained visual language", "shape": "dot", "title": "Title: Pre-trained visual language\u003cbr\u003eType: keyword", "url": null}, {"group": 3, "id": "shown excellent", "label": "shown excellent", "shape": "dot", "title": "Title: shown excellent\u003cbr\u003eType: keyword", "url": null}, {"group": 3, "id": "excellent performance", "label": "excellent performance", "shape": "dot", "title": "Title: excellent performance\u003cbr\u003eType: keyword", "url": null}]);
+                  edges = new vis.DataSet([{"from": "Lost in Translation: Large Language Models in Non-English Content Analysis", "title": "wrote", "to": "Gabriel Nicholas"}, {"from": "Lost in Translation: Large Language Models in Non-English Content Analysis", "title": "wrote", "to": "Aliya Bhatia"}, {"from": "Lost in Translation: Large Language Models in Non-English Content Analysis", "title": "has_keyword", "to": "multilingual language models"}, {"from": "Lost in Translation: Large Language Models in Non-English Content Analysis", "title": "has_keyword", "to": "language models"}, {"from": "Lost in Translation: Large Language Models in Non-English Content Analysis", "title": "has_keyword", "to": "Meta LLaMa"}, {"from": "Lost in Translation: Large Language Models in Non-English Content Analysis", "title": "has_keyword", "to": "large language models"}, {"from": "Lost in Translation: Large Language Models in Non-English Content Analysis", "title": "has_keyword", "to": "multilingual language"}, {"from": "language models", "title": "has_keyword", "to": "Modelling Language"}, {"from": "language models", "title": "has_keyword", "to": "Enhance Reasoning Ability of Visual-Language Models via Large Language Models"}, {"from": "large language models", "title": "has_keyword", "to": "Modelling Language"}, {"from": "Cedille: A large autoregressive French language model", "title": "wrote", "to": "Martin M\u00fcller"}, {"from": "Cedille: A large autoregressive French language model", "title": "wrote", "to": "Florian Laurent"}, {"from": "Cedille: A large autoregressive French language model", "title": "has_keyword", "to": "Natural Language Processing"}, {"from": "Cedille: A large autoregressive French language model", "title": "has_keyword", "to": "solving Natural Language"}, {"from": "Cedille: A large autoregressive French language model", "title": "has_keyword", "to": "Language Processing tasks"}, {"from": "Cedille: A large autoregressive French language model", "title": "has_keyword", "to": "solving Natural"}, {"from": "Cedille: A large autoregressive French language model", "title": "has_keyword", "to": "Processing tasks"}, {"from": "Natural Language Processing", "title": "has_keyword", "to": "How Good are Commercial Large Language Models on African Languages?"}, {"from": "Natural Language Processing", "title": "has_keyword", "to": "A Precis of Language Models are not Models of Language"}, {"from": "How Good are Commercial Large Language Models on African Languages?", "title": "wrote", "to": "Jessica Ojo"}, {"from": "How Good are Commercial Large Language Models on African Languages?", "title": "wrote", "to": "Kelechi Ogueji"}, {"from": "How Good are Commercial Large Language Models on African Languages?", "title": "has_keyword", "to": "advancements in Natural"}, {"from": "How Good are Commercial Large Language Models on African Languages?", "title": "has_keyword", "to": "Language Processing"}, {"from": "How Good are Commercial Large Language Models on African Languages?", "title": "has_keyword", "to": "Natural Language"}, {"from": "How Good are Commercial Large Language Models on African Languages?", "title": "has_keyword", "to": "African languages"}, {"from": "Language Processing", "title": "has_keyword", "to": "A Precis of Language Models are not Models of Language"}, {"from": "Goldfish: Monolingual Language Models for 350 Languages", "title": "wrote", "to": "Tyler A. Chang"}, {"from": "Goldfish: Monolingual Language Models for 350 Languages", "title": "wrote", "to": "Catherine Arnett"}, {"from": "Goldfish: Monolingual Language Models for 350 Languages", "title": "wrote", "to": "Zhuowen Tu"}, {"from": "Goldfish: Monolingual Language Models for 350 Languages", "title": "wrote", "to": "Benjamin K. Bergen"}, {"from": "Goldfish: Monolingual Language Models for 350 Languages", "title": "has_keyword", "to": "languages"}, {"from": "Goldfish: Monolingual Language Models for 350 Languages", "title": "has_keyword", "to": "models"}, {"from": "Goldfish: Monolingual Language Models for 350 Languages", "title": "has_keyword", "to": "Goldfish"}, {"from": "Goldfish: Monolingual Language Models for 350 Languages", "title": "has_keyword", "to": "low-resource languages"}, {"from": "Goldfish: Monolingual Language Models for 350 Languages", "title": "has_keyword", "to": "FLORES"}, {"from": "Modelling Language", "title": "wrote", "to": "Jumbly Grindrod"}, {"from": "Modelling Language", "title": "has_keyword", "to": "valuable scientific role"}, {"from": "Modelling Language", "title": "has_keyword", "to": "role to play"}, {"from": "Modelling Language", "title": "has_keyword", "to": "play in serving"}, {"from": "LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration", "title": "wrote", "to": "Mingrui Ma"}, {"from": "LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration", "title": "wrote", "to": "Yu Yang"}, {"from": "LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration", "title": "has_keyword", "to": "large language model"}, {"from": "LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration", "title": "has_keyword", "to": "large language"}, {"from": "LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration", "title": "has_keyword", "to": "language model"}, {"from": "LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration", "title": "has_keyword", "to": "pretrained large language"}, {"from": "LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration", "title": "has_keyword", "to": "Medical image registration"}, {"from": "A Precis of Language Models are not Models of Language", "title": "wrote", "to": "Csaba Veres"}, {"from": "A Precis of Language Models are not Models of Language", "title": "has_keyword", "to": "Artificial Intelligence"}, {"from": "A Precis of Language Models are not Models of Language", "title": "has_keyword", "to": "leading application areas"}, {"from": "A Precis of Language Models are not Models of Language", "title": "has_keyword", "to": "Large Neural Language"}, {"from": "A Survey of Large Language Models for European Languages", "title": "wrote", "to": "Wazir Ali"}, {"from": "A Survey of Large Language Models for European Languages", "title": "wrote", "to": "Sampo Pyysalo"}, {"from": "A Survey of Large Language Models for European Languages", "title": "has_keyword", "to": "gained significant attention"}, {"from": "A Survey of Large Language Models for European Languages", "title": "has_keyword", "to": "significant attention due"}, {"from": "A Survey of Large Language Models for European Languages", "title": "has_keyword", "to": "natural language tasks"}, {"from": "A Survey of Large Language Models for European Languages", "title": "has_keyword", "to": "gained significant"}, {"from": "A Survey of Large Language Models for European Languages", "title": "has_keyword", "to": "significant attention"}, {"from": "Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics", "title": "wrote", "to": "Conor Houghton"}, {"from": "Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics", "title": "wrote", "to": "Nina Kazanina"}, {"from": "Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics", "title": "wrote", "to": "Priyanka Sukumaran"}, {"from": "Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics", "title": "has_keyword", "to": "human linguistic processing"}, {"from": "Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics", "title": "has_keyword", "to": "Large language models"}, {"from": "Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics", "title": "has_keyword", "to": "linguistic processing"}, {"from": "Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics", "title": "has_keyword", "to": "human linguistic"}, {"from": "Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics", "title": "has_keyword", "to": "Large language"}, {"from": "Enhance Reasoning Ability of Visual-Language Models via Large Language Models", "title": "wrote", "to": "Yueting Yang"}, {"from": "Enhance Reasoning Ability of Visual-Language Models via Large Language Models", "title": "wrote", "to": "Xintong Zhang"}, {"from": "Enhance Reasoning Ability of Visual-Language Models via Large Language Models", "title": "wrote", "to": "Wenjuan Han"}, {"from": "Enhance Reasoning Ability of Visual-Language Models via Large Language Models", "title": "has_keyword", "to": "shown excellent performance"}, {"from": "Enhance Reasoning Ability of Visual-Language Models via Large Language Models", "title": "has_keyword", "to": "Pre-trained visual language"}, {"from": "Enhance Reasoning Ability of Visual-Language Models via Large Language Models", "title": "has_keyword", "to": "shown excellent"}, {"from": "Enhance Reasoning Ability of Visual-Language Models via Large Language Models", "title": "has_keyword", "to": "excellent performance"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "forceAtlas2Based": {
+            "avoidOverlap": 0,
+            "centralGravity": 0.01,
+            "damping": 0.4,
+            "gravitationalConstant": -50,
+            "springConstant": 0.08,
+            "springLength": 100
+        },
+        "solver": "forceAtlas2Based",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    
+        <script type="text/javascript">
+            network.on("doubleClick", function(params) {
+                if (params.nodes.length > 0) {
+                    var nodeId = params.nodes[0];
+                    var node = nodes.get(nodeId);
+                    if (node.url) {
+                        window.open(node.url, "_blank");
+                    }
+                }
+            });
+        </script>
+        
+</body>
+</html>

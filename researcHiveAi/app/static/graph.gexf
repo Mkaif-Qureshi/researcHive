@@ -1,0 +1,945 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2025-03-02">
+    <creator>NetworkX 3.4.2</creator>
+  </meta>
+  <graph defaultedgetype="undirected" mode="static" name="">
+    <attributes mode="static" class="edge">
+      <attribute id="6" title="relationship" type="string" />
+    </attributes>
+    <attributes mode="static" class="node">
+      <attribute id="0" title="type" type="string" />
+      <attribute id="1" title="link" type="string" />
+      <attribute id="2" title="published" type="string" />
+      <attribute id="3" title="categories" type="string" />
+      <attribute id="4" title="community" type="long" />
+      <attribute id="5" title="centrality" type="double" />
+    </attributes>
+    <nodes>
+      <node id="Lost in Translation: Large Language Models in Non-English Content Analysis" label="Lost in Translation: Large Language Models in Non-English Content Analysis">
+        <attvalues>
+          <attvalue for="0" value="paper" />
+          <attvalue for="1" value="http://arxiv.org/abs/2306.07377v1" />
+          <attvalue for="2" value="2023-06-12" />
+          <attvalue for="3" value="cs.CL, cs.AI" />
+          <attvalue for="4" value="0" />
+          <attvalue for="5" value="0.09333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Gabriel Nicholas" label="Gabriel Nicholas">
+        <attvalues>
+          <attvalue for="0" value="author" />
+          <attvalue for="4" value="0" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Aliya Bhatia" label="Aliya Bhatia">
+        <attvalues>
+          <attvalue for="0" value="author" />
+          <attvalue for="4" value="0" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="multilingual language models" label="multilingual language models">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="0" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="language models" label="language models">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="0" />
+          <attvalue for="5" value="0.04" />
+        </attvalues>
+      </node>
+      <node id="Meta LLaMa" label="Meta LLaMa">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="0" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="large language models" label="large language models">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="0" />
+          <attvalue for="5" value="0.02666666666666667" />
+        </attvalues>
+      </node>
+      <node id="multilingual language" label="multilingual language">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="0" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Cedille: A large autoregressive French language model" label="Cedille: A large autoregressive French language model">
+        <attvalues>
+          <attvalue for="0" value="paper" />
+          <attvalue for="1" value="http://arxiv.org/abs/2202.03371v1" />
+          <attvalue for="2" value="2022-02-07" />
+          <attvalue for="3" value="cs.CL, 68T50, I.2.7" />
+          <attvalue for="4" value="2" />
+          <attvalue for="5" value="0.09333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Martin Müller" label="Martin Müller">
+        <attvalues>
+          <attvalue for="0" value="author" />
+          <attvalue for="4" value="2" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Florian Laurent" label="Florian Laurent">
+        <attvalues>
+          <attvalue for="0" value="author" />
+          <attvalue for="4" value="2" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Natural Language Processing" label="Natural Language Processing">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="4" />
+          <attvalue for="5" value="0.04" />
+        </attvalues>
+      </node>
+      <node id="solving Natural Language" label="solving Natural Language">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="2" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Language Processing tasks" label="Language Processing tasks">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="2" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="solving Natural" label="solving Natural">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="2" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Processing tasks" label="Processing tasks">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="2" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="How Good are Commercial Large Language Models on African Languages?" label="How Good are Commercial Large Language Models on African Languages?">
+        <attvalues>
+          <attvalue for="0" value="paper" />
+          <attvalue for="1" value="http://arxiv.org/abs/2305.06530v1" />
+          <attvalue for="2" value="2023-05-11" />
+          <attvalue for="3" value="cs.CL, cs.AI, cs.LG" />
+          <attvalue for="4" value="4" />
+          <attvalue for="5" value="0.09333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Jessica Ojo" label="Jessica Ojo">
+        <attvalues>
+          <attvalue for="0" value="author" />
+          <attvalue for="4" value="4" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Kelechi Ogueji" label="Kelechi Ogueji">
+        <attvalues>
+          <attvalue for="0" value="author" />
+          <attvalue for="4" value="4" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="advancements in Natural" label="advancements in Natural">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="4" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Language Processing" label="Language Processing">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="4" />
+          <attvalue for="5" value="0.02666666666666667" />
+        </attvalues>
+      </node>
+      <node id="Natural Language" label="Natural Language">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="4" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="African languages" label="African languages">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="4" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Goldfish: Monolingual Language Models for 350 Languages" label="Goldfish: Monolingual Language Models for 350 Languages">
+        <attvalues>
+          <attvalue for="0" value="paper" />
+          <attvalue for="1" value="http://arxiv.org/abs/2408.10441v1" />
+          <attvalue for="2" value="2024-08-19" />
+          <attvalue for="3" value="cs.CL" />
+          <attvalue for="4" value="5" />
+          <attvalue for="5" value="0.12000000000000001" />
+        </attvalues>
+      </node>
+      <node id="Tyler A. Chang" label="Tyler A. Chang">
+        <attvalues>
+          <attvalue for="0" value="author" />
+          <attvalue for="4" value="5" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Catherine Arnett" label="Catherine Arnett">
+        <attvalues>
+          <attvalue for="0" value="author" />
+          <attvalue for="4" value="5" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Zhuowen Tu" label="Zhuowen Tu">
+        <attvalues>
+          <attvalue for="0" value="author" />
+          <attvalue for="4" value="5" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Benjamin K. Bergen" label="Benjamin K. Bergen">
+        <attvalues>
+          <attvalue for="0" value="author" />
+          <attvalue for="4" value="5" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="languages" label="languages">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="5" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="models" label="models">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="5" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Goldfish" label="Goldfish">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="5" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="low-resource languages" label="low-resource languages">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="5" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="FLORES" label="FLORES">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="5" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Modelling Language" label="Modelling Language">
+        <attvalues>
+          <attvalue for="0" value="paper" />
+          <attvalue for="1" value="http://arxiv.org/abs/2404.09579v1" />
+          <attvalue for="2" value="2024-04-15" />
+          <attvalue for="3" value="cs.CL, cs.AI" />
+          <attvalue for="4" value="0" />
+          <attvalue for="5" value="0.08" />
+        </attvalues>
+      </node>
+      <node id="Jumbly Grindrod" label="Jumbly Grindrod">
+        <attvalues>
+          <attvalue for="0" value="author" />
+          <attvalue for="4" value="0" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="valuable scientific role" label="valuable scientific role">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="0" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="role to play" label="role to play">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="0" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="play in serving" label="play in serving">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="0" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration" label="LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration">
+        <attvalues>
+          <attvalue for="0" value="paper" />
+          <attvalue for="1" value="http://arxiv.org/abs/2405.18774v1" />
+          <attvalue for="2" value="2024-05-29" />
+          <attvalue for="3" value="cs.CV" />
+          <attvalue for="4" value="6" />
+          <attvalue for="5" value="0.09333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Mingrui Ma" label="Mingrui Ma">
+        <attvalues>
+          <attvalue for="0" value="author" />
+          <attvalue for="4" value="6" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Yu Yang" label="Yu Yang">
+        <attvalues>
+          <attvalue for="0" value="author" />
+          <attvalue for="4" value="6" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="large language model" label="large language model">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="6" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="large language" label="large language">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="6" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="language model" label="language model">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="6" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="pretrained large language" label="pretrained large language">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="6" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Medical image registration" label="Medical image registration">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="6" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="A Precis of Language Models are not Models of Language" label="A Precis of Language Models are not Models of Language">
+        <attvalues>
+          <attvalue for="0" value="paper" />
+          <attvalue for="1" value="http://arxiv.org/abs/2205.07634v1" />
+          <attvalue for="2" value="2022-05-16" />
+          <attvalue for="3" value="cs.CL" />
+          <attvalue for="4" value="4" />
+          <attvalue for="5" value="0.08" />
+        </attvalues>
+      </node>
+      <node id="Csaba Veres" label="Csaba Veres">
+        <attvalues>
+          <attvalue for="0" value="author" />
+          <attvalue for="4" value="4" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Artificial Intelligence" label="Artificial Intelligence">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="4" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="leading application areas" label="leading application areas">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="4" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Large Neural Language" label="Large Neural Language">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="4" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="A Survey of Large Language Models for European Languages" label="A Survey of Large Language Models for European Languages">
+        <attvalues>
+          <attvalue for="0" value="paper" />
+          <attvalue for="1" value="http://arxiv.org/abs/2408.15040v2" />
+          <attvalue for="2" value="2024-08-27" />
+          <attvalue for="3" value="cs.CL" />
+          <attvalue for="4" value="7" />
+          <attvalue for="5" value="0.09333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Wazir Ali" label="Wazir Ali">
+        <attvalues>
+          <attvalue for="0" value="author" />
+          <attvalue for="4" value="7" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Sampo Pyysalo" label="Sampo Pyysalo">
+        <attvalues>
+          <attvalue for="0" value="author" />
+          <attvalue for="4" value="7" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="gained significant attention" label="gained significant attention">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="7" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="significant attention due" label="significant attention due">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="7" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="natural language tasks" label="natural language tasks">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="7" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="gained significant" label="gained significant">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="7" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="significant attention" label="significant attention">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="7" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics" label="Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics">
+        <attvalues>
+          <attvalue for="0" value="paper" />
+          <attvalue for="1" value="http://arxiv.org/abs/2303.00077v1" />
+          <attvalue for="2" value="2023-02-28" />
+          <attvalue for="3" value="cs.CL, cs.AI" />
+          <attvalue for="4" value="1" />
+          <attvalue for="5" value="0.10666666666666667" />
+        </attvalues>
+      </node>
+      <node id="Conor Houghton" label="Conor Houghton">
+        <attvalues>
+          <attvalue for="0" value="author" />
+          <attvalue for="4" value="1" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Nina Kazanina" label="Nina Kazanina">
+        <attvalues>
+          <attvalue for="0" value="author" />
+          <attvalue for="4" value="1" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Priyanka Sukumaran" label="Priyanka Sukumaran">
+        <attvalues>
+          <attvalue for="0" value="author" />
+          <attvalue for="4" value="1" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="human linguistic processing" label="human linguistic processing">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="1" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Large language models" label="Large language models">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="1" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="linguistic processing" label="linguistic processing">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="1" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="human linguistic" label="human linguistic">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="1" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Large language" label="Large language">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="1" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Enhance Reasoning Ability of Visual-Language Models via Large Language Models" label="Enhance Reasoning Ability of Visual-Language Models via Large Language Models">
+        <attvalues>
+          <attvalue for="0" value="paper" />
+          <attvalue for="1" value="http://arxiv.org/abs/2305.13267v1" />
+          <attvalue for="2" value="2023-05-22" />
+          <attvalue for="3" value="cs.CL, cs.AI" />
+          <attvalue for="4" value="3" />
+          <attvalue for="5" value="0.10666666666666667" />
+        </attvalues>
+      </node>
+      <node id="Yueting Yang" label="Yueting Yang">
+        <attvalues>
+          <attvalue for="0" value="author" />
+          <attvalue for="4" value="3" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Xintong Zhang" label="Xintong Zhang">
+        <attvalues>
+          <attvalue for="0" value="author" />
+          <attvalue for="4" value="3" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Wenjuan Han" label="Wenjuan Han">
+        <attvalues>
+          <attvalue for="0" value="author" />
+          <attvalue for="4" value="3" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="shown excellent performance" label="shown excellent performance">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="3" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="Pre-trained visual language" label="Pre-trained visual language">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="3" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="shown excellent" label="shown excellent">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="3" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+      <node id="excellent performance" label="excellent performance">
+        <attvalues>
+          <attvalue for="0" value="keyword" />
+          <attvalue for="4" value="3" />
+          <attvalue for="5" value="0.013333333333333334" />
+        </attvalues>
+      </node>
+    </nodes>
+    <edges>
+      <edge source="Lost in Translation: Large Language Models in Non-English Content Analysis" target="Gabriel Nicholas" id="0">
+        <attvalues>
+          <attvalue for="6" value="wrote" />
+        </attvalues>
+      </edge>
+      <edge source="Lost in Translation: Large Language Models in Non-English Content Analysis" target="Aliya Bhatia" id="1">
+        <attvalues>
+          <attvalue for="6" value="wrote" />
+        </attvalues>
+      </edge>
+      <edge source="Lost in Translation: Large Language Models in Non-English Content Analysis" target="multilingual language models" id="2">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Lost in Translation: Large Language Models in Non-English Content Analysis" target="language models" id="3">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Lost in Translation: Large Language Models in Non-English Content Analysis" target="Meta LLaMa" id="4">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Lost in Translation: Large Language Models in Non-English Content Analysis" target="large language models" id="5">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Lost in Translation: Large Language Models in Non-English Content Analysis" target="multilingual language" id="6">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="language models" target="Modelling Language" id="7">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="language models" target="Enhance Reasoning Ability of Visual-Language Models via Large Language Models" id="8">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="large language models" target="Modelling Language" id="9">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Cedille: A large autoregressive French language model" target="Martin Müller" id="10">
+        <attvalues>
+          <attvalue for="6" value="wrote" />
+        </attvalues>
+      </edge>
+      <edge source="Cedille: A large autoregressive French language model" target="Florian Laurent" id="11">
+        <attvalues>
+          <attvalue for="6" value="wrote" />
+        </attvalues>
+      </edge>
+      <edge source="Cedille: A large autoregressive French language model" target="Natural Language Processing" id="12">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Cedille: A large autoregressive French language model" target="solving Natural Language" id="13">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Cedille: A large autoregressive French language model" target="Language Processing tasks" id="14">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Cedille: A large autoregressive French language model" target="solving Natural" id="15">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Cedille: A large autoregressive French language model" target="Processing tasks" id="16">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Natural Language Processing" target="How Good are Commercial Large Language Models on African Languages?" id="17">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Natural Language Processing" target="A Precis of Language Models are not Models of Language" id="18">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="How Good are Commercial Large Language Models on African Languages?" target="Jessica Ojo" id="19">
+        <attvalues>
+          <attvalue for="6" value="wrote" />
+        </attvalues>
+      </edge>
+      <edge source="How Good are Commercial Large Language Models on African Languages?" target="Kelechi Ogueji" id="20">
+        <attvalues>
+          <attvalue for="6" value="wrote" />
+        </attvalues>
+      </edge>
+      <edge source="How Good are Commercial Large Language Models on African Languages?" target="advancements in Natural" id="21">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="How Good are Commercial Large Language Models on African Languages?" target="Language Processing" id="22">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="How Good are Commercial Large Language Models on African Languages?" target="Natural Language" id="23">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="How Good are Commercial Large Language Models on African Languages?" target="African languages" id="24">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Language Processing" target="A Precis of Language Models are not Models of Language" id="25">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Goldfish: Monolingual Language Models for 350 Languages" target="Tyler A. Chang" id="26">
+        <attvalues>
+          <attvalue for="6" value="wrote" />
+        </attvalues>
+      </edge>
+      <edge source="Goldfish: Monolingual Language Models for 350 Languages" target="Catherine Arnett" id="27">
+        <attvalues>
+          <attvalue for="6" value="wrote" />
+        </attvalues>
+      </edge>
+      <edge source="Goldfish: Monolingual Language Models for 350 Languages" target="Zhuowen Tu" id="28">
+        <attvalues>
+          <attvalue for="6" value="wrote" />
+        </attvalues>
+      </edge>
+      <edge source="Goldfish: Monolingual Language Models for 350 Languages" target="Benjamin K. Bergen" id="29">
+        <attvalues>
+          <attvalue for="6" value="wrote" />
+        </attvalues>
+      </edge>
+      <edge source="Goldfish: Monolingual Language Models for 350 Languages" target="languages" id="30">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Goldfish: Monolingual Language Models for 350 Languages" target="models" id="31">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Goldfish: Monolingual Language Models for 350 Languages" target="Goldfish" id="32">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Goldfish: Monolingual Language Models for 350 Languages" target="low-resource languages" id="33">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Goldfish: Monolingual Language Models for 350 Languages" target="FLORES" id="34">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Modelling Language" target="Jumbly Grindrod" id="35">
+        <attvalues>
+          <attvalue for="6" value="wrote" />
+        </attvalues>
+      </edge>
+      <edge source="Modelling Language" target="valuable scientific role" id="36">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Modelling Language" target="role to play" id="37">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Modelling Language" target="play in serving" id="38">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration" target="Mingrui Ma" id="39">
+        <attvalues>
+          <attvalue for="6" value="wrote" />
+        </attvalues>
+      </edge>
+      <edge source="LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration" target="Yu Yang" id="40">
+        <attvalues>
+          <attvalue for="6" value="wrote" />
+        </attvalues>
+      </edge>
+      <edge source="LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration" target="large language model" id="41">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration" target="large language" id="42">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration" target="language model" id="43">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration" target="pretrained large language" id="44">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration" target="Medical image registration" id="45">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="A Precis of Language Models are not Models of Language" target="Csaba Veres" id="46">
+        <attvalues>
+          <attvalue for="6" value="wrote" />
+        </attvalues>
+      </edge>
+      <edge source="A Precis of Language Models are not Models of Language" target="Artificial Intelligence" id="47">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="A Precis of Language Models are not Models of Language" target="leading application areas" id="48">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="A Precis of Language Models are not Models of Language" target="Large Neural Language" id="49">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="A Survey of Large Language Models for European Languages" target="Wazir Ali" id="50">
+        <attvalues>
+          <attvalue for="6" value="wrote" />
+        </attvalues>
+      </edge>
+      <edge source="A Survey of Large Language Models for European Languages" target="Sampo Pyysalo" id="51">
+        <attvalues>
+          <attvalue for="6" value="wrote" />
+        </attvalues>
+      </edge>
+      <edge source="A Survey of Large Language Models for European Languages" target="gained significant attention" id="52">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="A Survey of Large Language Models for European Languages" target="significant attention due" id="53">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="A Survey of Large Language Models for European Languages" target="natural language tasks" id="54">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="A Survey of Large Language Models for European Languages" target="gained significant" id="55">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="A Survey of Large Language Models for European Languages" target="significant attention" id="56">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics" target="Conor Houghton" id="57">
+        <attvalues>
+          <attvalue for="6" value="wrote" />
+        </attvalues>
+      </edge>
+      <edge source="Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics" target="Nina Kazanina" id="58">
+        <attvalues>
+          <attvalue for="6" value="wrote" />
+        </attvalues>
+      </edge>
+      <edge source="Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics" target="Priyanka Sukumaran" id="59">
+        <attvalues>
+          <attvalue for="6" value="wrote" />
+        </attvalues>
+      </edge>
+      <edge source="Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics" target="human linguistic processing" id="60">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics" target="Large language models" id="61">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics" target="linguistic processing" id="62">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics" target="human linguistic" id="63">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics" target="Large language" id="64">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Enhance Reasoning Ability of Visual-Language Models via Large Language Models" target="Yueting Yang" id="65">
+        <attvalues>
+          <attvalue for="6" value="wrote" />
+        </attvalues>
+      </edge>
+      <edge source="Enhance Reasoning Ability of Visual-Language Models via Large Language Models" target="Xintong Zhang" id="66">
+        <attvalues>
+          <attvalue for="6" value="wrote" />
+        </attvalues>
+      </edge>
+      <edge source="Enhance Reasoning Ability of Visual-Language Models via Large Language Models" target="Wenjuan Han" id="67">
+        <attvalues>
+          <attvalue for="6" value="wrote" />
+        </attvalues>
+      </edge>
+      <edge source="Enhance Reasoning Ability of Visual-Language Models via Large Language Models" target="shown excellent performance" id="68">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Enhance Reasoning Ability of Visual-Language Models via Large Language Models" target="Pre-trained visual language" id="69">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Enhance Reasoning Ability of Visual-Language Models via Large Language Models" target="shown excellent" id="70">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+      <edge source="Enhance Reasoning Ability of Visual-Language Models via Large Language Models" target="excellent performance" id="71">
+        <attvalues>
+          <attvalue for="6" value="has_keyword" />
+        </attvalues>
+      </edge>
+    </edges>
+  </graph>
+</gexf>
