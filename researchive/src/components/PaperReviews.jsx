@@ -1,19 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Star, ThumbsUp, MessageSquare } from 'lucide-react';
+import { Star, ThumbsUp } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
+import { backend_url } from '../../backendUrl';
 
 const ReviewCard = ({ review, isUserReview = false }) => {
     const [showFullComment, setShowFullComment] = useState(false);
-    const shouldTruncate = review.comments?.length > 300;
+    const shouldTruncate = review.comment?.length > 300;
     const displayedComment = shouldTruncate && !showFullComment
-        ? `${review.comments.slice(0, 300)}...`
-        : review.comments;
+        ? `${review.comment.slice(0, 300)}...`
+        : review.comment;
 
     return (
         <Card className={isUserReview ? 'border-primary' : ''}>
@@ -22,21 +22,14 @@ const ReviewCard = ({ review, isUserReview = false }) => {
                     <div>
                         <div className="flex items-center gap-2">
                             <CardTitle className="text-base">
-                                {isUserReview ? 'Your Review' : review.reviewer}
+                                {isUserReview ? 'Your Review' : review.userId.name}
                             </CardTitle>
                             {isUserReview && (
                                 <Badge variant="outline" className="text-primary">You</Badge>
                             )}
                         </div>
-                        <CardDescription>{new Date(review.date).toLocaleDateString()}</CardDescription>
+                        <CardDescription>{new Date(review.createdAt).toLocaleDateString()}</CardDescription>
                     </div>
-                    {/* <div className="flex items-center gap-2">
-                        {review.status === 'completed' ? (
-                            <Badge variant="success">Completed</Badge>
-                        ) : (
-                            <Badge variant="secondary">Pending</Badge>
-                        )}
-                    </div> */}
                 </div>
             </CardHeader>
             {review.status === 'completed' && (
@@ -44,16 +37,12 @@ const ReviewCard = ({ review, isUserReview = false }) => {
                     <div className="flex items-center gap-4">
                         <div className="flex items-center">
                             <Star className="h-4 w-4 text-yellow-500 mr-1" />
-                            <span className="font-medium">{review.score}/5</span>
+                            <span className="font-medium">{review.rating}/5</span>
                         </div>
                         <div className="flex items-center text-muted-foreground">
                             <ThumbsUp className="h-4 w-4 mr-1" />
                             <span>{review.helpful || 0}</span>
                         </div>
-                        {/* <div className="flex items-center text-muted-foreground">
-                            <MessageSquare className="h-4 w-4 mr-1" />
-                            <span>{review.comments_count || 0}</span>
-                        </div> */}
                     </div>
 
                     <div>
@@ -82,45 +71,46 @@ const ReviewCard = ({ review, isUserReview = false }) => {
     );
 };
 
-const PaperReviews = ({ paper, userReview, onEditReview }) => {
-    // Mock data for other reviews
-    const otherReviews = [
-        {
-            id: 1,
-            reviewer: 'Dr. Sarah Chen',
-            score: 4,
-            comments: 'This paper presents a novel approach to deep learning architectures. The methodology is sound and the results are well-documented. However, there are some areas that could benefit from more detailed explanation, particularly in the experimental setup section. The authors should consider adding more details about the hyperparameter selection process and the baseline models used for comparison.',
-            date: '2024-02-28',
-            status: 'completed',
-            helpful: 12,
-            comments_count: 3
-        },
-        {
-            id: 2,
-            reviewer: 'Prof. James Wilson',
-            score: 5,
-            comments: 'An excellent contribution to the field. The paper is well-structured and the arguments are presented clearly. The theoretical foundation is solid and the empirical results strongly support the main claims. The discussion section effectively addresses potential limitations and future research directions.',
-            date: '2024-02-27',
-            status: 'completed',
-            helpful: 8,
-            comments_count: 2
-        },
-        {
-            id: 3,
-            reviewer: 'Dr. Maria Garcia',
-            score: null,
-            comments: null,
-            date: '2024-02-28',
-            status: 'pending'
-        }
-    ];
+const PaperReviews = ({ paperId, userReview, onEditReview }) => {
+    const [reviews, setReviews] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchReviews = async () => {
+            try {
+                const response = await fetch(`${backend_url}/api/reviews/${paperId}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        setReviews(data.reviews);
+                    } else {
+                        setError('Failed to fetch reviews');
+                    }
+                } else {
+                    setError('Failed to fetch reviews');
+                }
+            } catch (error) {
+                setError('Error fetching reviews');
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchReviews();
+    }, [paperId]);
 
     return (
         <div className="space-y-6">
             <div>
                 <h3 className="text-lg font-semibold mb-1">Reviews</h3>
                 <p className="text-sm text-muted-foreground">
-                    {paper.reviewsReceived} of {paper.totalReviewers} reviews completed
+                    {/* Assuming you can calculate reviewsReceived and totalReviewers from paper */}
+                    {/* Example: {paperId.reviewsReceived} of {paperId.totalReviewers} reviews completed */}
+                    {/* Replace with dynamic values if needed */}
+                    {/* e.g. {reviews.length} reviews received */}
+                    {reviews.length} reviews received
                 </p>
             </div>
 
@@ -134,16 +124,22 @@ const PaperReviews = ({ paper, userReview, onEditReview }) => {
                         </>
                     )}
 
-                    {/* Other reviews */}
-                    <div className="space-y-4">
-                        {otherReviews.map((review) => (
-                            <ReviewCard key={review.id} review={review} />
-                        ))}
-                    </div>
+                    {/* Show loading or error messages */}
+                    {loading ? (
+                        <p>Loading reviews...</p>
+                    ) : error ? (
+                        <p className="text-red-500">{error}</p>
+                    ) : (
+                        <div className="space-y-4">
+                            {reviews.map((review) => (
+                                <ReviewCard key={review._id} review={review} />
+                            ))}
+                        </div>
+                    )}
                 </div>
             </ScrollArea>
         </div>
     );
 };
 
-export default PaperReviews; 
+export default PaperReviews;

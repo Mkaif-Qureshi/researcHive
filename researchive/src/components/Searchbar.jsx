@@ -20,7 +20,7 @@ const Searchbar = ({ onSearch, loading }) => {
         onChange={(e) => setInputValue(e.target.value)}
         className="flex-1"
       />
-      <Button type="submit" disabled={loading}>
+      <Button type="submit" disabled={loading} variant="button">
         {loading ? (
           <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
         ) : (
