@@ -45,8 +45,8 @@ const Navbar = () => {
             <Link to="/Chat" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
              Chat
             </Link>
-            <Link to="/meet" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
-            Meet
+            <Link to="/collabrator" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
+              Meet
             </Link>
 
           </div>}
