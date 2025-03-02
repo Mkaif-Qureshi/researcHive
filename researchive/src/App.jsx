@@ -9,6 +9,8 @@ import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import ResearchGraph from "./pages/ResearchGraph";
 import Chat from "./pages/Chat";
+import Meet from "./pages/Meet";
+
 
 const App = () => {
   return (
@@ -24,6 +26,8 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/research-graph" element={<ResearchGraph />} />
+          <Route path="/meet" element={<Meet />} />
+
         </Route>
       </Routes>
     </Router>

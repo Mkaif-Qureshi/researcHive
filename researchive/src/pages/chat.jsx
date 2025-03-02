@@ -81,7 +81,7 @@ function App() {
           {chat.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-gray-500">
               <FileText size={48} className="mb-4" />
-              <p className="text-center">Upload a PDF and start chatting to analyze your document</p>\
+              <p className="text-center">Upload a PDF and start chatting to analyze your document</p>
             </div>
           ) : (
             <div className="space-y-4">
