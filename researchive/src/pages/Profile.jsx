@@ -94,6 +94,10 @@ const Profile = () => {
     navigate('/update-profile');
   };
 
+  const handlegotoSavedpapers = () => {
+    navigate('/savedpages');
+  }
+
   if (!currentUser) {
     return <div className="p-6">Loading profile...</div>;
   }
@@ -205,7 +209,7 @@ const Profile = () => {
         </div>
 
         {/* Buttons */}
-        <div className="flex flex-row justify-between space-x-4 mt-6 w-full">
+        <div className="flex flex-row justify-between space-x-4 mt-6 w-full mr-60">
           <Button
             type="button"
             variant="outline"
@@ -218,13 +222,22 @@ const Profile = () => {
           <Button
             type="button"
             variant="default"
-            className="w-1/2"
+            className="w-60"
             onClick={handlelogout}
             style={{ backgroundColor: themeConfig.colors.primary }}
           >
             Logout
           </Button>
         </div>
+        <Button
+            type="button"
+            variant="default"
+            className="w-1/2"
+            onClick={handlegotoSavedpapers}
+            style={{ backgroundColor: themeConfig.colors.primary }}
+          >
+            Saved Papers
+          </Button>
 
         {/* Social Links */}
         {currentUser.social_links && currentUser.social_links.length > 0 && (
