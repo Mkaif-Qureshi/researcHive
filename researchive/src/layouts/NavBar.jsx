@@ -33,20 +33,23 @@ const Navbar = () => {
             <Link to="/" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
               Home
             </Link>
-            <Link to="/dashboard" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
-              Dashboard
-            </Link>
+
             <Link to="/communities" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
               Communities
-            </Link>
-            <Link to="/Chat" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
-             Chat
             </Link>
             <Link to="/collabrator" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
               Meet
             </Link>
+            <Link to="/Chat" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
+              Chat
+            </Link>
             <Link to="/research-graph" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
               Knowledge Graph
+            </Link>
+
+
+            <Link to="/dashboard" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
+              Dashboard
             </Link>
 
 
@@ -105,7 +108,7 @@ const Navbar = () => {
             meet
           </Link>
           <Link to="/Knowlege grap" className={`block px-3 py-2 rounded-md text-base font-medium text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} hover:bg-gray-50`}>
-             Knowlege grap
+            Knowlege grap
           </Link>
 
         </div>
