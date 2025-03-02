@@ -45,6 +45,10 @@ const Navbar = () => {
             <Link to="/collabrator" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
               Meet
             </Link>
+            <Link to="/research-graph" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
+              Knowledge Graph
+            </Link>
+
 
           </div>}
 
@@ -100,6 +104,10 @@ const Navbar = () => {
           <Link to="/meet" className={`block px-3 py-2 rounded-md text-base font-medium text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} hover:bg-gray-50`}>
             meet
           </Link>
+          <Link to="/Knowlege grap" className={`block px-3 py-2 rounded-md text-base font-medium text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} hover:bg-gray-50`}>
+             Knowlege grap
+          </Link>
+
         </div>
         <div className="pt-4 pb-3 border-t border-gray-200">
           <div className="flex items-center px-5 space-x-3">
