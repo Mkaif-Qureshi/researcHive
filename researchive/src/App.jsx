@@ -16,6 +16,7 @@ import Collabrator from "./pages/Collaborator";
 import Communities from "./pages/communities";
 
 
+
 const App = () => {
   return (
     <AuthProvider>
@@ -35,6 +36,7 @@ const App = () => {
           <Route path="/savedpages" element={<SavedPages />} />
           <Route path="/collabrator" element={<Collabrator />} />
           <Route path="/communities" element={<Communities />} />
+
 
         </Route>
       </Routes>
