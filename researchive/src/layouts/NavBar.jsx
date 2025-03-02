@@ -45,6 +45,10 @@ const Navbar = () => {
             <Link to="/Chat" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
              Chat
             </Link>
+            <Link to="/meet" className={`text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} px-3 py-2 rounded-md font-medium`}>
+            Meet
+            </Link>
+
           </div>}
 
           {/* Right side - Auth Section */}
@@ -63,12 +67,12 @@ const Navbar = () => {
               ) : (
                 <>
                   <Link to="/login">
-                    <Button variant="outline" size="sm" className={`text-${themeConfig.colors.primary} border-${themeConfig.colors.primary} hover:bg-blue-50`}>
+                    <Button variant="outline2" size="sm" className={`text-${themeConfig.colors.primary} border-${themeConfig.colors.primary} hover:bg-blue-50`}>
                       Log in
                     </Button>
                   </Link>
                   <Link to="/signup">
-                    <Button size="sm" className={`bg-black text-white hover:bg-${themeConfig.colors.primaryHover}`}>
+                    <Button size="sm" variant="button" className={`bg-black text-white hover:bg-${themeConfig.colors.primaryHover}`}>
                       Sign up
                     </Button>
                   </Link>
@@ -98,6 +102,9 @@ const Navbar = () => {
           </Link>
           <Link to="/communities" className={`block px-3 py-2 rounded-md text-base font-medium text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} hover:bg-gray-50`}>
             Chat
+          </Link>
+          <Link to="/meet" className={`block px-3 py-2 rounded-md text-base font-medium text-${themeConfig.colors.text} hover:text-${themeConfig.colors.textHover} hover:bg-gray-50`}>
+            meet
           </Link>
         </div>
         <div className="pt-4 pb-3 border-t border-gray-200">

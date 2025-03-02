@@ -46,7 +46,7 @@ const userSchema = new mongoose.Schema(
       enum: ["Reviewer", "Researcher", "Both"], // Ensures valid role assignment
     },
     expertise: {
-      type: String,
+      type: [String],
       trim: true,
     },
     ongoing_projects: {
@@ -64,6 +64,18 @@ const userSchema = new mongoose.Schema(
     social_links: {
       type: [String],
       default: [],
+    },
+    collaborators :{
+      type : [String],
+      default : [],
+    },
+    publications :{
+      type : [String],
+      default : [],
+    },
+    saved_papers :{
+      type : [String],
+      default : [],
     },
     visibility: {
       type: Boolean,

@@ -62,8 +62,10 @@ const Login = () => {
       
       if (response.status === 200) {
         toast.success('Login successful!');
-        navigate('/');
-        window.location.reload()
+        setTimeout(() => {
+          navigate("/");
+          window.location.reload()
+        }, 2000); // 2000 milliseconds = 2 seconds
 
       } else {
         toast.error(data.message || 'Login failed!');
