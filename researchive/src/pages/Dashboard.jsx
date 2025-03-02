@@ -113,11 +113,11 @@ const Dashboard = () => {
               </div>
 
 
-              {searchError && (
+              {/* {searchError && (
                 <div className="text-red-500 mb-4">
                   Error: {searchError}
                 </div>
-              )}
+              )} */}
 
               {searchLoading ? (
                 <div className="space-y-4">
