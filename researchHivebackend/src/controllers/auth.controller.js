@@ -296,3 +296,39 @@ export const checkAuth = async (req, res) => {
     res.status(500).json({ message: `Internal Server error ${err}` });
   }
 };
+
+
+
+//saved-papers
+export const updateSavedPapers = async (req, res) => {
+  try {
+    const { paper } = req.body; // Assuming the complete paper object is sent in the request body
+    
+    const userId = req.user._id; // Get the user ID from the authenticated user
+
+    if (!paper) {
+      return res.status(400).json({ message: "Paper object is required" });
+    }
+
+    // Find the user by ID and update the saved_papers array
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        $push: { saved_papers: paper }, // Push the paper object into saved_papers array
+      },
+      { new: true } // Return the updated user
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json({
+      message: "Paper saved successfully",
+      user: updatedUser,
+    });
+  } catch (err) {
+    console.log(`Error in Save Paper: ${err.message}`);
+    res.status(500).json({ message: `Internal Server error: ${err.message}` });
+  }
+};
