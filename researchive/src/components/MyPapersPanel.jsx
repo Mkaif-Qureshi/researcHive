@@ -8,8 +8,11 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Progress } from '@/components/ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PlusCircle, Upload, FileText, Users, Calendar, Book, Star, Clock, CheckCircle, XCircle, Circle } from 'lucide-react';
 import { usePeerReview } from '@/hooks/usePeerReview';
+import CollaboratorRecommendations from './CollaboratorRecommendations';
+import CollaborativeEditor from './CollaborativeEditor';
 
 const ReviewDialog = ({ paper, isOpen, onClose }) => {
     // Mock reviews data
@@ -171,12 +174,56 @@ const ProgressDialog = ({ paper, isOpen, onClose }) => {
     );
 };
 
+const getStatusBadge = (status) => {
+    const statusConfig = {
+        under_review: { label: 'Under Review', variant: 'default' },
+        pending_reviewer: { label: 'Pending Reviewers', variant: 'secondary' },
+        revision_needed: { label: 'Revision Needed', variant: 'warning' },
+        accepted: { label: 'Accepted', variant: 'success' },
+        rejected: { label: 'Rejected', variant: 'destructive' }
+    };
+
+    const config = statusConfig[status] || statusConfig.under_review;
+    return <Badge variant={config.variant}>{config.label}</Badge>;
+};
+
+const PaperCard = ({ paper, onSelect }) => (
+    <Card className="hover:border-primary cursor-pointer" onClick={() => onSelect(paper)}>
+        <CardHeader>
+            <div className="flex justify-between items-start">
+                <div className="space-y-1">
+                    <CardTitle>{paper.title}</CardTitle>
+                    <CardDescription>
+                        Submitted on {new Date(paper.submittedAt).toLocaleDateString()}
+                    </CardDescription>
+                </div>
+                {getStatusBadge(paper.status)}
+            </div>
+        </CardHeader>
+        <CardContent>
+            <div className="flex items-center gap-4">
+                <div className="flex items-center">
+                    <Users className="mr-2 h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">
+                        {paper.collaborators?.length || 0} collaborators
+                    </span>
+                </div>
+                <div className="flex items-center">
+                    <FileText className="mr-2 h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">
+                        {paper.reviewsReceived}/{paper.totalReviewers} reviews
+                    </span>
+                </div>
+            </div>
+        </CardContent>
+    </Card>
+);
+
 const MyPapersPanel = () => {
     const { loading, error, submitPaper } = usePeerReview();
     const [showSubmitForm, setShowSubmitForm] = useState(false);
     const [selectedPaper, setSelectedPaper] = useState(null);
-    const [showReviews, setShowReviews] = useState(false);
-    const [showProgress, setShowProgress] = useState(false);
+    const [showReviewDialog, setShowReviewDialog] = useState(false);
     const [paperData, setPaperData] = useState({
         title: '',
         abstract: '',
@@ -191,7 +238,11 @@ const MyPapersPanel = () => {
             status: 'under_review',
             submittedAt: '2024-02-28T10:00:00Z',
             reviewsReceived: 1,
-            totalReviewers: 3
+            totalReviewers: 3,
+            collaborators: [
+                { id: 'collab1', name: 'Dr. Sarah Chen' },
+                { id: 'collab2', name: 'Prof. James Wilson' }
+            ]
         },
         {
             id: 'mock-2',
@@ -199,7 +250,8 @@ const MyPapersPanel = () => {
             status: 'pending_reviewer',
             submittedAt: '2024-03-01T15:30:00Z',
             reviewsReceived: 0,
-            totalReviewers: 3
+            totalReviewers: 3,
+            collaborators: []
         }
     ]);
 
@@ -212,29 +264,112 @@ const MyPapersPanel = () => {
         }
     };
 
-    const handleViewReviews = (paper) => {
+    const handleSelectPaper = (paper) => {
         setSelectedPaper(paper);
-        setShowReviews(true);
     };
 
-    const handleTrackProgress = (paper) => {
-        setSelectedPaper(paper);
-        setShowProgress(true);
+    const handleBackToList = () => {
+        setSelectedPaper(null);
     };
 
-    const getStatusBadge = (status) => {
-        const statusConfig = {
-            under_review: { label: 'Under Review', variant: 'default' },
-            pending_reviewer: { label: 'Pending Reviewers', variant: 'secondary' },
-            revision_needed: { label: 'Revision Needed', variant: 'warning' },
-            accepted: { label: 'Accepted', variant: 'success' },
-            rejected: { label: 'Rejected', variant: 'destructive' }
-        };
+    // If a paper is selected, show its details and collaboration options
+    if (selectedPaper) {
+        return (
+            <div className="space-y-6">
+                <div className="flex justify-between items-center">
+                    <div>
+                        <Button variant="ghost" onClick={handleBackToList}>
+                            ← Back to Papers
+                        </Button>
+                        <h2 className="text-2xl font-bold mt-2">{selectedPaper.title}</h2>
+                    </div>
+                    <Badge>{getStatusBadge(selectedPaper.status)}</Badge>
+                </div>
 
-        const config = statusConfig[status] || statusConfig.under_review;
-        return <Badge variant={config.variant}>{config.label}</Badge>;
-    };
+                <Tabs defaultValue="editor">
+                    <TabsList className="grid w-full grid-cols-3">
+                        <TabsTrigger value="editor">Edit Paper</TabsTrigger>
+                        <TabsTrigger value="reviews">Reviews ({selectedPaper.reviewsReceived})</TabsTrigger>
+                        <TabsTrigger value="collaborators">
+                            Collaborators ({selectedPaper.collaborators?.length || 0})
+                        </TabsTrigger>
+                    </TabsList>
 
+                    <TabsContent value="editor" className="mt-6">
+                        <CollaborativeEditor paper={selectedPaper} />
+                    </TabsContent>
+
+                    <TabsContent value="reviews" className="mt-6">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Paper Reviews</CardTitle>
+                                <CardDescription>
+                                    Track review progress and feedback
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <ReviewDialog
+                                    paper={selectedPaper}
+                                    isOpen={showReviewDialog}
+                                    onClose={() => setShowReviewDialog(false)}
+                                />
+                                <div className="flex justify-center">
+                                    <Button onClick={() => setShowReviewDialog(true)} size="sm">
+                                        <FileText className="h-4 w-4 mr-2" />
+                                        View All Reviews
+                                    </Button>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </TabsContent>
+
+                    <TabsContent value="collaborators" className="mt-6">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Manage Collaborators</CardTitle>
+                                <CardDescription>
+                                    Invite others to work on your paper
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="space-y-4">
+                                    {/* Current Collaborators */}
+                                    {selectedPaper.collaborators?.length > 0 && (
+                                        <div>
+                                            <h3 className="text-sm font-medium mb-2">Current Collaborators</h3>
+                                            <div className="flex flex-wrap gap-2">
+                                                {selectedPaper.collaborators.map(collaborator => (
+                                                    <Badge key={collaborator.id} variant="secondary">
+                                                        {collaborator.name}
+                                                    </Badge>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Invite Form */}
+                                    <div>
+                                        <h3 className="text-sm font-medium mb-2">Invite Collaborator</h3>
+                                        <div className="flex gap-2 items-center">
+                                            <Input
+                                                placeholder="Enter email address"
+                                                type="email"
+                                            />
+                                            <Button>
+                                                Send Invite
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </TabsContent>
+                </Tabs>
+            </div>
+        );
+    }
+
+    // Show the list of papers
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
@@ -353,38 +488,13 @@ const MyPapersPanel = () => {
                     </CardFooter>
                 </Card>
             ) : (
-                <div className="space-y-4">
+                <div className="grid gap-4">
                     {submittedPapers.map(paper => (
-                        <Card key={paper.id}>
-                            <CardHeader>
-                                <div className="flex justify-between items-start">
-                                    <div className="space-y-1">
-                                        <CardTitle>{paper.title}</CardTitle>
-                                        <CardDescription>
-                                            Submitted on {new Date(paper.submittedAt).toLocaleDateString()}
-                                        </CardDescription>
-                                    </div>
-                                    {getStatusBadge(paper.status)}
-                                </div>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="flex items-center space-x-4">
-                                    <div className="flex items-center">
-                                        <Users className="mr-2 h-4 w-4 text-muted-foreground" />
-                                        <span>{paper.reviewsReceived}/{paper.totalReviewers} reviews received</span>
-                                    </div>
-                                </div>
-                            </CardContent>
-                            <CardFooter className="flex justify-end space-x-2">
-                                <Button variant="outline" onClick={() => handleViewReviews(paper)}>
-                                    <FileText className="mr-2 h-4 w-4" />
-                                    View Reviews
-                                </Button>
-                                <Button onClick={() => handleTrackProgress(paper)}>
-                                    Track Progress
-                                </Button>
-                            </CardFooter>
-                        </Card>
+                        <PaperCard
+                            key={paper.id}
+                            paper={paper}
+                            onSelect={handleSelectPaper}
+                        />
                     ))}
                 </div>
             )}
@@ -393,21 +503,6 @@ const MyPapersPanel = () => {
                 <div className="bg-destructive/10 text-destructive p-4 rounded-md">
                     {error}
                 </div>
-            )}
-
-            {selectedPaper && (
-                <>
-                    <ReviewDialog
-                        paper={selectedPaper}
-                        isOpen={showReviews}
-                        onClose={() => setShowReviews(false)}
-                    />
-                    <ProgressDialog
-                        paper={selectedPaper}
-                        isOpen={showProgress}
-                        onClose={() => setShowProgress(false)}
-                    />
-                </>
             )}
         </div>
     );
