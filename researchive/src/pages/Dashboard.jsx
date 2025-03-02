@@ -13,11 +13,13 @@ import { backend_url } from '../../backendUrl';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TrendingUp, Clock, Star, FileText } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import KanbanBoard from '@/components/kanban/KanbanBoard';
 
 const DEFAULT_SEARCH_QUERY = "ai ml";
 
 const Dashboard = () => {
   const [selectedPaperId, setSelectedPaperId] = useState(null);
+  const [kanbanPapers, setKanbanPapers] = useState([]);
   const {
     papers,
     loading: searchLoading,
@@ -63,6 +65,15 @@ const Dashboard = () => {
     setSelectedPaperId(null);
   };
 
+  const handleAddToKanban = (paper) => {
+    setKanbanPapers(prev => {
+      if (!prev.find(p => p.paperId === paper.paperId)) {
+        return [...prev, paper];
+      }
+      return prev;
+    });
+  };
+
   const PaperStats = () => (
     <div className="grid grid-cols-3 gap-4 mb-6">
       <Card className="p-4 flex items-center gap-3">
@@ -83,14 +94,17 @@ const Dashboard = () => {
   );
 
   return (
-    <div className="container mx-auto my-7 p-4">
-      <Tabs defaultValue="search" className="mb-6">
-        <TabsList>
-          <TabsTrigger value="search">Search Papers</TabsTrigger>
-          <TabsTrigger value="my-papers">My Papers</TabsTrigger>
-        </TabsList>
+    <div className="container mx-auto py-6">
+      <Tabs defaultValue="search" className="space-y-6">
+        <div className="flex items-center justify-between">
+          <TabsList>
+            <TabsTrigger value="search">Search Papers</TabsTrigger>
+            <TabsTrigger value="my-papers">My Papers</TabsTrigger>
+            <TabsTrigger value="kanban">Kanban Board</TabsTrigger>
+          </TabsList>
+        </div>
 
-        <TabsContent value="search">
+        <TabsContent value="search" className="space-y-4">
           <div className="grid grid-cols-12 gap-4">
             {/* Left Sidebar - Filters */}
             <div className="col-span-2">
@@ -133,6 +147,7 @@ const Dashboard = () => {
                       paper={paper}
                       onViewDetails={handleViewDetails}
                       isSelected={selectedPaperId === paper.paperId}
+                      onAddToKanban={() => handleAddToKanban(paper)}
                     />
                   ))}
                 </div>
@@ -178,6 +193,23 @@ const Dashboard = () => {
 
         <TabsContent value="my-papers">
           <MyPapersPanel />
+        </TabsContent>
+
+        <TabsContent value="kanban">
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <div>
+                <h2 className="text-2xl font-bold">Research Kanban</h2>
+                <p className="text-muted-foreground">
+                  Organize and track your research papers
+                </p>
+              </div>
+            </div>
+            <KanbanBoard
+              papers={kanbanPapers}
+              onPapersChange={setKanbanPapers}
+            />
+          </div>
         </TabsContent>
       </Tabs>
     </div>

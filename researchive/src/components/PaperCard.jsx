@@ -3,9 +3,18 @@
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Book, Users, FileText, ExternalLink } from 'lucide-react';
+import { Book, Users, FileText, ExternalLink, Layout } from 'lucide-react';
+import { toast } from 'sonner';
 
-const PaperCard = ({ paper, onViewDetails }) => {
+const PaperCard = ({ paper, onViewDetails, onAddToKanban }) => {
+  const handleAddToKanban = () => {
+    onAddToKanban?.(paper);
+    toast.success('Added to Kanban Board', {
+      description: `"${paper.title}" has been added to your Kanban board.`,
+      duration: 3000,
+    });
+  };
+
   return (
     <Card className="w-full hover:shadow-md transition-shadow">
       <CardHeader>
@@ -16,7 +25,7 @@ const PaperCard = ({ paper, onViewDetails }) => {
           )}
           {paper.citationCount !== undefined && (
             <Badge variant="secondary">
-              <Users className="mr-1 h-3 w-3" /> 
+              <Users className="mr-1 h-3 w-3" />
               {paper.citationCount} citations
             </Badge>
           )}
@@ -54,11 +63,21 @@ const PaperCard = ({ paper, onViewDetails }) => {
           </div>
         )}
       </CardContent>
-      <CardFooter className="flex justify-between">
+      <CardFooter className="flex justify-between gap-2">
         <Button variant="outline" size="sm" onClick={() => onViewDetails(paper.paperId)}>
           <FileText className="mr-2 h-4 w-4" />
           Details
         </Button>
+        <Button
+  variant="secondary"
+  size="sm"
+  onClick={handleAddToKanban}
+  className="hover:bg-primary/20 transition-colors active:scale-95"
+>
+  <Layout className="mr-2 h-4 w-4" />
+  Add to Kanban
+</Button>
+
         {paper.url && (
           <Button variant="ghost" size="sm" asChild>
             <a href={paper.url} target="_blank" rel="noopener noreferrer">

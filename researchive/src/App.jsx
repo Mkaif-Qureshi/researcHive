@@ -10,29 +10,27 @@ import Profile from "./pages/Profile";
 import ResearchGraph from "./pages/ResearchGraph";
 import Chat from "./pages/Chat";
 import Meet from "./pages/Meet";
-
 import UpdateProfile from "./pages/UpdateProfile";
-
 
 const App = () => {
   return (
     <AuthProvider>
-    <Router>
-      <Toaster /> 
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/research-graph" element={<ResearchGraph />} />
-          <Route path="/meet" element={<Meet />} />
-          <Route path="/update-profile" element={<UpdateProfile />} />
-        </Route>
-      </Routes>
-    </Router>
+      <Toaster />
+      <Router>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/chat" element={<Chat />} />
+            <Route path="/research-graph" element={<ResearchGraph />} />
+            <Route path="/meet" element={<Meet />} />
+            <Route path="/update-profile" element={<UpdateProfile />} />
+          </Route>
+        </Routes>
+      </Router>
     </AuthProvider>
   );
 };
