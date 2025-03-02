@@ -135,7 +135,7 @@ const PaperDetail = ({ paper, onBack }) => {
             </TabsContent>
           </Tabs>
         </CardContent>
-        <CardFooter className="flex justify-between">
+        <CardFooter className="flex flex-col items-start gap-3">
           {paper.url && (
             <Button asChild>
               <a href={paper.url} target="_blank" rel="noopener noreferrer">

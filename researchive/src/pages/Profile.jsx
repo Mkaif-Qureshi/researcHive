@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Linkedin, Twitter, Github, BookOpen, Layers, Edit, Save, X } from 'lucide-react';
 import { ResponsiveContainer, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar } from 'recharts';
 import { useAuth } from '@/context/AuthContext';
+import { useNavigate } from "react-router-dom";
+
 
 const Profile = () => {
   const {currentUser} = useAuth();
+  const navigate = useNavigate(); // Ensure navigate is initialized here
   const [isEditing, setIsEditing] = useState(false);
   const [editField, setEditField] = useState('');
   const [profileData, setProfileData] = useState({
@@ -48,6 +51,7 @@ const Profile = () => {
     ],
     totalPublications: 15,
   });
+  
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -198,14 +202,17 @@ const Profile = () => {
                   <div className="flex items-center text-gray-600 group relative">
                     <Layers className="w-4 h-4 mr-2 text-blue-500" />
                     {editField === 'expertise' ? (
-                      <input
-                        value={currentUser.expertise.join(", ")}
-                        onChange={(e) => handleChange('expertise', e.target.value.split(', '))}
-                        className="border-b-2 border-blue-200 focus:outline-none"
-                      />
-                    ) : (
-                      <span className="text-sm">{currentUser.expertise.join(", ")}</span>
-                    )}
+                    <input
+                      value={Array.isArray(currentUser.expertise) ? currentUser.expertise.join(", ") : currentUser.expertise || ""}
+                      onChange={(e) => handleChange('expertise', e.target.value.split(', '))}
+                      className="border-b-2 border-blue-200 focus:outline-none"
+                    />
+                  ) : (
+                    <span className="text-sm">
+                      {Array.isArray(currentUser.expertise) ? currentUser.expertise.join(", ") : currentUser.expertise}
+                    </span>
+                  )}
+
                     <Edit
                       size={14}
                       className="ml-2 text-gray-400 cursor-pointer hover:text-blue-500 absolute right-0 opacity-0 group-hover:opacity-100"
@@ -252,19 +259,32 @@ const Profile = () => {
           </div>
         </div>
   
-        {/* Ongoing Projects Card */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-2">Ongoing Projects</h2>
-          <div className="space-y-4">
-            {profileData.ongoing_projects.map((project, index) => (
-              <div key={index} className="bg-blue-50 p-4 rounded-lg">
-                <h3 className="text-md font-medium text-gray-800">{project.name}</h3>
-                <p className="text-sm text-gray-600">{project.description}</p>
-              </div>
-            ))}
+          {/* Ongoing Projects Card */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h2 className="text-lg font-semibold text-gray-800 mb-2">Ongoing Projects</h2>
+            <div className="space-y-4">
+              {profileData.ongoing_projects.map((project, index) => (
+                <div key={index} className="bg-blue-50 p-4 rounded-lg">
+                  <h3 className="text-md font-medium text-gray-800">{project.name}</h3>
+                  <p className="text-sm text-gray-600">{project.description}</p>
+                </div>
+              ))}
+            </div>
+
+            const navigate = useNavigate();
+
+
+            {/* Button container to keep it below content */}
+            <div className="mt-6 flex justify-end">
+            <button
+              className="bg-white text-black border border-black px-4 py-2 rounded-lg hover:bg-gray-100 transition"
+              onClick={() => navigate("/savedpages")} // Ensure this navigates correctly
+            >
+              View Saved Pages
+            </button>
+            </div>
           </div>
-        </div>
-  
+
         {/* Publications, Collaborators, and Graph in a Single Row */}
         <div className="flex space-x-6">
           {/* Publications Card */}

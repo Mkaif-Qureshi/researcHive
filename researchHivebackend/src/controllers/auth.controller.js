@@ -199,7 +199,7 @@ export const logout = (req, res) => {
 export const updateProfilePic = async (req, res) => {
   try {
     //grab
-    const { profilePic , userId } = req.body;
+    const { profilePic, userId } = req.body;
 
     if (!profilePic) {
       res.status(400).json({ message: "Profile pic is required" });
@@ -208,7 +208,6 @@ export const updateProfilePic = async (req, res) => {
     //upload to cloudinary
     const uploadRes = await cloudinary.uploader.upload(profilePic);
 
-
     //update user in database
     const updatedUser = await User.findByIdAndUpdate(
       userId,
@@ -216,9 +215,9 @@ export const updateProfilePic = async (req, res) => {
       { new: true }
     ); //secure_url given by clodinary
     //on new : true gives updated object
-    console.log('fgfggg')
-    console.log(updatedUser)
-    return res.status(200).json({message: "Updated user profile picture" });
+    console.log("fgfggg");
+    console.log(updatedUser);
+    return res.status(200).json({ message: "Updated user profile picture" });
   } catch (err) {
     console.log(`Error in Update Profile Pic : ${err.message}`);
     res.status(500).json({ message: `Internal Server error ${err}` });
@@ -229,47 +228,43 @@ export const updateUserData = async (req, res) => {
   try {
     // Extract the fields from the request body
     const {
+      name,
+      role,
       gender,
       age,
       expertise,
-      ongoing_projects,
-      institution,
+      institutions,
       interests,
       social_links,
+      visibility,
     } = req.body;
 
     const userId = req.user._id; // Assuming user ID is stored in the request user object
 
+    if (!name.trim()) {
+      return res.status(400).json({ message: "Name cannot be empty" });
+    }
     if (!gender.trim()) {
       return res.status(400).json({ message: "Gender cannot be empty" });
+    }
+    if (!role.trim()) {
+      return res.status(400).json({ message: "Role cannot be empty" });
     }
     if (!age || age <= 0) {
       return res.status(400).json({ message: "Age must be a valid number" });
     }
-    if (!expertise.trim()) {
-      return res.status(400).json({ message: "Expertise cannot be empty" });
-    }
-    if (!ongoing_projects.trim()) {
-      return res
-        .status(400)
-        .json({ message: "Ongoing projects cannot be empty" });
-    }
-    if (!institution.trim()) {
-      return res.status(400).json({ message: "Institution cannot be empty" });
-    }
-    if (!interests.trim()) {
-      return res.status(400).json({ message: "Interests cannot be empty" });
-    }
 
     // Prepare the update object
     const updateData = {
+      name,
+      role,
       gender,
       age,
       expertise,
-      ongoing_projects,
-      institution,
+      institutions,
       interests,
-      social_links: social_links || [], // Default to empty array if not provided // Default to true if not provided
+      social_links,
+      visibility, // Default to empty array if not provided // Default to true if not provided
     };
 
     // Update the user data
