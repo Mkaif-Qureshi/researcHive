@@ -1,11 +1,36 @@
-// src/components/PaperCard.jsx
-
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Book, Users, FileText, ExternalLink } from 'lucide-react';
+import { Book, Users, FileText, ExternalLink, Save } from 'lucide-react';
+import { backend_url } from '../../backendUrl';
+import { toast } from 'sonner';
 
 const PaperCard = ({ paper, onViewDetails }) => {
+  const handleSave = async () => {
+    try {
+      // Sending the complete paper object to the backend to be saved in the user's saved_papers array
+      const response = await fetch(`${backend_url}/api/auth/update-saved-papers`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ paper }),
+      });
+
+      let data = await response.json();
+
+      if (response.ok) {
+        toast.success('Paper saved successfully');
+      } else {
+        toast.success(data.message || 'Error saving the paper');
+      }
+    } catch (err) {
+      console.error('Error while saving the paper:', err);
+      toast.success(err.message || 'Error saving the paper');
+    }
+  };
+
   return (
     <Card className="w-full hover:shadow-md transition-shadow">
       <CardHeader>
@@ -67,6 +92,11 @@ const PaperCard = ({ paper, onViewDetails }) => {
             </a>
           </Button>
         )}
+        {/* Save Button */}
+        <Button variant="outline" size="sm" onClick={handleSave}>
+          <Save className="mr-2 h-4 w-4" />
+          Save
+        </Button>
       </CardFooter>
     </Card>
   );
