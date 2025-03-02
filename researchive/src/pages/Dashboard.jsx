@@ -1,21 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { usePaperDetail } from '../hooks/userPaperDetail.js';
+import { useSearchPapers } from '../hooks/useSearchPapers';
+import { usePaperDetail } from '../hooks/usePaperDetail';
 import SearchBar from '../components/SearchBar';
 import FilterPanel from '../components/FilterPanel';
 import PaperCard from '../components/PaperCard';
 import PaperDetail from '../components/PaperDetail';
 import CollaborationPanel from '../components/CollaborationPanel';
 import MyPapersPanel from '../components/MyPapersPanel';
+import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useSearchPapers } from '@/hooks/userSearchPapers.js';
+import { backend_url } from '../../backendUrl';
+import { Skeleton } from '@/components/ui/skeleton';
+import { TrendingUp, Clock, Star, FileText } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+
+const DEFAULT_SEARCH_QUERY = "ai ml";
 
 const Dashboard = () => {
   const [selectedPaperId, setSelectedPaperId] = useState(null);
   const {
     papers,
     loading: searchLoading,
-    error: searchError, 
-    searchPapers,  
+    error: searchError,
+    searchPapers,
     setQuery,
     setFilters
   } = useSearchPapers();
@@ -27,7 +34,11 @@ const Dashboard = () => {
     fetchPaperDetails
   } = usePaperDetail();
 
-  // Fetch paper details when selectedPaperId changes
+  // Fetch initial papers when component mounts
+  useEffect(() => {
+    searchPapers(DEFAULT_SEARCH_QUERY);
+  }, []);
+
   useEffect(() => {
     if (selectedPaperId) {
       fetchPaperDetails(selectedPaperId);
@@ -41,8 +52,7 @@ const Dashboard = () => {
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
-    // Re-run the search with current query and new filters
-    searchPapers(null, newFilters);
+    searchPapers(DEFAULT_SEARCH_QUERY, newFilters);
   };
 
   const handleViewDetails = (paperId) => {
@@ -52,6 +62,25 @@ const Dashboard = () => {
   const handleBackToSearch = () => {
     setSelectedPaperId(null);
   };
+
+  const PaperStats = () => (
+    <div className="grid grid-cols-3 gap-4 mb-6">
+      <Card className="p-4 flex items-center gap-3">
+        <Star className="h-5 w-5 text-primary" />
+        <div>
+          <h3 className="font-medium">Results</h3>
+          <p className="text-sm text-muted-foreground">{papers?.length || 0} papers found</p>
+        </div>
+      </Card>
+      <Card className="p-4 flex items-center gap-3">
+        <FileText className="h-5 w-5 text-primary" />
+        <div>
+          <h3 className="font-medium">Filter</h3>
+          <p className="text-sm text-muted-foreground">Use sidebar to refine</p>
+        </div>
+      </Card>
+    </div>
+  );
 
   return (
     <div className="container mx-auto my-7 p-4">
@@ -80,8 +109,9 @@ const Dashboard = () => {
             {/* Main Content Area */}
             <div className="col-span-7">
               <div className="mb-4">
-                <SearchBar onSearch={handleSearch} />
+                <SearchBar onSearch={handleSearch} defaultValue={DEFAULT_SEARCH_QUERY} />
               </div>
+
 
               {searchError && (
                 <div className="text-red-500 mb-4">
@@ -90,12 +120,14 @@ const Dashboard = () => {
               )}
 
               {searchLoading ? (
-                <div className="flex justify-center items-center h-64">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-                </div>
-              ) : (
                 <div className="space-y-4">
-                  {papers?.map((paper) => (
+                  {[1, 2, 3].map((i) => (
+                    <Skeleton key={i} className="h-[200px] w-full" />
+                  ))}
+                </div>
+              ) : papers?.length > 0 ? (
+                <div className="space-y-4">
+                  {papers.map((paper) => (
                     <PaperCard
                       key={paper.paperId}
                       paper={paper}
@@ -103,6 +135,10 @@ const Dashboard = () => {
                       isSelected={selectedPaperId === paper.paperId}
                     />
                   ))}
+                </div>
+              ) : (
+                <div className="text-center text-muted-foreground py-8">
+                  No papers found. Try adjusting your search query or filters.
                 </div>
               )}
             </div>
@@ -118,9 +154,7 @@ const Dashboard = () => {
                 <TabsContent value="details">
                   {selectedPaperId && (
                     detailLoading ? (
-                      <div className="flex justify-center items-center h-64">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-                      </div>
+                      <Skeleton className="h-[500px] w-full" />
                     ) : detailError ? (
                       <div className="text-red-500 p-4">
                         Error loading paper details: {detailError}
