@@ -69,7 +69,7 @@ function App() {
 
   return (
     <div className="flex flex-col h-screen bg-gray-50">
-      <header className="bg-black text-white p-4 shadow-md">
+      <header className="bg-black text-white p-8.5 shadow-md">
         <div className="container mx-auto flex items-center">
           <FileText className="mr-2" size={24} />
           <h1 className="text-xl font-bold">PDF Chat Assistant</h1>
