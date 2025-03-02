@@ -1,18 +1,46 @@
-// src/components/PaperCard.jsx
-
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Book, Users, FileText, ExternalLink, Layout } from 'lucide-react';
+import { Book, Users, FileText, ExternalLink, Layout, Save } from 'lucide-react';
 import { toast } from 'sonner';
+import { backend_url } from '../../backendUrl';
+
+
+
 
 const PaperCard = ({ paper, onViewDetails, onAddToKanban }) => {
+
   const handleAddToKanban = () => {
     onAddToKanban?.(paper);
     toast.success('Added to Kanban Board', {
       description: `"${paper.title}" has been added to your Kanban board.`,
       duration: 3000,
     });
+  };
+
+  const handleSave = async () => {
+    try {
+      // Sending the complete paper object to the backend to be saved in the user's saved_papers array
+      const response = await fetch(`${backend_url}/api/auth/update-saved-papers`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ paper }),
+      });
+
+      let data = await response.json();
+
+      if (response.ok) {
+        toast.success('Paper saved successfully');
+      } else {
+        toast.error(data.message || 'Error saving the paper');
+      }
+    } catch (err) {
+      console.error('Error while saving the paper:', err);
+      toast.error(err.message || 'Error saving the paper');
+    }
   };
 
   return (
@@ -63,30 +91,49 @@ const PaperCard = ({ paper, onViewDetails, onAddToKanban }) => {
           </div>
         )}
       </CardContent>
-      <CardFooter className="flex justify-between gap-2">
-        <Button variant="outline" size="sm" onClick={() => onViewDetails(paper.paperId)}>
-          <FileText className="mr-2 h-4 w-4" />
-          Details
-        </Button>
-        <Button
-  variant="secondary"
-  size="sm"
-  onClick={handleAddToKanban}
-  className="hover:bg-primary/20 transition-colors active:scale-95"
->
-  <Layout className="mr-2 h-4 w-4" />
-  Add to Kanban
-</Button>
+      <CardFooter className="flex justify-between gap-4 items-center">
+  <Button
+    variant="outline"
+    size="sm"
+    onClick={() => onViewDetails(paper.paperId)}
+    className="flex items-center justify-center gap-2"
+  >
+    <FileText className="h-4 w-4" />
+    Details
+  </Button>
+  <Button
+    variant="outline"  // Changed from secondary to outline for consistency
+    size="sm"
+    onClick={handleAddToKanban}
+    className="flex items-center justify-center gap-2 hover:bg-primary/20 transition-colors active:scale-95"
+  >
+    <Layout className="h-4 w-4" />
+    Add to Kanban
+  </Button>
+  {paper.url && (
+    <Button
+      variant="outline"
+      size="sm"
+      asChild
+      className="flex items-center justify-center gap-2 hover:bg-primary/20 transition-colors active:scale-95"
+    >
+      <a href={paper.url} target="_blank" rel="noopener noreferrer">
+        <ExternalLink className="h-4 w-4" />
+        View
+      </a>
+    </Button>
+  )}
+  <Button
+    variant="outline"
+    size="sm"
+    onClick={handleSave}
+    className="flex items-center justify-center gap-2 hover:bg-primary/20 transition-colors active:scale-95"
+  >
+    <Save className="h-4 w-4" />
+    Save
+  </Button>
+</CardFooter>
 
-        {paper.url && (
-          <Button variant="ghost" size="sm" asChild>
-            <a href={paper.url} target="_blank" rel="noopener noreferrer">
-              <ExternalLink className="mr-2 h-4 w-4" />
-              View
-            </a>
-          </Button>
-        )}
-      </CardFooter>
     </Card>
   );
 };

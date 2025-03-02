@@ -1,5 +1,5 @@
-import React from 'react';
-import { Mail, Phone, BookOpen, Layers, EyeIcon, Calendar, Clock, Linkedin, Twitter, Github, Globe } from 'lucide-react';
+import React, { useState } from 'react';
+import { Mail, Phone, MapPin, Linkedin, Twitter, Github, BookOpen, Layers, Edit, Save, X, EyeIcon, Calendar, Clock, Globe } from 'lucide-react';
 import { ResponsiveContainer, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar } from 'recharts';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -8,9 +8,22 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
-  const { currentUser , logout } = useAuth();
+  const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
-  const [profileData, setProfileData] = React.useState({
+  const [isEditing, setIsEditing] = useState(false);
+  const [editField, setEditField] = useState('');
+  
+  const [profileData, setProfileData] = useState({
+    address: "Stanford, CA, USA",
+    social_links: {
+      linkedin: "https://linkedin.com/in/kaifahmed",
+      twitter: "https://twitter.com/kaifahmed",
+      github: "https://github.com/kaifahmed",
+    },
+    ongoing_projects: [
+      { name: "AI-Powered Research Collaboration Platform", description: "An AI-driven platform integrating knowledge graphs, expert matching, and real-time searching agents to enhance research collaboration." },
+      { name: "Blockchain-Based Research Integrity & Verification", description: "A decentralized system ensuring research transparency, authorship verification, and data integrity using blockchain technology." },
+    ],
     timeSpentData: [
       { name: "Project 1", hours: 40 },
       { name: "Project 2", hours: 30 },
@@ -18,6 +31,7 @@ const Profile = () => {
       { name: "Project 4", hours: 50 },
       { name: "Project 5", hours: 20 },
     ],
+    totalPublications: 15,
   });
 
   // Format date function
@@ -29,6 +43,10 @@ const Profile = () => {
       month: 'long',
       day: 'numeric',
     });
+  };
+
+  const handleChange = (field, value) => {
+    setProfileData(prev => ({ ...prev, [field]: value }));
   };
 
   // Get social icon based on URL
@@ -46,17 +64,38 @@ const Profile = () => {
     }
   };
 
-  if (!currentUser) {
-    return <div className="p-6">Loading profile...</div>;
-  }
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileData(prev => ({ ...prev, avatar: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSave = () => {
+    setIsEditing(false);
+    setEditField('');
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setEditField('');
+  };
 
   const handlelogout = () => {
     logout();
-      navigate('/login');
-  }
+    navigate('/login');
+  };
 
   const handlegotoUpdate = () => {
     navigate('/update-profile');
+  };
+
+  if (!currentUser) {
+    return <div className="p-6">Loading profile...</div>;
   }
 
   return (
@@ -129,17 +168,6 @@ const Profile = () => {
                       {Array.isArray(currentUser.institutions) 
                         ? currentUser.institutions.join(", ") 
                         : currentUser.institutions}
-                    </span>
-                  </div>
-                )}
-
-                {currentUser.expertise && currentUser.expertise.length > 0 && (
-                  <div className="flex items-center text-gray-600">
-                    <Layers className="w-4 h-4 mr-2 text-blue-500" />
-                    <span className="text-sm">
-                      {Array.isArray(currentUser.expertise) 
-                        ? currentUser.expertise.join(", ") 
-                        : currentUser.expertise}
                     </span>
                   </div>
                 )}

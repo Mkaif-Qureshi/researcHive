@@ -1,5 +1,5 @@
 import express from "express";
-import {checkAuth, loginByEmail, loginByMobile, logout, signup, updateProfilePic, updateUserData } from "../controllers/auth.controller.js";
+import {checkAuth, loginByEmail, loginByMobile, logout, signup, updateProfilePic, updateSavedPapers, updateUserData } from "../controllers/auth.controller.js";
 import { protectRoute } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
@@ -20,6 +20,7 @@ router.put("/update-profile-pic" , updateProfilePic) // only authenticated can d
 
 //update other data
 router.put("/update-user-data" , protectRoute , updateUserData)
+router.put("/update-saved-papers", protectRoute, updateSavedPapers);
 
 //last check authorized or not?
 router.get("/check" , protectRoute , checkAuth)

@@ -73,9 +73,9 @@ const userSchema = new mongoose.Schema(
       type : [String],
       default : [],
     },
-    saved_papers :{
-      type : [String],
-      default : [],
+    saved_papers: {
+      type: [mongoose.Schema.Types.Mixed], // Store arbitrary objects in saved_papers array
+      default: [],
     },
     visibility: {
       type: Boolean,

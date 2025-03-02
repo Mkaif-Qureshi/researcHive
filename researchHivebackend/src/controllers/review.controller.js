@@ -60,11 +60,29 @@ export const getReviewsByPaper = async (req, res) => {
     const reviews = await Review.find({ paperId }).populate(
       "userId",
       "name profile_pic role"
-    ); // Select only required fields
+    );
 
-    res.status(200).json({ success: true, reviews });
+    // Map over reviews to modify the response structure
+    const modifiedReviews = reviews.map(review => {
+      // Create a new object with user details flattened
+      const { userId, ...reviewDetails } = review.toObject();
+      
+      return {
+        ...reviewDetails,
+        user_id: userId._id, // Extract and assign user_id outside of userId object
+        user_name: userId.name,
+        user_profile_pic: userId.profile_pic,
+        user_role: userId.role
+      };
+    });
+
+    res.status(200).json({ success: true, reviews: modifiedReviews });
   } catch (error) {
     console.error("Error fetching reviews:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+
+
+

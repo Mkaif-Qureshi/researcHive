@@ -10,7 +10,9 @@ import Profile from "./pages/Profile";
 import ResearchGraph from "./pages/ResearchGraph";
 import Chat from "./pages/Chat";
 import Meet from "./pages/Meet";
+import SavedPages from "./pages/SavedPages"; // Create this page
 import UpdateProfile from "./pages/UpdateProfile";
+import Collabrator from "./pages/Collaborator";
 
 const App = () => {
   return (
@@ -18,17 +20,19 @@ const App = () => {
       <Toaster />
       <Router>
         <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/chat" element={<Chat />} />
-            <Route path="/research-graph" element={<ResearchGraph />} />
-            <Route path="/meet" element={<Meet />} />
-            <Route path="/update-profile" element={<UpdateProfile />} />
-          </Route>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/research-graph" element={<ResearchGraph />} />
+          <Route path="/meet" element={<Meet />} />
+          <Route path="/update-profile" element={<UpdateProfile />} />
+          <Route path="/savedpages" element={<SavedPages />} />
+          <Route path="/collabrator" element={<Collabrator />} />
+        </Route>
         </Routes>
       </Router>
     </AuthProvider>

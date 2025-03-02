@@ -6,62 +6,74 @@ import { Label } from '@/components/ui/label';
 import { Star, ThumbsUp } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-import { backend_url } from '../../backendUrl';
+import { useAuth } from '@/context/AuthContext';
 
-const ReviewCard = ({ review, isUserReview = false }) => {
+const ReviewCard = ({ review }) => {
+    const [isUserReview , setIsUserReview] = useState(false);
+    const { currentUser } = useAuth();
     const [showFullComment, setShowFullComment] = useState(false);
+
     const shouldTruncate = review.comment?.length > 300;
     const displayedComment = shouldTruncate && !showFullComment
         ? `${review.comment.slice(0, 300)}...`
         : review.comment;
 
+    useEffect(() => {
+        if(currentUser._id === review.user_id) {
+            setIsUserReview(true);
+        }
+    }, [currentUser._id, review.user_id]); // Run effect when currentUser or review changes
+
     return (
-        <Card className={isUserReview ? 'border-primary' : ''}>
+        <Card className='w-120'>
             <CardHeader>
                 <div className="flex justify-between items-start">
-                    <div>
-                        <div className="flex items-center gap-2">
-                            <CardTitle className="text-base">
-                                {isUserReview ? 'Your Review' : review.userId.name}
-                            </CardTitle>
-                            {isUserReview && (
-                                <Badge variant="outline" className="text-primary">You</Badge>
-                            )}
+                    <div className="flex items-center gap-4">
+                        {/* Display reviewer avatar */}
+                        <img src={review.user_profile_pic} alt={review.user_name} className="h-12 w-12 rounded-full" />
+                        <div>
+                            <div className="flex items-center gap-2">
+                                <CardTitle className="text-base">
+                                    {isUserReview ? 'Your Review' : review.user_name}
+                                </CardTitle>
+                                {isUserReview && (
+                                    <Badge variant="outline" className="text-primary">You</Badge>
+                                )}
+                            </div>
+                            <CardDescription>{review.role}</CardDescription>
+                            <CardDescription>{new Date(review.createdAt).toLocaleDateString()}</CardDescription>
                         </div>
-                        <CardDescription>{new Date(review.createdAt).toLocaleDateString()}</CardDescription>
                     </div>
                 </div>
             </CardHeader>
-            {review.status === 'completed' && (
-                <CardContent className="space-y-4">
-                    <div className="flex items-center gap-4">
-                        <div className="flex items-center">
-                            <Star className="h-4 w-4 text-yellow-500 mr-1" />
-                            <span className="font-medium">{review.rating}/5</span>
-                        </div>
-                        <div className="flex items-center text-muted-foreground">
-                            <ThumbsUp className="h-4 w-4 mr-1" />
-                            <span>{review.helpful || 0}</span>
-                        </div>
+            <CardContent className="space-y-4">
+                <div className="flex items-center gap-4">
+                    <div className="flex items-center">
+                        <Star className="h-4 w-4 text-yellow-500 mr-1" />
+                        <span className="font-medium">{review.rating}/5</span>
                     </div>
+                    <div className="flex items-center text-muted-foreground">
+                        <ThumbsUp className="h-4 w-4 mr-1" />
+                        <span>{review.helpful || 0}</span>
+                    </div>
+                </div>
 
-                    <div>
-                        <Label>Comments</Label>
-                        <p className="mt-1 text-sm text-muted-foreground">
-                            {displayedComment}
-                        </p>
-                        {shouldTruncate && (
-                            <Button
-                                variant="link"
-                                className="px-0 text-primary"
-                                onClick={() => setShowFullComment(!showFullComment)}
-                            >
-                                {showFullComment ? 'Show less' : 'Read more'}
-                            </Button>
-                        )}
-                    </div>
-                </CardContent>
-            )}
+                <div>
+                    <Label>Comments</Label>
+                    <p className="mt-1 text-sm">
+                        {displayedComment}
+                    </p>
+                    {shouldTruncate && (
+                        <Button
+                            variant="link"
+                            className="px-0 text-primary"
+                            onClick={() => setShowFullComment(!showFullComment)}
+                        >
+                            {showFullComment ? 'Show less' : 'Read more'}
+                        </Button>
+                    )}
+                </div>
+            </CardContent>
             {isUserReview && review.status === 'completed' && (
                 <CardFooter>
                     <Button variant="outline" size="sm">Edit Review</Button>
@@ -71,35 +83,10 @@ const ReviewCard = ({ review, isUserReview = false }) => {
     );
 };
 
-const PaperReviews = ({ paperId, userReview, onEditReview }) => {
-    const [reviews, setReviews] = useState([]);
-    const [loading, setLoading] = useState(true);
+
+const PaperReviews = ({ paper, userReview , reviews }) => {
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const fetchReviews = async () => {
-            try {
-                const response = await fetch(`${backend_url}/api/reviews/${paperId}`);
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success) {
-                        setReviews(data.reviews);
-                    } else {
-                        setError('Failed to fetch reviews');
-                    }
-                } else {
-                    setError('Failed to fetch reviews');
-                }
-            } catch (error) {
-                setError('Error fetching reviews');
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchReviews();
-    }, [paperId]);
 
     return (
         <div className="space-y-6">
