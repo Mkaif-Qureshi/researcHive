@@ -9,7 +9,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Progress } from '@/components/ui/progress';
 import { PlusCircle, Upload, FileText, Users, Calendar, Book, Star, Clock, CheckCircle, XCircle, Circle } from 'lucide-react';
-import { usePeerReview } from '@/hooks/userPeerReview';
+import { usePeerReview } from '@/hooks/usePeerReview';
 
 const ReviewDialog = ({ paper, isOpen, onClose }) => {
     // Mock reviews data

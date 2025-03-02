@@ -1,6 +1,7 @@
 // src/components/CollaborationPanel.jsx
 
 import { useState } from 'react';
+import { usePeerReview } from '../hooks/usePeerReview';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -9,12 +10,15 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { AlertCircle, CheckCircle2, Users, Star, Send } from 'lucide-react';
-import { usePeerReview } from '@/hooks/userPeerReview';
+import PaperReviews from './PaperReviews';
 
 const CollaborationPanel = ({ paper }) => {
   const { loading, error, findReviewers, checkConflictOfInterest } = usePeerReview();
   const [reviewText, setReviewText] = useState('');
   const [reviewScore, setReviewScore] = useState(0);
+
+  // Mock user's review data (in a real app, this would come from an API)
+  const userReview = null; // Set to null to simulate no review submitted yet
 
   if (!paper) {
     return (
@@ -37,51 +41,64 @@ const CollaborationPanel = ({ paper }) => {
           <TabsTrigger value="discuss">Discuss</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="review">
-          <Card>
-            <CardHeader>
-              <CardTitle>Review Paper</CardTitle>
-              <CardDescription>
-                Provide your expert review for this paper
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label>Review Comments</Label>
-                <Textarea
-                  placeholder="Enter your detailed review..."
-                  value={reviewText}
-                  onChange={(e) => setReviewText(e.target.value)}
-                  className="min-h-[200px]"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label>Score (1-5)</Label>
-                <div className="flex space-x-2">
-                  {[1, 2, 3, 4, 5].map((score) => (
-                    <Button
-                      key={score}
-                      variant={reviewScore === score ? 'default' : 'outline'}
-                      onClick={() => setReviewScore(score)}
-                      className="w-10 h-10 p-0"
-                    >
-                      {score}
-                    </Button>
-                  ))}
+        <TabsContent value="review" className="space-y-6">
+          {/* Review Submission Form */}
+          {!userReview && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Submit Your Review</CardTitle>
+                <CardDescription>
+                  Provide your expert review for this paper
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Review Comments</Label>
+                  <Textarea
+                    placeholder="Enter your detailed review..."
+                    value={reviewText}
+                    onChange={(e) => setReviewText(e.target.value)}
+                    className="min-h-[200px]"
+                  />
                 </div>
-              </div>
 
-              <Button
-                className="w-full"
-                onClick={handleSubmitReview}
-                disabled={!reviewText || !reviewScore}
-              >
-                <Send className="mr-2 h-4 w-4" />
-                Submit Review
-              </Button>
-            </CardContent>
-          </Card>
+                <div className="space-y-2">
+                  <Label>Score (1-5)</Label>
+                  <div className="flex space-x-2">
+                    {[1, 2, 3, 4, 5].map((score) => (
+                      <Button
+                        key={score}
+                        variant={reviewScore === score ? 'default' : 'outline'}
+                        onClick={() => setReviewScore(score)}
+                        className="w-10 h-10 p-0"
+                      >
+                        {score}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+
+                <Button
+                  className="w-full"
+                  onClick={handleSubmitReview}
+                  disabled={!reviewText || !reviewScore}
+                >
+                  <Send className="mr-2 h-4 w-4" />
+                  Submit Review
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* All Reviews Section */}
+          <PaperReviews
+            paper={paper}
+            userReview={userReview}
+            onEditReview={() => {
+              // Handle edit review
+              console.log('Edit review clicked');
+            }}
+          />
         </TabsContent>
 
         <TabsContent value="discuss">

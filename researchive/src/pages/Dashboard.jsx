@@ -14,8 +14,8 @@ const Dashboard = () => {
   const {
     papers,
     loading: searchLoading,
-    error: searchError,
-    searchPapers,
+    error: searchError, 
+    searchPapers,  
     setQuery,
     setFilters
   } = useSearchPapers();
