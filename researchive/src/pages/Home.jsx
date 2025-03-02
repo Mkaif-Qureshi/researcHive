@@ -4,10 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { FiSearch, FiBookOpen, FiUsers, FiFileText, FiAward } from 'react-icons/fi';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const { currentUser } = useAuth();
   const [showVideo, setShowVideo] = useState(false);
+  const navigate = useNavigate();
   
   useEffect(() => {
     // Check if this is initial load or refresh
@@ -27,6 +29,16 @@ const Home = () => {
       return () => clearTimeout(timer);
     }
   }, []);
+
+  const handleSearchClick = () =>{
+    navigate('/dashboard')
+  }
+  const handleCollaboratorClick = () =>{
+    navigate('/profile')
+  }
+  const handlePaperClick = () =>{
+    navigate('/dashboard')
+  }
   
   // Listen for page refresh or login event
   useEffect(() => {
@@ -69,7 +81,7 @@ const Home = () => {
           setShowVideo(false);
           // Mark that user has seen welcome in this session
           localStorage.setItem('hasSeenWelcome', 'true');
-        }, 2000);
+        }, 1000);
         
         return () => clearTimeout(timer);
       }
@@ -85,7 +97,7 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-white text-black">
       {showVideo ? (
-        <div className="relative w-full h-screen flex justify-center items-center bg-gray-100">
+        <div className="relative w-full h-screen flex justify-center items-center bg-white">
           <video 
             className="w-full h-full object-cover opacity-80"
             autoPlay 
@@ -249,17 +261,17 @@ const Home = () => {
                 </CardHeader>
                 <CardContent className="p-6">
                   <div className="space-y-3">
-                    <Button className="w-full bg-gray-800 text-white py-6 flex items-center justify-center rounded-xl shadow-md">
+                    <Button className="w-full bg-gray-800 text-white py-6 flex items-center justify-center rounded-xl shadow-md" onClick={handleSearchClick}>
                       <FiSearch className="mr-2" size={18} />
                       Search Research Papers
                     </Button>
                     
-                    <Button className="w-full bg-gray-800 hover:bg-gray-700 text-white py-6 flex items-center justify-center rounded-xl shadow-md">
+                    <Button className="w-full bg-gray-800 hover:bg-gray-700 text-white py-6 flex items-center justify-center rounded-xl shadow-md" onClick={handleCollaboratorClick}>
                       <FiUsers className="mr-2" size={18} />
                       Find Collaborators
                     </Button>
                     
-                    <Button className="w-full bg-gray-800 hover:bg-gray-700 text-white py-6 flex items-center justify-center rounded-xl shadow-md">
+                    <Button className="w-full bg-gray-800 hover:bg-gray-700 text-white py-6 flex items-center justify-center rounded-xl shadow-md"onClick={handlePaperClick}>
                       <FiFileText className="mr-2" size={18} />
                       Upload New Paper
                     </Button>
