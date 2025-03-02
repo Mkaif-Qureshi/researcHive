@@ -60,15 +60,7 @@ const CollaborativeEditor = ({ paper }) => {
                             Join Session
                         </Button>
 
-                        <div className="text-sm text-muted-foreground">
-                            <p className="font-medium">Testing Instructions:</p>
-                            <ol className="list-decimal list-inside space-y-1 mt-2">
-                                <li>Open this page in another browser window</li>
-                                <li>Enter a different name in each window</li>
-                                <li>Join the session in both windows</li>
-                                <li>Start collaborating in real-time!</li>
-                            </ol>
-                        </div>
+                       
                     </div>
                 </CardContent>
             </Card>
