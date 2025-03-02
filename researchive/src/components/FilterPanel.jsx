@@ -27,7 +27,7 @@ const FilterPanel = ({ filters, onApplyFilters }) => {
   ];
 
   const handleFieldToggle = (field) => {
-    setSelectedFields(prev => 
+    setSelectedFields(prev =>
       prev.includes(field)
         ? prev.filter(f => f !== field)
         : [...prev, field]
@@ -44,51 +44,54 @@ const FilterPanel = ({ filters, onApplyFilters }) => {
 
   return (
     <Card className="w-full">
-      <CardHeader>
-        <CardTitle>Filter Results</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="year-range">Publication Year Range</Label>
-          <Input
-            id="year-range"
-            placeholder="e.g., 2020-2023"
-            value={yearRange}
-            onChange={(e) => setYearRange(e.target.value)}
-          />
-          <p className="text-sm text-muted-foreground">Format: YYYY or YYYY-YYYY</p>
-        </div>
+  <CardHeader>
+    <CardTitle>Filter Results</CardTitle>
+  </CardHeader>
+  <CardContent className="space-y-4">
+    <div className="space-y-2">
+      <Label htmlFor="year-range">Publication Year Range</Label>
+      <Input
+        id="year-range"
+        placeholder="e.g., 2020-2023"
+        value={yearRange}
+        onChange={(e) => setYearRange(e.target.value)}
+      />
+      <p className="text-sm text-muted-foreground">Format: YYYY or YYYY-YYYY</p>
+    </div>
 
-        <div className="flex items-center space-x-2">
-          <Checkbox
-            id="open-access"
-            checked={openAccessOnly}
-            onCheckedChange={setOpenAccessOnly}
-          />
-          <Label htmlFor="open-access">Open Access Papers Only</Label>
-        </div>
+    <div className="flex items-center space-x-2">
+      <Checkbox
+        id="open-access"
+        checked={openAccessOnly}
+        onCheckedChange={setOpenAccessOnly}
+      />
+      <Label htmlFor="open-access">Open Access Papers Only</Label>
+    </div>
 
-        <div className="space-y-2">
-          <Label>Fields of Study</Label>
-          <div className="grid grid-cols-2 gap-2">
-            {fieldsOfStudy.map(field => (
-              <div key={field} className="flex items-center space-x-2">
-                <Checkbox
-                  id={`field-${field}`}
-                  checked={selectedFields.includes(field)}
-                  onCheckedChange={() => handleFieldToggle(field)}
-                />
-                <Label htmlFor={`field-${field}`}>{field}</Label>
-              </div>
-            ))}
+    <div className="space-y-2">
+      <Label className="text-sm">Fields of Study</Label>
+      <div className="grid grid-cols-2 gap-2">
+        {fieldsOfStudy.map(field => (
+          <div key={field} className="flex items-center space-x-2">
+            <Checkbox
+              id={`field-${field}`}
+              checked={selectedFields.includes(field)}
+              onCheckedChange={() => handleFieldToggle(field)}
+              className="flex-shrink-0"
+            />
+            <Label htmlFor={`field-${field}`} className="text-xs">
+              {field}
+            </Label>
           </div>
-        </div>
+        ))}
+      </div>
+    </div>
 
-        <Button onClick={handleApplyFilters} className="w-full">
-          Apply Filters
-        </Button>
-      </CardContent>
-    </Card>
+    <Button onClick={handleApplyFilters} className="w-full">
+      Apply Filters
+    </Button>
+  </CardContent>
+</Card>
   );
 };
 
