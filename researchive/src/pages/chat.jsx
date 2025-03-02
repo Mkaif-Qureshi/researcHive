@@ -1,142 +1,490 @@
-import React, { useState, useCallback } from 'react';
-import { useDropzone } from 'react-dropzone';
-import { FileText, Upload, Send, FileCheck, AlertTriangle, Lightbulb } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import axios from 'axios';
+import ReactMarkdown from 'react-markdown';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Loader2, Upload, FileText, BrainCircuit, Lightbulb, MessageSquare, Send, Download, RefreshCw } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
-function App() {
-  const [message, setMessage] = useState('');
-  const [chat, setChat] = useState([]);
-  const [file, setFile] = useState(null);
-  const [isDragging, setIsDragging] = useState(false);
+// API base URL - can be configured based on environment
+const API_BASE_URL = 'http://localhost:5000/api';
 
-  const onDrop = useCallback((acceptedFiles) => {
-    if (acceptedFiles.length > 0) {
-      const selectedFile = acceptedFiles[0];
-      if (selectedFile.type === 'application/pdf') {
-        setFile(selectedFile);
-      } else {
-        alert('Please upload a PDF file');
-      }
-    }
+const ResearchAssistant = () => {
+  // State variables
+  const [isLoading, setIsLoading] = useState(false);
+  const [activeOperation, setActiveOperation] = useState(null);
+  const [pdfUploaded, setPdfUploaded] = useState(false);
+  const [pdfName, setPdfName] = useState('');
+  const [uploadStatus, setUploadStatus] = useState({ message: '', isError: false });
+  const [summary, setSummary] = useState('');
+  const [suggestions, setSuggestions] = useState('');
+  const [customQuery, setCustomQuery] = useState('');
+  const [chatQuery, setChatQuery] = useState('');
+  const [chatHistory, setChatHistory] = useState([]);
+  const fileInputRef = useRef(null);
+  const chatContainerRef = useRef(null);
+
+  // Check for existing PDF on load
+  useEffect(() => {
+    // You could implement an endpoint to check if a PDF is already processed
+    // For now, we'll just reset the state
+    setPdfUploaded(false);
+    setPdfName('');
+    setSummary('');
+    setSuggestions('');
+    setChatHistory([]);
   }, []);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: { 'application/pdf': ['.pdf'] },
-    multiple: false,
-  });
-
-  const handleSendMessage = () => {
-    if (message.trim() === '' && !file) return;
-    
-    let newMessage = message;
-    if (file) {
-      newMessage += ` [Attached: ${file.name}]`;
+  // Auto-scroll chat to bottom
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
-    
-    setChat([...chat, { type: 'user', content: newMessage }]);
-    setMessage('');
-    setFile(null);
-    
-    setTimeout(() => {
-      setChat((prev) => [...prev, { 
-        type: 'bot', 
-        content: 'I received your message. How can I help you with this document?' 
-      }]);
-    }, 1000);
+  }, [chatHistory]);
+
+  // Handle file upload
+  const handleFileUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('pdf', file);
+
+    setIsLoading(true);
+    setActiveOperation('upload');
+    setUploadStatus({ message: '', isError: false });
+
+    try {
+      const response = await axios.post(`${API_BASE_URL}/chat/refresh`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      setUploadStatus({
+        message: response.data.message || 'PDF uploaded successfully!',
+        isError: false
+      });
+      setPdfUploaded(true);
+      setPdfName(file.name);
+
+      // Reset other states when new PDF is uploaded
+      setSummary('');
+      setSuggestions('');
+      setChatHistory([]);
+    } catch (error) {
+      console.error('Error uploading PDF:', error);
+      setUploadStatus({
+        message: error.response?.data?.error || 'Failed to upload PDF. Please try again.',
+        isError: true
+      });
+      setPdfUploaded(false);
+    } finally {
+      setIsLoading(false);
+      setActiveOperation(null);
+    }
   };
 
-  const handleFeatureClick = (feature) => {
-    if (!file) {
-      setChat([...chat, { type: 'bot', content: 'Please upload a PDF document first to use this feature.' }]);
+  // Request summary
+  const handleGetSummary = async () => {
+    if (!pdfUploaded) {
+      setUploadStatus({
+        message: 'Please upload a PDF first.',
+        isError: true
+      });
       return;
     }
-    
-    let botResponse = '';
-    switch (feature) {
-      case 'summarize':
-        botResponse = `I'll summarize the content of "${file.name}" for you. This may take a moment...`;
-        break;
-      case 'plagiarism':
-        botResponse = `I'll check "${file.name}" for potential plagiarism. This may take a moment...`;
-        break;
-      case 'suggestion':
-        botResponse = `I'll provide suggestions for improving "${file.name}". This may take a moment...`;
-        break;
+
+    setIsLoading(true);
+    setActiveOperation('summary');
+
+    try {
+      const response = await axios.post(`${API_BASE_URL}/chat/summarize`, {
+        query: customQuery || 'Summarize the research paper'
+      });
+      setSummary(response.data.summary);
+    } catch (error) {
+      console.error('Error getting summary:', error);
+      setUploadStatus({
+        message: error.response?.data?.error || 'Failed to generate summary.',
+        isError: true
+      });
+    } finally {
+      setIsLoading(false);
+      setActiveOperation(null);
     }
-    
-    setChat([...chat, { type: 'bot', content: botResponse }]);
+  };
+
+  // Request research suggestions
+  const handleGetSuggestions = async () => {
+    if (!pdfUploaded) {
+      setUploadStatus({
+        message: 'Please upload a PDF first.',
+        isError: true
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    setActiveOperation('suggestions');
+
+    try {
+      const response = await axios.post(`${API_BASE_URL}/chat/research_suggestions`, {
+        query: customQuery || 'Suggest future research directions'
+      });
+      setSuggestions(response.data.research_suggestions);
+    } catch (error) {
+      console.error('Error getting research suggestions:', error);
+      setUploadStatus({
+        message: error.response?.data?.error || 'Failed to generate research suggestions.',
+        isError: true
+      });
+    } finally {
+      setIsLoading(false);
+      setActiveOperation(null);
+    }
+  };
+
+  // Handle chat with the document
+  const handleChat = async (e) => {
+    e.preventDefault();
+
+    if (!pdfUploaded) {
+      setUploadStatus({
+        message: 'Please upload a PDF first.',
+        isError: true
+      });
+      return;
+    }
+
+    if (!chatQuery.trim()) {
+      return;
+    }
+
+    const userQuery = chatQuery.trim();
+    setChatHistory([...chatHistory, { role: 'user', content: userQuery }]);
+    setChatQuery('');
+    setIsLoading(true);
+    setActiveOperation('chat');
+
+    try {
+      const response = await axios.post(`${API_BASE_URL}/chat/chat`, {
+        query: userQuery
+      });
+
+      const aiResponse = response.data.response;
+      setChatHistory(prev => [...prev, { role: 'assistant', content: aiResponse }]);
+    } catch (error) {
+      console.error('Error getting chat response:', error);
+      setUploadStatus({
+        message: error.response?.data?.error || 'Failed to get a response.',
+        isError: true
+      });
+      setChatHistory(prev => [...prev, {
+        role: 'assistant',
+        content: 'Sorry, I encountered an error processing your question. Please try again.'
+      }]);
+    } finally {
+      setIsLoading(false);
+      setActiveOperation(null);
+    }
+  };
+
+  // Clear chat history
+  const clearChat = () => {
+    setChatHistory([]);
+  };
+
+  // Export chat history
+  const exportChat = () => {
+    const chatText = chatHistory.map(msg =>
+      `${msg.role === 'user' ? 'You' : 'Assistant'}: ${msg.content}`
+    ).join('\n\n');
+
+    const blob = new Blob([chatText], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${pdfName.replace('.pdf', '')}-chat-export.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  // Trigger file input click
+  const triggerFileInput = () => {
+    fileInputRef.current.click();
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
-      <header className="bg-black text-white p-4 shadow-md">
-        <div className="container mx-auto flex items-center">
-          <FileText className="mr-2" size={24} />
-          <h1 className="text-xl font-bold">PDF Chat Assistant</h1>
-        </div>
-      </header>
+    <div className="container mx-auto py-10 px-10">
+      <Card className="mb-8">
+        <CardHeader>
+          <CardTitle className="text-2xl">Research Paper Assistant</CardTitle>
+          <CardDescription>
+            Upload a research paper and get AI-powered analysis and answers
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-lg border-gray-300 bg-gray-50 hover:bg-gray-100 cursor-pointer" onClick={triggerFileInput}>
+            <Input
+              type="file"
+              ref={fileInputRef}
+              className="hidden"
+              accept=".pdf"
+              onChange={handleFileUpload}
+            />
+            {isLoading && activeOperation === 'upload' ? (
+              <Loader2 className="h-12 w-12 text-gray-400 mb-2 animate-spin" />
+            ) : (
+              <Upload className="h-12 w-12 text-gray-400 mb-2" />
+            )}
+            <p className="text-sm text-gray-500">Click to upload or drag and drop</p>
+            <p className="text-xs text-gray-400 mt-1">PDF files only</p>
+          </div>
 
-      <main className="flex-1 container mx-auto p-4 flex flex-col max-w-4xl">
-        <div className="flex-1 overflow-y-auto mb-4 border border-gray-200 rounded-lg bg-white p-4">
-          {chat.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-gray-500">
-              <FileText size={48} className="mb-4" />
-              <p className="text-center">Upload a PDF and start chatting to analyze your document</p>\
+          {uploadStatus.message && (
+            <Alert className={`mt-4 ${uploadStatus.isError ? 'bg-red-50' : 'bg-green-50'}`}>
+              <AlertTitle>{uploadStatus.isError ? 'Error' : 'Success'}</AlertTitle>
+              <AlertDescription>{uploadStatus.message}</AlertDescription>
+            </Alert>
+          )}
+
+          {pdfUploaded && (
+            <div className="mt-4">
+              <div className="flex items-center space-x-2 text-green-600">
+                <FileText size={16} />
+                <span>{pdfName || 'PDF processed and ready'}</span>
+              </div>
             </div>
-          ) : (
-            <div className="space-y-4">
-              {chat.map((msg, index) => (
-                <div 
-                  key={index} 
-                  className={`p-3 rounded-lg ${msg.type === 'user' ? 'bg-black text-white ml-auto' : 'bg-gray-100 text-black mr-auto'} max-w-[80%]`}
-                >
-                  {msg.content}
+          )}
+        </CardContent>
+      </Card>
+
+      <Tabs defaultValue="summary" className="w-full">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="summary" disabled={isLoading}>
+            <div className="flex items-center gap-2">
+              <BrainCircuit size={16} />
+              <span>Summary</span>
+            </div>
+          </TabsTrigger>
+          <TabsTrigger value="suggestions" disabled={isLoading}>
+            <div className="flex items-center gap-2">
+              <Lightbulb size={16} />
+              <span>Research Suggestions</span>
+            </div>
+          </TabsTrigger>
+          <TabsTrigger value="chat" disabled={isLoading}>
+            <div className="flex items-center gap-2">
+              <MessageSquare size={16} />
+              <span>Chat</span>
+            </div>
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="summary">
+          <Card>
+            <CardHeader>
+              <CardTitle>Paper Summary</CardTitle>
+              <CardDescription>
+                Get a comprehensive summary of the uploaded research paper
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="mb-4">
+                <Input
+                  placeholder="Custom query (optional, e.g., 'Summarize the methodology')"
+                  value={customQuery}
+                  onChange={(e) => setCustomQuery(e.target.value)}
+                  disabled={isLoading}
+                />
+              </div>
+
+              {summary ? (
+                <div className="p-4 bg-gray-50 rounded-md prose max-w-none">
+                  <ReactMarkdown>{summary}</ReactMarkdown>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
+              ) : (
+                <div className="p-4 bg-gray-50 rounded-md text-gray-500 text-center">
+                  Summary will appear here
+                </div>
+              )}
+            </CardContent>
+            <CardFooter>
+              <Button onClick={handleGetSummary} disabled={isLoading || !pdfUploaded} className="w-full">
+                {isLoading && activeOperation === 'summary' ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Generating Summary...
+                  </>
+                ) : (
+                  'Generate Summary'
+                )}
+              </Button>
+            </CardFooter>
+          </Card>
+        </TabsContent>
 
-        <div className="grid grid-cols-3 gap-4 mb-4">
-          <button onClick={() => handleFeatureClick('summarize')} className="bg-white border-2 border-black text-black py-2 px-4 rounded-lg hover:bg-gray-100 transition flex items-center justify-center">
-            <FileCheck className="mr-2" size={18} />
-            Summarize
-          </button>
-          <button onClick={() => handleFeatureClick('plagiarism')} className="bg-white border-2 border-black text-black py-2 px-4 rounded-lg hover:bg-gray-100 transition flex items-center justify-center">
-            <AlertTriangle className="mr-2" size={18} />
-            Plagiarism Check
-          </button>
-          <button onClick={() => handleFeatureClick('suggestion')} className="bg-white border-2 border-black text-black py-2 px-4 rounded-lg hover:bg-gray-100 transition flex items-center justify-center">
-            <Lightbulb className="mr-2" size={18} />
-            Suggestions
-          </button>
-        </div>
+        <TabsContent value="suggestions">
+          <Card>
+            <CardHeader>
+              <CardTitle>Research Suggestions</CardTitle>
+              <CardDescription>
+                Get AI-generated ideas for future research directions
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="mb-4">
+                <Input
+                  placeholder="Custom query (optional, e.g., 'Suggest research on limitations')"
+                  value={customQuery}
+                  onChange={(e) => setCustomQuery(e.target.value)}
+                  disabled={isLoading}
+                />
+              </div>
 
-        <div {...getRootProps()} className={`border-2 border-dashed rounded-lg p-6 mb-4 text-center cursor-pointer transition-colors ${isDragActive ? 'border-black bg-gray-100' : 'border-gray-300 hover:border-gray-400'}`}>
-          <input {...getInputProps()} />
-          <Upload className="mx-auto mb-2" size={24} />
-          {file ? (
-            <div>
-              <p className="font-medium">{file.name}</p>
-              <p className="text-sm text-gray-500">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
-            </div>
-          ) : (
-            <div>
-              <p className="font-medium">Drop your PDF here, or click to select</p>
-              <p className="text-sm text-gray-500">Only PDF files are supported</p>
-            </div>
-          )}
-        </div>
+              {suggestions ? (
+                <div className="p-4 bg-gray-50 rounded-md prose max-w-none">
+                  <ReactMarkdown>{suggestions}</ReactMarkdown>
+                </div>
+              ) : (
+                <div className="p-4 bg-gray-50 rounded-md text-gray-500 text-center">
+                  Research suggestions will appear here
+                </div>
+              )}
+            </CardContent>
+            <CardFooter>
+              <Button onClick={handleGetSuggestions} disabled={isLoading || !pdfUploaded} className="w-full">
+                {isLoading && activeOperation === 'suggestions' ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Generating Suggestions...
+                  </>
+                ) : (
+                  'Generate Research Suggestions'
+                )}
+              </Button>
+            </CardFooter>
+          </Card>
+        </TabsContent>
 
-        <div className="flex items-center space-x-2">
-          <input type="text" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Type your message here..." className="flex-1 border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-black" onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()} />
-          <button onClick={handleSendMessage} className="bg-black text-white p-2 rounded-lg hover:bg-gray-800 transition">
-            <Send size={20} />
-          </button>
-        </div>
-      </main>
+        <TabsContent value="chat">
+          <Card className="flex flex-col h-[600px]">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <div>
+                <CardTitle>Ask about the Paper</CardTitle>
+                <CardDescription>
+                  Chat with the AI about specific aspects of the research paper
+                </CardDescription>
+              </div>
+              <div className="flex gap-2">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={clearChat}
+                        disabled={isLoading || chatHistory.length === 0}
+                      >
+                        <RefreshCw size={16} />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Clear chat history</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={exportChat}
+                        disabled={isLoading || chatHistory.length === 0}
+                      >
+                        <Download size={16} />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Export conversation</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+            </CardHeader>
+            <CardContent
+              className="flex-grow overflow-y-auto mb-4"
+              ref={chatContainerRef}
+            >
+              <div className="space-y-4">
+                {chatHistory.length === 0 ? (
+                  <div className="text-center text-gray-500 mt-8">
+                    <MessageSquare className="h-12 w-12 mx-auto text-gray-300 mb-2" />
+                    <p>Ask a question about the research paper</p>
+                  </div>
+                ) : (
+                  chatHistory.map((message, index) => (
+                    <div
+                      key={index}
+                      className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                    >
+                      <div
+                        className={`max-w-3/4 rounded-lg p-3 ${message.role === 'user'
+                          ? 'bg-blue-500 text-white'
+                          : 'bg-gray-100'
+                          }`}
+                      >
+                        <div className="prose max-w-none">
+                          <ReactMarkdown>{message.content}</ReactMarkdown>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+                {isLoading && activeOperation === 'chat' && (
+                  <div className="flex justify-start">
+                    <div className="bg-gray-100 rounded-lg p-3">
+                      <Loader2 className="h-5 w-5 animate-spin text-gray-500" />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+            <CardFooter className="border-t pt-4">
+              <form onSubmit={handleChat} className="w-full flex gap-2">
+                <Input
+                  placeholder="Ask a question about the paper..."
+                  value={chatQuery}
+                  onChange={(e) => setChatQuery(e.target.value)}
+                  disabled={isLoading || !pdfUploaded}
+                  className="flex-grow"
+                />
+                <Button
+                  type="submit"
+                  disabled={isLoading || !pdfUploaded || !chatQuery.trim()}
+                >
+                  {isLoading && activeOperation === 'chat' ? (
+                    <Loader2 size={16} className="animate-spin" />
+                  ) : (
+                    <Send size={16} />
+                  )}
+                </Button>
+              </form>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
-}
+};
 
-export default App;
+export default ResearchAssistant;

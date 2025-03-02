@@ -1,177 +1,177 @@
-import { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
-import { Search, Download, Share2 } from 'lucide-react';
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Slider } from "@/components/ui/slider";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+"use client"
+
+import { useState, useEffect, useRef } from "react"
+import axios from "axios"
+import { Search, Download, Share2 } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Slider } from "@/components/ui/slider"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 // Base API URL - replace with your actual backend URL
-const API_BASE_URL = 'http://localhost:5000';
+const API_BASE_URL = "http://localhost:5000"
 
 const ResearchGraph = () => {
     // State variables
-    const [query, setQuery] = useState('Artificial Intelligence');
-    const [maxResults, setMaxResults] = useState(10);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
-    const [graphGenerated, setGraphGenerated] = useState(false);
-    const [paperTitle, setPaperTitle] = useState('');
-    const [recommendations, setRecommendations] = useState([]);
-    const [exportFormat, setExportFormat] = useState('gexf');
-    const [graphHtml, setGraphHtml] = useState(null);
-    const [availablePapers, setAvailablePapers] = useState([]);
+    const [query, setQuery] = useState("Artificial Intelligence")
+    const [maxResults, setMaxResults] = useState(10)
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
+    const [success, setSuccess] = useState(null)
+    const [graphGenerated, setGraphGenerated] = useState(false)
+    const [paperTitle, setPaperTitle] = useState("")
+    const [recommendations, setRecommendations] = useState([])
+    const [exportFormat, setExportFormat] = useState("gexf")
+    const [graphHtml, setGraphHtml] = useState(null)
+    const [availablePapers, setAvailablePapers] = useState([])
 
     // Reference for the iframe
-    const iframeRef = useRef(null);
+    const iframeRef = useRef(null)
 
     // Reset status messages after 5 seconds
     useEffect(() => {
         const timer = setTimeout(() => {
-            setError(null);
-            setSuccess(null);
-        }, 5000);
-        return () => clearTimeout(timer);
-    }, [error, success]);
+            setError(null)
+            setSuccess(null)
+        }, 5000)
+        return () => clearTimeout(timer)
+    }, [])
 
     // Generate knowledge graph
     const handleGenerateGraph = async () => {
-        setLoading(true);
-        setError(null);
+        setLoading(true)
+        setError(null)
         try {
             const response = await axios.post(`${API_BASE_URL}/api/graph/generate`, {
                 query,
-                max_results: maxResults
-            });
-            setSuccess('Graph generated successfully!');
-            setGraphGenerated(true);
+                max_results: maxResults,
+            })
+            setSuccess("Graph generated successfully!")
+            setGraphGenerated(true)
 
             // Load the graph visualization after generation
-            loadGraphVisualization();
+            loadGraphVisualization()
 
             // Fetch available papers for dropdown
-            fetchAvailablePapers();
+            fetchAvailablePapers()
         } catch (err) {
-            setError(`Error generating graph: ${err.response?.data?.error || err.message}`);
+            setError(`Error generating graph: ${err.response?.data?.error || err.message}`)
         } finally {
-            setLoading(false);
+            setLoading(false)
         }
-    };
+    }
 
     // Fetch available papers from the graph
     const fetchAvailablePapers = async () => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/api/graph/papers`);
+            const response = await axios.get(`${API_BASE_URL}/api/graph/papers`)
             if (response.data && response.data.papers) {
-                setAvailablePapers(response.data.papers);
+                // Extract just the titles from the paper objects
+                const paperTitles = response.data.papers.map((paper) => paper.title)
+                setAvailablePapers(paperTitles)
                 // Auto-select the first paper if available
-                if (response.data.papers.length > 0) {
-                    setPaperTitle(response.data.papers[0]);
+                if (paperTitles.length > 0) {
+                    setPaperTitle(paperTitles[0])
                 }
             }
         } catch (err) {
-            console.error("Error fetching paper titles:", err);
-            setError("Could not load paper titles from the graph");
+            console.error("Error fetching paper titles:", err)
+            setError("Could not load paper titles from the graph")
         }
-    };
+    }
 
     // Load the graph visualization
     const loadGraphVisualization = async () => {
         try {
             // Fetch the HTML content directly
             const response = await axios.get(`${API_BASE_URL}/api/graph/visualize`, {
-                responseType: 'text',
+                responseType: "text",
                 headers: {
-                    'Accept': 'text/html'
-                }
-            });
+                    Accept: "text/html",
+                },
+            })
 
-            setGraphHtml(response.data);
+            setGraphHtml(response.data)
 
             // Update iframe if it exists
             if (iframeRef.current) {
-                const iframe = iframeRef.current;
-                const doc = iframe.contentDocument || iframe.contentWindow.document;
-                doc.open();
-                doc.write(response.data);
-                doc.close();
+                const iframe = iframeRef.current
+                const doc = iframe.contentDocument || iframe.contentWindow.document
+                doc.open()
+                doc.write(response.data)
+                doc.close()
             }
         } catch (err) {
-            console.error("Error loading graph visualization:", err);
-            setError("Could not load graph visualization. Please try again.");
+            console.error("Error loading graph visualization:", err)
+            setError("Could not load graph visualization. Please try again.")
         }
-    };
+    }
 
     // Effect to load graph visualization when the component mounts or when graphGenerated changes
     useEffect(() => {
         if (graphGenerated) {
-            loadGraphVisualization();
+            loadGraphVisualization()
         }
-    }, [graphGenerated]);
+    }, [graphGenerated])
 
     // Get recommendations for a paper
     const handleGetRecommendations = async () => {
         if (!paperTitle) {
-            setError('Please select a paper from the dropdown');
-            return;
+            setError("Please select a paper from the dropdown")
+            return
         }
 
-        setLoading(true);
-        setError(null);
+        setLoading(true)
+        setError(null)
         try {
-            const response = await axios.get(`${API_BASE_URL}/api/graph/recommend`, {
-                params: { title: paperTitle, top_n: 5 }
-            });
+            const response = await axios.post(`${API_BASE_URL}/api/graph/recommend`, {
+                title: paperTitle,
+                top_n: 5,
+            })
 
             // Check if we received an error message from the backend
             if (response.data.error) {
-                throw new Error(response.data.error);
+                throw new Error(response.data.error)
             }
 
-            // Make sure recommendations exist before setting state
-            if (response.data.recommendations) {
-                setRecommendations(response.data.recommendations);
-                setSuccess('Recommendations retrieved successfully!');
-            } else {
-                setRecommendations([]);
-                setError('No recommendations found');
-            }
+            // The backend returns an array directly
+            setRecommendations(response.data)
+            setSuccess("Recommendations retrieved successfully!")
         } catch (err) {
-            setError(`Error getting recommendations: ${err.response?.data?.error || err.message}`);
-            setRecommendations([]);
+            setError(`Error getting recommendations: ${err.response?.data?.error || err.message}`)
+            setRecommendations([])
         } finally {
-            setLoading(false);
+            setLoading(false)
         }
-    };
+    }
 
     // Download visualization or export file
     const handleDownload = async (type) => {
         if (!graphGenerated) {
-            setError('Please generate a graph first');
-            return;
+            setError("Please generate a graph first")
+            return
         }
 
-        setLoading(true);
+        setLoading(true)
         try {
-            let url = `${API_BASE_URL}/api/graph/visualize`;
+            let url = `${API_BASE_URL}/api/graph/visualize`
 
-            if (type === 'export') {
-                url = `${API_BASE_URL}/api/graph/export?format=${exportFormat}`;
+            if (type === "export") {
+                url = `${API_BASE_URL}/api/graph/export?format=${exportFormat}`
             }
 
             // This will trigger file download
-            window.open(url, '_blank');
-            setSuccess(`${type === 'export' ? 'Export' : 'Visualization'} download initiated`);
+            window.open(url, "_blank")
+            setSuccess(`${type === "export" ? "Export" : "Visualization"} download initiated`)
         } catch (err) {
-            setError(`Error downloading: ${err.message}`);
+            setError(`Error downloading: ${err.message}`)
         } finally {
-            setLoading(false);
+            setLoading(false)
         }
-    };
+    }
 
     return (
         <div className="container mx-auto py-8 px-4">
@@ -196,7 +196,7 @@ const ResearchGraph = () => {
                 <TabsList className="grid grid-cols-3 mb-4">
                     <TabsTrigger value="generate">Generate Graph</TabsTrigger>
                     <TabsTrigger value="visualize">Visualize & Export</TabsTrigger>
-                    <TabsTrigger value="recommend">Recommendations</TabsTrigger>
+                    <TabsTrigger value="recommendations">Recommendations</TabsTrigger>
                 </TabsList>
 
                 {/* Generate Graph Tab */}
@@ -204,13 +204,13 @@ const ResearchGraph = () => {
                     <Card>
                         <CardHeader>
                             <CardTitle>Generate Knowledge Graph</CardTitle>
-                            <CardDescription>
-                                Search for academic papers and generate a knowledge graph
-                            </CardDescription>
+                            <CardDescription>Search for academic papers and generate a knowledge graph</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div className="flex flex-col space-y-2">
-                                <label htmlFor="query" className="font-medium">Search Query</label>
+                                <label htmlFor="query" className="font-medium">
+                                    Search Query
+                                </label>
                                 <Input
                                     id="query"
                                     placeholder="e.g., Artificial Intelligence, Machine Learning"
@@ -234,12 +234,8 @@ const ResearchGraph = () => {
                             </div>
                         </CardContent>
                         <CardFooter>
-                            <Button
-                                className="w-full"
-                                onClick={handleGenerateGraph}
-                                disabled={loading}
-                            >
-                                {loading ? 'Generating...' : 'Generate Graph'}
+                            <Button className="w-full" onClick={handleGenerateGraph} disabled={loading}>
+                                {loading ? "Generating..." : "Generate Graph"}
                                 {!loading && <Search className="ml-2 h-4 w-4" />}
                             </Button>
                         </CardFooter>
@@ -251,9 +247,7 @@ const ResearchGraph = () => {
                     <Card>
                         <CardHeader>
                             <CardTitle>Visualize and Export Graph</CardTitle>
-                            <CardDescription>
-                                Explore the interactive visualization or export the graph data
-                            </CardDescription>
+                            <CardDescription>Explore the interactive visualization or export the graph data</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             {!graphGenerated ? (
@@ -273,7 +267,9 @@ const ResearchGraph = () => {
                             )}
 
                             <div className="flex flex-col space-y-2 mt-4">
-                                <label htmlFor="exportFormat" className="font-medium">Export Format</label>
+                                <label htmlFor="exportFormat" className="font-medium">
+                                    Export Format
+                                </label>
                                 <Select value={exportFormat} onValueChange={setExportFormat}>
                                     <SelectTrigger id="exportFormat">
                                         <SelectValue placeholder="Select format" />
@@ -289,7 +285,7 @@ const ResearchGraph = () => {
                         <CardFooter className="flex justify-between">
                             <Button
                                 variant="outline"
-                                onClick={() => handleDownload('visualize')}
+                                onClick={() => handleDownload("visualize")}
                                 disabled={loading || !graphGenerated}
                                 className="flex-1 mr-2"
                             >
@@ -297,7 +293,7 @@ const ResearchGraph = () => {
                                 Download HTML
                             </Button>
                             <Button
-                                onClick={() => handleDownload('export')}
+                                onClick={() => handleDownload("export")}
                                 disabled={loading || !graphGenerated}
                                 className="flex-1 ml-2"
                             >
@@ -309,13 +305,11 @@ const ResearchGraph = () => {
                 </TabsContent>
 
                 {/* Recommendations Tab */}
-                <TabsContent value="recommend">
+                <TabsContent value="recommendations">
                     <Card>
                         <CardHeader>
                             <CardTitle>Paper Recommendations</CardTitle>
-                            <CardDescription>
-                                Get similar paper recommendations based on a paper in your graph
-                            </CardDescription>
+                            <CardDescription>Get similar paper recommendations based on a paper in your graph</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             {!graphGenerated ? (
@@ -325,24 +319,31 @@ const ResearchGraph = () => {
                             ) : (
                                 <>
                                     <div className="flex flex-col space-y-2">
-                                        <label htmlFor="paperSelect" className="font-medium">Select Paper</label>
-                                        <Select value={paperTitle} onValueChange={(value) => {
-                                            setPaperTitle(value);
-                                            // Auto-get recommendations when paper is selected
-                                            setTimeout(() => {
-                                                if (value) handleGetRecommendations();
-                                            }, 100);
-                                        }}>
+                                        <label htmlFor="paperSelect" className="font-medium">
+                                            Select Paper
+                                        </label>
+                                        <Select
+                                            value={paperTitle}
+                                            onValueChange={(value) => {
+                                                setPaperTitle(value)
+                                                // Auto-get recommendations when paper is selected
+                                                setTimeout(() => {
+                                                    if (value) handleGetRecommendations()
+                                                }, 100)
+                                            }}
+                                        >
                                             <SelectTrigger id="paperSelect">
                                                 <SelectValue placeholder="Select a paper from your graph" />
                                             </SelectTrigger>
                                             <SelectContent className="max-h-80">
                                                 {availablePapers.length === 0 ? (
-                                                    <SelectItem value="" disabled>No papers available</SelectItem>
+                                                    <SelectItem value="" disabled>
+                                                        No papers available
+                                                    </SelectItem>
                                                 ) : (
                                                     availablePapers.map((title, index) => (
                                                         <SelectItem key={index} value={title}>
-                                                            {title.length > 60 ? title.substring(0, 57) + '...' : title}
+                                                            {title.length > 60 ? title.substring(0, 57) + "..." : title}
                                                         </SelectItem>
                                                     ))
                                                 )}
@@ -359,14 +360,37 @@ const ResearchGraph = () => {
                                     {recommendations.length > 0 && (
                                         <div className="mt-4">
                                             <h3 className="font-semibold mb-2">Similar Papers:</h3>
-                                            <ul className="space-y-2">
+                                            <div className="space-y-3">
                                                 {recommendations.map((rec, index) => (
-                                                    <li key={index} className="p-2 bg-gray-50 rounded-md">
-                                                        <div className="font-medium">{rec[0]}</div>
-                                                        <div className="text-sm text-gray-500">Similarity score: {(rec[1] * 100).toFixed(2)}%</div>
-                                                    </li>
+                                                    <Card key={index} className="overflow-hidden">
+                                                        <CardContent className="p-4">
+                                                            <div className="font-medium">
+                                                                {rec.link ? (
+                                                                    <a
+                                                                        href={rec.link}
+                                                                        target="_blank"
+                                                                        rel="noopener noreferrer"
+                                                                        className="text-blue-600 hover:underline"
+                                                                    >
+                                                                        {rec.title}
+                                                                    </a>
+                                                                ) : (
+                                                                    rec.title
+                                                                )}
+                                                            </div>
+                                                            <div className="text-sm text-gray-500 mt-1">
+                                                                Similarity score: {(rec.score * 100).toFixed(2)}%
+                                                            </div>
+                                                            {rec.authors && rec.authors.length > 0 && (
+                                                                <div className="mt-2">
+                                                                    <span className="text-xs font-medium text-gray-700">Authors: </span>
+                                                                    <span className="text-xs text-gray-600">{rec.authors.join(", ")}</span>
+                                                                </div>
+                                                            )}
+                                                        </CardContent>
+                                                    </Card>
                                                 ))}
-                                            </ul>
+                                            </div>
                                         </div>
                                     )}
                                 </>
@@ -376,7 +400,8 @@ const ResearchGraph = () => {
                 </TabsContent>
             </Tabs>
         </div>
-    );
-};
+    )
+}
 
-export default ResearchGraph;
+export default ResearchGraph
+

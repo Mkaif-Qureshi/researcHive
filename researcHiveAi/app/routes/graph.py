@@ -9,6 +9,7 @@ from community import best_partition
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 import os
+import json
 
 graph_bp = Blueprint("graph", __name__)
 
@@ -131,20 +132,37 @@ class ResearchKnowledgeGraph:
     def recommend_papers(self, paper_title, top_n=5):
         """Recommend similar papers using content similarity"""
         titles = [node for node, data in self.graph.nodes(data=True) if data["type"] == "paper"]
-        
+
         if not titles:
-            return {"error": "No papers in the graph"}
-            
-        embeddings = embedder.encode(titles, convert_to_tensor=True).cpu().numpy()
+            return jsonify({"error": "No papers in the graph"})
 
-        if paper_title not in titles:
-            return {"error": "Paper not found"}
+        embeddings = embedder.encode(titles, convert_to_numpy=True)
 
-        target_idx = titles.index(paper_title)
-        sim_scores = cosine_similarity(embeddings[target_idx].reshape(1, -1), embeddings)[0]
-        recommendations = sorted(zip(titles, sim_scores), key=lambda x: x[1], reverse=True)[1:top_n+1]
+        try:
+            query_embedding = embedder.encode([paper_title], convert_to_numpy=True)
+            similarities = cosine_similarity(query_embedding, embeddings)[0]
 
-        return {"recommendations": recommendations}
+            top_indices = np.argsort(similarities)[-top_n:][::-1]
+            recommendations = []
+
+            for i in top_indices:
+                paper_node = titles[i]
+                paper_data = self.graph.nodes[paper_node]
+
+                # Get linked authors
+                authors = [neighbor for neighbor in self.graph.neighbors(paper_node) if self.graph.nodes[neighbor]["type"] == "author"]
+
+                recommendations.append({
+                    "title": paper_node,
+                    "score": float(similarities[i]),  # Convert np.float32 to Python float
+                    "link": paper_data.get("link", None),  # Get link if available
+                    "authors": authors  # List of authors
+                })
+
+            return jsonify(recommendations)
+
+        except Exception as e:
+            return jsonify({"error": str(e)})
 
     def export_graph(self, format="gexf"):
         """Export graph in various formats"""
@@ -207,18 +225,18 @@ def visualize_graph():
 
     return send_file(graph_file)
 
-@graph_bp.route("/recommend", methods=["GET"])
+@graph_bp.route("/recommend", methods=["POST"])
 def recommend_papers():
-    """Get paper recommendations"""
-    paper_title = request.args.get("title")
+    """Get paper recommendations based on a JSON request"""
+    data = request.json
+    paper_title = data.get("title")
+    top_n = data.get("top_n", 5)
+
     if not paper_title:
         return jsonify({"error": "Paper title is required"}), 400
-        
-    top_n = int(request.args.get("top_n", 5))
 
-    recommendations = kg.recommend_papers(paper_title, top_n)
-    print(recommendations)
-    return jsonify(recommendations)
+    return kg.recommend_papers(paper_title, top_n)
+
 
 @graph_bp.route("/export", methods=["GET"])
 def export_graph():
