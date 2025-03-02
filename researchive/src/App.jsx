@@ -13,6 +13,7 @@ import Meet from "./pages/Meet";
 import SavedPages from "./pages/SavedPages"; // Create this page
 import UpdateProfile from "./pages/UpdateProfile";
 import Collabrator from "./pages/Collaborator";
+import Communities from "./pages/communities";
 
 const App = () => {
   return (
@@ -32,6 +33,8 @@ const App = () => {
           <Route path="/update-profile" element={<UpdateProfile />} />
           <Route path="/savedpages" element={<SavedPages />} />
           <Route path="/collabrator" element={<Collabrator />} />
+          <Route path="/communities" element={<Communities />} />
+
         </Route>
         </Routes>
       </Router>
