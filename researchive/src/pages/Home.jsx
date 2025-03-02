@@ -7,7 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 
 const Home = () => {
-  const {currentUser , logout} = useAuth();
+  const {currentUser} = useAuth();
   return (
     <div className="flex min-h-screen bg-gray-100">
       <div className="w-full p-8 space-y-6 , ml-20">
@@ -24,7 +24,6 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <Button type='button' onClick={logout} />
 
         <h2 className="text-2xl font-bold text-gray-800">Research Papers</h2>
 

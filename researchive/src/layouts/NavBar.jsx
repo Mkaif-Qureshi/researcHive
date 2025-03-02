@@ -67,12 +67,12 @@ const Navbar = () => {
               ) : (
                 <>
                   <Link to="/login">
-                    <Button variant="outline" size="sm" className={`text-${themeConfig.colors.primary} border-${themeConfig.colors.primary} hover:bg-blue-50`}>
+                    <Button variant="outline2" size="sm" className={`text-${themeConfig.colors.primary} border-${themeConfig.colors.primary} hover:bg-blue-50`}>
                       Log in
                     </Button>
                   </Link>
                   <Link to="/signup">
-                    <Button size="sm" className={`bg-black text-white hover:bg-${themeConfig.colors.primaryHover}`}>
+                    <Button size="sm" variant="button" className={`bg-black text-white hover:bg-${themeConfig.colors.primaryHover}`}>
                       Sign up
                     </Button>
                   </Link>
