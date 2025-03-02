@@ -96,7 +96,7 @@ const Dashboard = () => {
   return (
     <div className="container mx-auto py-6">
       <Tabs defaultValue="search" className="space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between my-5">
           <TabsList>
             <TabsTrigger value="search">Search Papers</TabsTrigger>
             <TabsTrigger value="my-papers">My Papers</TabsTrigger>
