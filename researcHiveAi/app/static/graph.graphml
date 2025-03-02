@@ -1,0 +1,638 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key id="d6" for="edge" attr.name="relationship" attr.type="string" />
+  <key id="d5" for="node" attr.name="centrality" attr.type="double" />
+  <key id="d4" for="node" attr.name="community" attr.type="long" />
+  <key id="d3" for="node" attr.name="categories" attr.type="string" />
+  <key id="d2" for="node" attr.name="published" attr.type="string" />
+  <key id="d1" for="node" attr.name="link" attr.type="string" />
+  <key id="d0" for="node" attr.name="type" attr.type="string" />
+  <graph edgedefault="undirected">
+    <node id="Lost in Translation: Large Language Models in Non-English Content Analysis">
+      <data key="d0">paper</data>
+      <data key="d1">http://arxiv.org/abs/2306.07377v1</data>
+      <data key="d2">2023-06-12</data>
+      <data key="d3">cs.CL, cs.AI</data>
+      <data key="d4">1</data>
+      <data key="d5">0.09333333333333334</data>
+    </node>
+    <node id="Gabriel Nicholas">
+      <data key="d0">author</data>
+      <data key="d4">1</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Aliya Bhatia">
+      <data key="d0">author</data>
+      <data key="d4">1</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="multilingual language models">
+      <data key="d0">keyword</data>
+      <data key="d4">1</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="language models">
+      <data key="d0">keyword</data>
+      <data key="d4">1</data>
+      <data key="d5">0.04</data>
+    </node>
+    <node id="Meta LLaMa">
+      <data key="d0">keyword</data>
+      <data key="d4">1</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="large language models">
+      <data key="d0">keyword</data>
+      <data key="d4">1</data>
+      <data key="d5">0.02666666666666667</data>
+    </node>
+    <node id="multilingual language">
+      <data key="d0">keyword</data>
+      <data key="d4">1</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Cedille: A large autoregressive French language model">
+      <data key="d0">paper</data>
+      <data key="d1">http://arxiv.org/abs/2202.03371v1</data>
+      <data key="d2">2022-02-07</data>
+      <data key="d3">cs.CL, 68T50, I.2.7</data>
+      <data key="d4">2</data>
+      <data key="d5">0.09333333333333334</data>
+    </node>
+    <node id="Martin Müller">
+      <data key="d0">author</data>
+      <data key="d4">2</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Florian Laurent">
+      <data key="d0">author</data>
+      <data key="d4">2</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Natural Language Processing">
+      <data key="d0">keyword</data>
+      <data key="d4">4</data>
+      <data key="d5">0.04</data>
+    </node>
+    <node id="solving Natural Language">
+      <data key="d0">keyword</data>
+      <data key="d4">2</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Language Processing tasks">
+      <data key="d0">keyword</data>
+      <data key="d4">2</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="solving Natural">
+      <data key="d0">keyword</data>
+      <data key="d4">2</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Processing tasks">
+      <data key="d0">keyword</data>
+      <data key="d4">2</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="How Good are Commercial Large Language Models on African Languages?">
+      <data key="d0">paper</data>
+      <data key="d1">http://arxiv.org/abs/2305.06530v1</data>
+      <data key="d2">2023-05-11</data>
+      <data key="d3">cs.CL, cs.AI, cs.LG</data>
+      <data key="d4">4</data>
+      <data key="d5">0.09333333333333334</data>
+    </node>
+    <node id="Jessica Ojo">
+      <data key="d0">author</data>
+      <data key="d4">4</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Kelechi Ogueji">
+      <data key="d0">author</data>
+      <data key="d4">4</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="advancements in Natural">
+      <data key="d0">keyword</data>
+      <data key="d4">4</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Language Processing">
+      <data key="d0">keyword</data>
+      <data key="d4">4</data>
+      <data key="d5">0.02666666666666667</data>
+    </node>
+    <node id="Natural Language">
+      <data key="d0">keyword</data>
+      <data key="d4">4</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="African languages">
+      <data key="d0">keyword</data>
+      <data key="d4">4</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Goldfish: Monolingual Language Models for 350 Languages">
+      <data key="d0">paper</data>
+      <data key="d1">http://arxiv.org/abs/2408.10441v1</data>
+      <data key="d2">2024-08-19</data>
+      <data key="d3">cs.CL</data>
+      <data key="d4">5</data>
+      <data key="d5">0.12000000000000001</data>
+    </node>
+    <node id="Tyler A. Chang">
+      <data key="d0">author</data>
+      <data key="d4">5</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Catherine Arnett">
+      <data key="d0">author</data>
+      <data key="d4">5</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Zhuowen Tu">
+      <data key="d0">author</data>
+      <data key="d4">5</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Benjamin K. Bergen">
+      <data key="d0">author</data>
+      <data key="d4">5</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="languages">
+      <data key="d0">keyword</data>
+      <data key="d4">5</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="models">
+      <data key="d0">keyword</data>
+      <data key="d4">5</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Goldfish">
+      <data key="d0">keyword</data>
+      <data key="d4">5</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="low-resource languages">
+      <data key="d0">keyword</data>
+      <data key="d4">5</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="FLORES">
+      <data key="d0">keyword</data>
+      <data key="d4">5</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Modelling Language">
+      <data key="d0">paper</data>
+      <data key="d1">http://arxiv.org/abs/2404.09579v1</data>
+      <data key="d2">2024-04-15</data>
+      <data key="d3">cs.CL, cs.AI</data>
+      <data key="d4">1</data>
+      <data key="d5">0.08</data>
+    </node>
+    <node id="Jumbly Grindrod">
+      <data key="d0">author</data>
+      <data key="d4">1</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="valuable scientific role">
+      <data key="d0">keyword</data>
+      <data key="d4">1</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="role to play">
+      <data key="d0">keyword</data>
+      <data key="d4">1</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="play in serving">
+      <data key="d0">keyword</data>
+      <data key="d4">1</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration">
+      <data key="d0">paper</data>
+      <data key="d1">http://arxiv.org/abs/2405.18774v1</data>
+      <data key="d2">2024-05-29</data>
+      <data key="d3">cs.CV</data>
+      <data key="d4">6</data>
+      <data key="d5">0.09333333333333334</data>
+    </node>
+    <node id="Mingrui Ma">
+      <data key="d0">author</data>
+      <data key="d4">6</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Yu Yang">
+      <data key="d0">author</data>
+      <data key="d4">6</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="large language model">
+      <data key="d0">keyword</data>
+      <data key="d4">6</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="large language">
+      <data key="d0">keyword</data>
+      <data key="d4">6</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="language model">
+      <data key="d0">keyword</data>
+      <data key="d4">6</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="pretrained large language">
+      <data key="d0">keyword</data>
+      <data key="d4">6</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Medical image registration">
+      <data key="d0">keyword</data>
+      <data key="d4">6</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="A Precis of Language Models are not Models of Language">
+      <data key="d0">paper</data>
+      <data key="d1">http://arxiv.org/abs/2205.07634v1</data>
+      <data key="d2">2022-05-16</data>
+      <data key="d3">cs.CL</data>
+      <data key="d4">4</data>
+      <data key="d5">0.08</data>
+    </node>
+    <node id="Csaba Veres">
+      <data key="d0">author</data>
+      <data key="d4">4</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Artificial Intelligence">
+      <data key="d0">keyword</data>
+      <data key="d4">4</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="leading application areas">
+      <data key="d0">keyword</data>
+      <data key="d4">4</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Large Neural Language">
+      <data key="d0">keyword</data>
+      <data key="d4">4</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="A Survey of Large Language Models for European Languages">
+      <data key="d0">paper</data>
+      <data key="d1">http://arxiv.org/abs/2408.15040v2</data>
+      <data key="d2">2024-08-27</data>
+      <data key="d3">cs.CL</data>
+      <data key="d4">7</data>
+      <data key="d5">0.09333333333333334</data>
+    </node>
+    <node id="Wazir Ali">
+      <data key="d0">author</data>
+      <data key="d4">7</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Sampo Pyysalo">
+      <data key="d0">author</data>
+      <data key="d4">7</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="gained significant attention">
+      <data key="d0">keyword</data>
+      <data key="d4">7</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="significant attention due">
+      <data key="d0">keyword</data>
+      <data key="d4">7</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="natural language tasks">
+      <data key="d0">keyword</data>
+      <data key="d4">7</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="gained significant">
+      <data key="d0">keyword</data>
+      <data key="d4">7</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="significant attention">
+      <data key="d0">keyword</data>
+      <data key="d4">7</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics">
+      <data key="d0">paper</data>
+      <data key="d1">http://arxiv.org/abs/2303.00077v1</data>
+      <data key="d2">2023-02-28</data>
+      <data key="d3">cs.CL, cs.AI</data>
+      <data key="d4">0</data>
+      <data key="d5">0.10666666666666667</data>
+    </node>
+    <node id="Conor Houghton">
+      <data key="d0">author</data>
+      <data key="d4">0</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Nina Kazanina">
+      <data key="d0">author</data>
+      <data key="d4">0</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Priyanka Sukumaran">
+      <data key="d0">author</data>
+      <data key="d4">0</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="human linguistic processing">
+      <data key="d0">keyword</data>
+      <data key="d4">0</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Large language models">
+      <data key="d0">keyword</data>
+      <data key="d4">0</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="linguistic processing">
+      <data key="d0">keyword</data>
+      <data key="d4">0</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="human linguistic">
+      <data key="d0">keyword</data>
+      <data key="d4">0</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Large language">
+      <data key="d0">keyword</data>
+      <data key="d4">0</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Enhance Reasoning Ability of Visual-Language Models via Large Language Models">
+      <data key="d0">paper</data>
+      <data key="d1">http://arxiv.org/abs/2305.13267v1</data>
+      <data key="d2">2023-05-22</data>
+      <data key="d3">cs.CL, cs.AI</data>
+      <data key="d4">3</data>
+      <data key="d5">0.10666666666666667</data>
+    </node>
+    <node id="Yueting Yang">
+      <data key="d0">author</data>
+      <data key="d4">3</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Xintong Zhang">
+      <data key="d0">author</data>
+      <data key="d4">3</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Wenjuan Han">
+      <data key="d0">author</data>
+      <data key="d4">3</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="shown excellent performance">
+      <data key="d0">keyword</data>
+      <data key="d4">3</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="Pre-trained visual language">
+      <data key="d0">keyword</data>
+      <data key="d4">3</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="shown excellent">
+      <data key="d0">keyword</data>
+      <data key="d4">3</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <node id="excellent performance">
+      <data key="d0">keyword</data>
+      <data key="d4">3</data>
+      <data key="d5">0.013333333333333334</data>
+    </node>
+    <edge source="Lost in Translation: Large Language Models in Non-English Content Analysis" target="Gabriel Nicholas">
+      <data key="d6">wrote</data>
+    </edge>
+    <edge source="Lost in Translation: Large Language Models in Non-English Content Analysis" target="Aliya Bhatia">
+      <data key="d6">wrote</data>
+    </edge>
+    <edge source="Lost in Translation: Large Language Models in Non-English Content Analysis" target="multilingual language models">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Lost in Translation: Large Language Models in Non-English Content Analysis" target="language models">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Lost in Translation: Large Language Models in Non-English Content Analysis" target="Meta LLaMa">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Lost in Translation: Large Language Models in Non-English Content Analysis" target="large language models">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Lost in Translation: Large Language Models in Non-English Content Analysis" target="multilingual language">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="language models" target="Modelling Language">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="language models" target="Enhance Reasoning Ability of Visual-Language Models via Large Language Models">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="large language models" target="Modelling Language">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Cedille: A large autoregressive French language model" target="Martin Müller">
+      <data key="d6">wrote</data>
+    </edge>
+    <edge source="Cedille: A large autoregressive French language model" target="Florian Laurent">
+      <data key="d6">wrote</data>
+    </edge>
+    <edge source="Cedille: A large autoregressive French language model" target="Natural Language Processing">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Cedille: A large autoregressive French language model" target="solving Natural Language">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Cedille: A large autoregressive French language model" target="Language Processing tasks">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Cedille: A large autoregressive French language model" target="solving Natural">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Cedille: A large autoregressive French language model" target="Processing tasks">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Natural Language Processing" target="How Good are Commercial Large Language Models on African Languages?">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Natural Language Processing" target="A Precis of Language Models are not Models of Language">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="How Good are Commercial Large Language Models on African Languages?" target="Jessica Ojo">
+      <data key="d6">wrote</data>
+    </edge>
+    <edge source="How Good are Commercial Large Language Models on African Languages?" target="Kelechi Ogueji">
+      <data key="d6">wrote</data>
+    </edge>
+    <edge source="How Good are Commercial Large Language Models on African Languages?" target="advancements in Natural">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="How Good are Commercial Large Language Models on African Languages?" target="Language Processing">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="How Good are Commercial Large Language Models on African Languages?" target="Natural Language">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="How Good are Commercial Large Language Models on African Languages?" target="African languages">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Language Processing" target="A Precis of Language Models are not Models of Language">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Goldfish: Monolingual Language Models for 350 Languages" target="Tyler A. Chang">
+      <data key="d6">wrote</data>
+    </edge>
+    <edge source="Goldfish: Monolingual Language Models for 350 Languages" target="Catherine Arnett">
+      <data key="d6">wrote</data>
+    </edge>
+    <edge source="Goldfish: Monolingual Language Models for 350 Languages" target="Zhuowen Tu">
+      <data key="d6">wrote</data>
+    </edge>
+    <edge source="Goldfish: Monolingual Language Models for 350 Languages" target="Benjamin K. Bergen">
+      <data key="d6">wrote</data>
+    </edge>
+    <edge source="Goldfish: Monolingual Language Models for 350 Languages" target="languages">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Goldfish: Monolingual Language Models for 350 Languages" target="models">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Goldfish: Monolingual Language Models for 350 Languages" target="Goldfish">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Goldfish: Monolingual Language Models for 350 Languages" target="low-resource languages">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Goldfish: Monolingual Language Models for 350 Languages" target="FLORES">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Modelling Language" target="Jumbly Grindrod">
+      <data key="d6">wrote</data>
+    </edge>
+    <edge source="Modelling Language" target="valuable scientific role">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Modelling Language" target="role to play">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Modelling Language" target="play in serving">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration" target="Mingrui Ma">
+      <data key="d6">wrote</data>
+    </edge>
+    <edge source="LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration" target="Yu Yang">
+      <data key="d6">wrote</data>
+    </edge>
+    <edge source="LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration" target="large language model">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration" target="large language">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration" target="language model">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration" target="pretrained large language">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="LLaMA-Reg: Using LLaMA 2 for Unsupervised Medical Image Registration" target="Medical image registration">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="A Precis of Language Models are not Models of Language" target="Csaba Veres">
+      <data key="d6">wrote</data>
+    </edge>
+    <edge source="A Precis of Language Models are not Models of Language" target="Artificial Intelligence">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="A Precis of Language Models are not Models of Language" target="leading application areas">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="A Precis of Language Models are not Models of Language" target="Large Neural Language">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="A Survey of Large Language Models for European Languages" target="Wazir Ali">
+      <data key="d6">wrote</data>
+    </edge>
+    <edge source="A Survey of Large Language Models for European Languages" target="Sampo Pyysalo">
+      <data key="d6">wrote</data>
+    </edge>
+    <edge source="A Survey of Large Language Models for European Languages" target="gained significant attention">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="A Survey of Large Language Models for European Languages" target="significant attention due">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="A Survey of Large Language Models for European Languages" target="natural language tasks">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="A Survey of Large Language Models for European Languages" target="gained significant">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="A Survey of Large Language Models for European Languages" target="significant attention">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics" target="Conor Houghton">
+      <data key="d6">wrote</data>
+    </edge>
+    <edge source="Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics" target="Nina Kazanina">
+      <data key="d6">wrote</data>
+    </edge>
+    <edge source="Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics" target="Priyanka Sukumaran">
+      <data key="d6">wrote</data>
+    </edge>
+    <edge source="Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics" target="human linguistic processing">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics" target="Large language models">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics" target="linguistic processing">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics" target="human linguistic">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Beyond the limitations of any imaginable mechanism: large language models and psycholinguistics" target="Large language">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Enhance Reasoning Ability of Visual-Language Models via Large Language Models" target="Yueting Yang">
+      <data key="d6">wrote</data>
+    </edge>
+    <edge source="Enhance Reasoning Ability of Visual-Language Models via Large Language Models" target="Xintong Zhang">
+      <data key="d6">wrote</data>
+    </edge>
+    <edge source="Enhance Reasoning Ability of Visual-Language Models via Large Language Models" target="Wenjuan Han">
+      <data key="d6">wrote</data>
+    </edge>
+    <edge source="Enhance Reasoning Ability of Visual-Language Models via Large Language Models" target="shown excellent performance">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Enhance Reasoning Ability of Visual-Language Models via Large Language Models" target="Pre-trained visual language">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Enhance Reasoning Ability of Visual-Language Models via Large Language Models" target="shown excellent">
+      <data key="d6">has_keyword</data>
+    </edge>
+    <edge source="Enhance Reasoning Ability of Visual-Language Models via Large Language Models" target="excellent performance">
+      <data key="d6">has_keyword</data>
+    </edge>
+  </graph>
+</graphml>

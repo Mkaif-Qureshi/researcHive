@@ -1,0 +1,12 @@
+Flask
+Flask-Cors
+arxiv
+spacy
+networkx
+pyvis
+sentence-transformers
+yake
+python-louvain
+scikit-learn
+numpy
+pandas

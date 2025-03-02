@@ -7,6 +7,7 @@ import cors from "cors";
 
 //import routes
 import authRoutes from "./routes/auth.route.js"; //as module type write .js for local files
+import reviewRoutes from "./routes/review.route.js"; 
 import { connectDB } from "./lib/db.js";
 
 dotenv.config();
@@ -39,6 +40,7 @@ app.get("/", (req, res) => {
 
 //routes added here
 app.use("/api/auth", authRoutes);
+app.use("/api/review", reviewRoutes);
 
 const port = process.env.PORT;
 app.listen(port, () => {

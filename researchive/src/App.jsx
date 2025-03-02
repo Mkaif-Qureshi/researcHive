@@ -1,11 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Signup from "@/pages/Signup";
-import Layout from "@/layouts/Layout"; 
+import Layout from "@/layouts/Layout";
 import { Toaster } from "sonner";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import { AuthProvider } from "./context/AuthContext";
 import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
+import ResearchGraph from "./pages/ResearchGraph";
+import Chat from "./pages/Chat";
 
 const App = () => {
   return (
@@ -18,6 +21,9 @@ const App = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/research-graph" element={<ResearchGraph />} />
         </Route>
       </Routes>
     </Router>

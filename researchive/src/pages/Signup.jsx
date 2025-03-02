@@ -179,6 +179,7 @@ export default function SignupForm() {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials:'include'
       });
 
       if (!response.ok) {
@@ -212,8 +213,9 @@ export default function SignupForm() {
       }
 
       setTimeout(() => {
-        navigate("/login");
-      }, 4000); // 2000 milliseconds = 2 seconds
+        navigate("/");
+        window.location.reload()
+      }, 3000); // 2000 milliseconds = 2 seconds
 
 
     } catch (error) {

@@ -11,8 +11,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { AlertCircle, CheckCircle2, Users, Star, Send } from 'lucide-react';
 import PaperReviews from './PaperReviews';
+import { usePeerReview } from '@/hooks/userPeerReview';
+import { useAuth } from '@/context/AuthContext';
+import { backend_url } from '../../backendUrl';
+import { toast } from 'sonner';
 
 const CollaborationPanel = ({ paper }) => {
+  const {currentUser} = useAuth();
   const { loading, error, findReviewers, checkConflictOfInterest } = usePeerReview();
   const [reviewText, setReviewText] = useState('');
   const [reviewScore, setReviewScore] = useState(0);
@@ -28,10 +33,37 @@ const CollaborationPanel = ({ paper }) => {
     );
   }
 
-  const handleSubmitReview = () => {
-    // In a real app, this would submit the review to an API
-    console.log('Submitting review:', { reviewText, reviewScore });
+  const handleSubmitReview = async () => {
+    if (!reviewText || !reviewScore) return;
+  
+    try {
+      const response = await fetch(`${backend_url}/api/review/create`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          paperId: paper.paperId, // Ensure this is the correct paper ID
+          comment : reviewText,
+          rating : reviewScore,
+        }),
+      });
+  
+      if (response.ok) {
+        toast.success("Review submitted successfully for paper id : !" + paper.paperId);
+        setReviewText("");
+        setReviewScore(0);
+      } else {
+        const errorData = await response.json();
+        toast.error(errorData.message || "Failed to submit review");
+      }
+    } catch (error) {
+      console.error("Error submitting review:", error);
+      toast.error("Something went wrong!");
+    }
   };
+  
 
   return (
     <div className="space-y-4">
