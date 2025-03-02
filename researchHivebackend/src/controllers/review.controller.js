@@ -59,7 +59,7 @@ export const getReviewsByPaper = async (req, res) => {
     // Fetch reviews and populate user details (name, profilePic, role)
     const reviews = await Review.find({ paperId }).populate(
       "userId",
-      "name profilePic role"
+      "name profile_pic role"
     ); // Select only required fields
 
     res.status(200).json({ success: true, reviews });
