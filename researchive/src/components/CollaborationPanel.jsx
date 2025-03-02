@@ -1,7 +1,7 @@
 // src/components/CollaborationPanel.jsx
 
 import { useState } from 'react';
-import { usePeerReview } from '../hooks/usePeerReview';
+// import { usePeerReview } from '../hooks/usePeerReview';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -11,7 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { AlertCircle, CheckCircle2, Users, Star, Send } from 'lucide-react';
 import PaperReviews from './PaperReviews';
-import { usePeerReview } from '@/hooks/userPeerReview';
+import { usePeerReview } from '@/hooks/usePeerReview';
 import { useAuth } from '@/context/AuthContext';
 import { backend_url } from '../../backendUrl';
 import { toast } from 'sonner';
