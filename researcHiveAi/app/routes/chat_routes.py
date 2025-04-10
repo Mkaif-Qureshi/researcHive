@@ -6,7 +6,15 @@ from sentence_transformers import SentenceTransformer
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_mistralai import ChatMistralAI
 from langchain.schema import HumanMessage
+
 from flask import Blueprint, request, jsonify
+from flask import send_file
+from groq import Groq
+from elevenlabs.client import ElevenLabs
+from elevenlabs import save
+from pydub import AudioSegment
+from app.config import Config 
+from pydantic import BaseModel, Field
 
 # Load the embedding model
 embedding_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
@@ -213,3 +221,160 @@ def chat():
         response_text = response.content
     
     return jsonify({"response": response_text})
+
+# Initialize new API clients (add after existing client initializations)
+groq_client = Groq(api_key=Config.GROQ_API_KEY)  # Use API key from Config
+elevenlabs_client = ElevenLabs(api_key=Config.ELEVENLABS_API_KEY) # Replace with your key
+# print(Config.ELEVENLABS_API_KEY)
+
+# Define a simple Q&A format using Pydantic
+class QAFormat(BaseModel):
+    question: str = Field(..., description="Generated question")
+    answer: str = Field(..., description="Generated answer")
+
+def generate_podcast_content(text, podcast_duration):
+    """Generates intro, Q&A pairs, and outro using Groq API."""
+    # Calculate number of questions based on duration (2 minutes per Q&A pair)
+    num_questions = max(1, int(podcast_duration // 2))
+    
+    # Generate Introduction
+    intro_prompt = f"""Create a engaging podcast introduction for a research paper. Include:
+    1. Warm greeting
+    2. Brief context about the research topic
+    3. What listeners can expect
+    Keep it conversational and under 4 sentences. Paper content: {text[:1000]}"""
+    
+    intro = groq_client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[{"role": "user", "content": intro_prompt}],
+        temperature=0.7,
+    ).choices[0].message.content
+
+    # Generate Q&A Pairs
+    qa_prompt = f"""Generate {num_questions} podcast-style Q&A pairs from this research paper. Follow these rules:
+    1. Questions should be curious and engaging
+    2. Answers should be concise (1-2 short paragraphs)
+    3. Use everyday language and examples
+    4. Maintain natural flow between questions
+    5. Format EXACTLY as: Question: [text]\nAnswer: [text]
+    
+    Paper content: {text}"""
+    
+    qa_content = groq_client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[{"role": "user", "content": qa_prompt}],
+        temperature=0.8,
+    ).choices[0].message.content
+
+    qa_pairs = []
+    for qa in qa_content.split("\n\n"):
+        lines = qa.split("\n")
+        if len(lines) >= 2:
+            question = lines[0].replace("Question: ", "").strip()
+            answer = lines[1].replace("Answer: ", "").strip()
+            qa_pairs.append(QAFormat(question=question, answer=answer))
+
+    # Generate Outro
+    outro_prompt = f"""Create a podcast closing segment that includes:
+    1. Thank you message
+    2. Key takeaway
+    3. Call to engage (e.g., follow for more content)
+    Keep it under 3 sentences and conversational."""
+    
+    outro = groq_client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[{"role": "user", "content": outro_prompt}],
+        temperature=0.7,
+    ).choices[0].message.content
+    print(intro, qa_pairs, outro)
+    return intro, qa_pairs, outro
+
+def text_to_speech(intro, qa_pairs, outro, output_filename="podcast.mp3"):
+    """Converts text segments into podcast audio."""
+    audio_segments = []
+    
+    # Generate Introduction
+    intro_audio = elevenlabs_client.generate(
+        text=intro,
+        voice="Rachel",
+        model="eleven_multilingual_v2"
+    )
+    save(intro_audio, "temp_intro.mp3")
+    audio_segments.append(AudioSegment.from_mp3("temp_intro.mp3"))
+    
+    # Generate Q&A
+    for idx, qa in enumerate(qa_pairs):
+        q_audio = elevenlabs_client.generate(
+            text=qa.question,
+            voice="Rachel",
+            model="eleven_multilingual_v2"
+        )
+        a_audio = elevenlabs_client.generate(
+            text=qa.answer,
+            voice="Adam",
+            model="eleven_multilingual_v2"
+        )        
+        save(q_audio, f"temp_q{idx}.mp3")
+        save(a_audio, f"temp_a{idx}.mp3")
+        
+        q_segment = AudioSegment.from_mp3(f"temp_q{idx}.mp3")
+        a_segment = AudioSegment.from_mp3(f"temp_a{idx}.mp3")
+        silence = AudioSegment.silent(duration=800)
+        audio_segments.append(q_segment + silence + a_segment + silence)
+        
+        os.remove(f"temp_q{idx}.mp3")
+        os.remove(f"temp_a{idx}.mp3")
+
+    # Generate Outro
+    outro_audio = elevenlabs_client.generate(
+        text=outro,
+        voice="Rachel",
+        model="eleven_multilingual_v2"
+    )
+    save(outro_audio, "temp_outro.mp3")
+    audio_segments.append(AudioSegment.from_mp3("temp_outro.mp3"))
+    
+    # Combine all segments
+    podcast_audio = sum(audio_segments)
+    podcast_audio.export(output_filename, format="mp3")
+    
+    # Cleanup temp files
+    os.remove("temp_intro.mp3")
+    os.remove("temp_outro.mp3")
+    
+    return output_filename
+
+
+@chat_routes.route("/generate_podcast", methods=["POST"])
+def generate_podcast():
+    """Generates a podcast from the uploaded research paper."""
+    if not ensure_pdf_processed():
+        return jsonify({"error": "No PDF uploaded. Upload a file first."}), 400
+
+    try:
+        # Extract and limit text
+        text = extract_text_from_pdf(pdf_path)[:7000]
+        if not text:
+            return jsonify({"error": "Failed to extract text from PDF"}), 500
+
+        # Get duration from request
+        data = request.get_json()
+        podcast_duration = data.get("duration", 12)
+
+        # Generate content
+        intro, qa_pairs, outro = generate_podcast_content(text, podcast_duration)
+
+        # Generate audio
+        audio_io = text_to_speech(intro, qa_pairs, outro)
+
+        return send_file(
+            audio_io,
+            mimetype="audio/mp3",
+            as_attachment=True,
+            download_name="research_podcast.mp3"
+        )
+    except Exception as e:
+        # Log the full error for server-side debugging
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": f"Podcast generation failed: {str(e)}"}), 500

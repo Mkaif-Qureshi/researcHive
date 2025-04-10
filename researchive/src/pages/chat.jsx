@@ -7,8 +7,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2, Upload, FileText, BrainCircuit, Lightbulb, MessageSquare, Send, Download, RefreshCw } from 'lucide-react';
+import { Loader2, Upload, FileText, BrainCircuit, Lightbulb, MessageSquare, Send, Download, RefreshCw, Podcast } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+
 
 // API base URL - can be configured based on environment
 const API_BASE_URL = 'http://localhost:5000/api';
@@ -25,8 +26,11 @@ const ResearchAssistant = () => {
   const [customQuery, setCustomQuery] = useState('');
   const [chatQuery, setChatQuery] = useState('');
   const [chatHistory, setChatHistory] = useState([]);
+  const [podcastDuration, setPodcastDuration] = useState(12);
+  const [podcastAudio, setPodcastAudio] = useState(null);
   const fileInputRef = useRef(null);
   const chatContainerRef = useRef(null);
+
 
   // Check for existing PDF on load
   useEffect(() => {
@@ -37,6 +41,7 @@ const ResearchAssistant = () => {
     setSummary('');
     setSuggestions('');
     setChatHistory([]);
+    setPodcastAudio(null);
   }, []);
 
   // Auto-scroll chat to bottom
@@ -141,6 +146,40 @@ const ResearchAssistant = () => {
       console.error('Error getting research suggestions:', error);
       setUploadStatus({
         message: error.response?.data?.error || 'Failed to generate research suggestions.',
+        isError: true
+      });
+    } finally {
+      setIsLoading(false);
+      setActiveOperation(null);
+    }
+  };
+
+  // New function to generate podcast
+  const handleGeneratePodcast = async () => {
+    if (!pdfUploaded) {
+      setUploadStatus({
+        message: 'Please upload a PDF first.',
+        isError: true
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    setActiveOperation('podcast');
+    setPodcastAudio(null);
+
+    try {
+      const response = await axios.post(`${API_BASE_URL}/chat/generate_podcast`,
+        { duration: podcastDuration },
+        { responseType: 'blob' }
+      );
+
+      const audioBlob = new Blob([response.data], { type: 'audio/mp3' });
+      setPodcastAudio(URL.createObjectURL(audioBlob));
+    } catch (error) {
+      console.error('Error generating podcast:', error);
+      setUploadStatus({
+        message: error.response?.data?.error || 'Failed to generate podcast.',
         isError: true
       });
     } finally {
@@ -267,7 +306,7 @@ const ResearchAssistant = () => {
       </Card>
 
       <Tabs defaultValue="summary" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="summary" disabled={isLoading}>
             <div className="flex items-center gap-2">
               <BrainCircuit size={16} />
@@ -284,6 +323,12 @@ const ResearchAssistant = () => {
             <div className="flex items-center gap-2">
               <MessageSquare size={16} />
               <span>Chat</span>
+            </div>
+          </TabsTrigger>
+          <TabsTrigger value="podcast" disabled={isLoading}>
+            <div className="flex items-center gap-2">
+              <Podcast size={16} />
+              <span>Podcast</span>
             </div>
           </TabsTrigger>
         </TabsList>
@@ -479,6 +524,65 @@ const ResearchAssistant = () => {
                   )}
                 </Button>
               </form>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+        <TabsContent value="podcast">
+          <Card>
+            <CardHeader>
+              <CardTitle>Research Paper Podcast</CardTitle>
+              <CardDescription>
+                Generate an AI-narrated podcast from your research paper
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <label htmlFor="podcast-duration" className="block text-sm font-medium text-gray-700 mb-2">
+                  Podcast Duration (minutes)
+                </label>
+                <Input
+                  id="podcast-duration"
+                  type="number"
+                  min="5"
+                  max="30"
+                  value={podcastDuration}
+                  onChange={(e) => setPodcastDuration(Number(e.target.value))}
+                  disabled={isLoading || !pdfUploaded}
+                  className="w-full"
+                />
+              </div>
+
+              {podcastAudio ? (
+                <div className="mt-4">
+                  <audio controls className="w-full">
+                    <source src={podcastAudio} type="audio/mp3" />
+                    Your browser does not support the audio element.
+                  </audio>
+                </div>
+              ) : (
+                <div className="p-4 bg-gray-50 rounded-md text-gray-500 text-center">
+                  Generated podcast will appear here
+                </div>
+              )}
+            </CardContent>
+            <CardFooter>
+              <Button
+                onClick={handleGeneratePodcast}
+                disabled={isLoading || !pdfUploaded}
+                className="w-full"
+              >
+                {isLoading && activeOperation === 'podcast' ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Generating Podcast...
+                  </>
+                ) : (
+                  <>
+                    <Podcast className="mr-2 h-4 w-4" />
+                    Generate Podcast
+                  </>
+                )}
+              </Button>
             </CardFooter>
           </Card>
         </TabsContent>
